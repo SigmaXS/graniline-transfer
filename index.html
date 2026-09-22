@@ -447,6 +447,36 @@
   }
   .field select:focus,.field input:focus,.field textarea:focus{border-color:var(--accent);}
   .form-note{font-size:.78rem;color:var(--ink-faint);margin-top:2px;}
+
+  .send-modal-backdrop{
+    position:fixed;inset:0;z-index:100;
+    background:rgba(4,6,12,.65);backdrop-filter:blur(3px);
+    display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .send-modal-backdrop[hidden]{display:none;}
+  .send-modal{
+    position:relative;width:100%;max-width:360px;
+    background:var(--bg-elev-2);border:1px solid var(--line-strong);border-radius:var(--r-l);
+    padding:28px 24px 24px;text-align:center;box-shadow:var(--shadow-deep);
+  }
+  .send-modal h3{font-family:'Unbounded';font-size:1.15rem;}
+  .send-modal p{color:var(--ink-dim);font-size:.86rem;margin-top:8px;}
+  .send-modal-options{display:flex;flex-direction:column;gap:10px;margin-top:20px;}
+  .send-option{
+    display:flex;align-items:center;gap:12px;
+    padding:.85rem 1.1rem;border-radius:var(--r-s);border:1px solid var(--line-strong);
+    background:var(--bg-elev);color:var(--ink);font-weight:600;font-size:.95rem;
+    transition:border-color .2s,transform .2s,background .2s;
+  }
+  .send-option svg{width:19px;height:19px;color:var(--accent);flex:none;}
+  .send-option:hover{border-color:var(--accent);transform:translateY(-1px);background:var(--bg-elev-2);}
+  .send-modal-note{min-height:1.2em;font-size:.76rem;color:var(--accent-soft);margin-top:14px;}
+  .send-modal-close{
+    position:absolute;top:14px;right:14px;width:28px;height:28px;border-radius:50%;
+    display:grid;place-items:center;color:var(--ink-dim);border:1px solid var(--line-strong);
+  }
+  .send-modal-close svg{width:13px;height:13px;}
+  .send-modal-close:hover{color:var(--ink);border-color:var(--accent);}
   .checkbox-field{display:flex;align-items:flex-start;gap:10px;font-size:.86rem;color:var(--ink-dim);cursor:pointer;}
   .checkbox-field input{width:16px;height:16px;margin-top:2px;accent-color:var(--accent);flex:none;}
   .checkbox-field i{font-style:normal;color:var(--ink-faint);}
@@ -1010,7 +1040,7 @@
           <div class="contact-list">
             <a href="tel:+37378293919">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 3a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.2-1.3a2 2 0 0 1 2.1-.5c1 .4 2 .6 3 .7a2 2 0 0 1 1.7 2z"/></svg>
-              <span><b>+373 78 293 919</b><span class="small">Молдова, звонки и WhatsApp</span></span>
+              <span><b>+373 78 293 919</b><span class="small">Молдова, звонки, WhatsApp, Viber, Telegram</span></span>
             </a>
             <a href="tel:+380987361623">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 3a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.2-1.3a2 2 0 0 1 2.1-.5c1 .4 2 .6 3 .7a2 2 0 0 1 1.7 2z"/></svg>
@@ -1072,8 +1102,32 @@
             Отправить заявку
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </button>
-          <p class="form-note">Заявка уйдёт нам в WhatsApp со всеми деталями — ответим и подтвердим маршрут.</p>
+          <p class="form-note">Выберите мессенджер — заявка со всеми деталями уйдёт нам, и мы подтвердим маршрут.</p>
         </form>
+        <div class="send-modal-backdrop" id="sendModalBackdrop" hidden>
+          <div class="send-modal" role="dialog" aria-label="Куда отправить заявку">
+            <h3>Куда отправить заявку?</h3>
+            <p>Выберите удобный мессенджер</p>
+            <div class="send-modal-options">
+              <button type="button" class="send-option" data-app="whatsapp">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                WhatsApp
+              </button>
+              <button type="button" class="send-option" data-app="viber">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3c5 0 8 2.7 8 7.5S17 18 12 18l-4 3v-3.6C4.8 16.4 3 13.9 3 10.5 3 5.7 7 3 12 3z"/></svg>
+                Viber
+              </button>
+              <button type="button" class="send-option" data-app="telegram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m22 2-20 8 7 2.5M22 2 15 22l-6-9.5M22 2 9 14.5"/></svg>
+                Telegram
+              </button>
+            </div>
+            <p class="send-modal-note" id="sendModalNote"></p>
+            <button type="button" class="send-modal-close" id="sendModalClose" aria-label="Закрыть">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -1231,7 +1285,44 @@
         if(comment) lines.push('Комментарий: '+comment);
         var phone=document.getElementById('fPhone').value;
         lines.push('Телефон: '+(phone||'не указан'));
-        window.open('https://wa.me/37378293919?text='+encodeURIComponent(lines.join('\n')), '_blank');
+        window.__pendingRequestText=lines.join('\n');
+        var backdrop=document.getElementById('sendModalBackdrop');
+        var note=document.getElementById('sendModalNote');
+        if(note) note.textContent='';
+        if(backdrop) backdrop.hidden=false;
+      });
+    }catch(e){}
+
+    try{
+      var MD_PHONE='37378293919';
+      var backdrop=document.getElementById('sendModalBackdrop');
+      var note=document.getElementById('sendModalNote');
+      function closeSendModal(){ if(backdrop) backdrop.hidden=true; }
+      var closeBtn=document.getElementById('sendModalClose');
+      if(closeBtn) closeBtn.addEventListener('click',closeSendModal);
+      if(backdrop) backdrop.addEventListener('click',function(e){ if(e.target===backdrop) closeSendModal(); });
+      document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeSendModal(); });
+
+      document.querySelectorAll('.send-option').forEach(function(btn){
+        btn.addEventListener('click',function(){
+          var text=window.__pendingRequestText||'Здравствуйте! Хочу заказать трансфер.';
+          var app=btn.getAttribute('data-app');
+          if(app==='whatsapp'){
+            window.open('https://wa.me/'+MD_PHONE+'?text='+encodeURIComponent(text), '_blank');
+            closeSendModal();
+            return;
+          }
+          try{
+            if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text); }
+          }catch(e){}
+          if(app==='viber'){
+            window.open('viber://chat?number=%2B'+MD_PHONE, '_blank');
+          } else if(app==='telegram'){
+            window.open('https://t.me/+'+MD_PHONE, '_blank');
+          }
+          if(note) note.textContent='Текст заявки скопирован — вставьте его в чат (Ctrl+V).';
+          setTimeout(closeSendModal, 1800);
+        });
       });
     }catch(e){}
 
