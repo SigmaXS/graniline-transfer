@@ -189,6 +189,8 @@
   .btn-primary:hover{transform:translateY(-2px);}
   .btn-ghost{border:1px solid var(--line-strong);color:var(--ink);}
   .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+  .mini-icons{display:flex;align-items:center;gap:5px;margin-left:2px;padding-left:10px;border-left:1px solid var(--line-strong);}
+  .mini-icons svg{width:13px;height:13px;color:var(--ink-faint);}
 
   .route-mark{margin-top:clamp(32px,5vw,52px);}
   .route-card{
@@ -567,10 +569,15 @@
           Рассчитать маршрут
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </a>
-        <a class="btn btn-ghost" href="#" id="waBtn">
+        <button type="button" class="btn btn-ghost" id="waBtn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-          Написать в WhatsApp
-        </a>
+          Написать нам
+          <span class="mini-icons" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3c5 0 8 2.7 8 7.5S17 18 12 18l-4 3v-3.6C4.8 16.4 3 13.9 3 10.5 3 5.7 7 3 12 3z"/></svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m22 2-20 8 7 2.5M22 2 15 22l-6-9.5M22 2 9 14.5"/></svg>
+          </span>
+        </button>
       </div>
 
       <div class="stat-row" id="statRow">
@@ -591,9 +598,15 @@
           <circle cx="18" cy="122" r="5.5" fill="var(--bg-elev)" stroke="var(--accent)" stroke-width="2"/>
           <circle cx="152" cy="58" r="5.5" fill="var(--bg-elev)" stroke="var(--accent-violet)" stroke-width="2"/>
           <circle cx="300" cy="26" r="5.5" fill="var(--bg-elev)" stroke="var(--accent-2)" stroke-width="2"/>
-          <circle r="4" fill="#fff" class="route-dot">
-            <animateMotion dur="4.5s" repeatCount="indefinite" path="M18 122 C 70 92, 92 44, 152 58 S 258 92, 300 26"/>
-          </circle>
+          <g class="route-dot">
+            <animateMotion dur="4.5s" repeatCount="indefinite" rotate="auto" path="M18 122 C 70 92, 92 44, 152 58 S 258 92, 300 26"/>
+            <g transform="translate(-8,-5)">
+              <rect x="1" y="3" width="14" height="5" rx="2" fill="#fff"/>
+              <path d="M4 3 L6 0.6 H10 L12 3 Z" fill="#fff"/>
+              <circle cx="4.2" cy="8" r="1.6" fill="#0A0E17" stroke="#fff" stroke-width="0.8"/>
+              <circle cx="11.8" cy="8" r="1.6" fill="#0A0E17" stroke="#fff" stroke-width="0.8"/>
+            </g>
+          </g>
           <text x="4" y="140" fill="var(--ink-faint)" font-family="JetBrains Mono" font-size="10">KIV</text>
           <text x="132" y="52" fill="var(--ink-faint)" font-family="JetBrains Mono" font-size="10">граница</text>
           <text x="272" y="20" fill="var(--ink-faint)" font-family="JetBrains Mono" font-size="10" id="routeToCode">IEV</text>
@@ -1179,7 +1192,13 @@
 
     try{
       var wa=document.getElementById('waBtn');
-      wa.href='https://wa.me/37378293919?text=' + encodeURIComponent('Здравствуйте! Хочу заказать трансфер.');
+      wa.addEventListener('click',function(){
+        window.__pendingRequestText='Здравствуйте! Хочу заказать трансфер.';
+        var backdrop=document.getElementById('sendModalBackdrop');
+        var note=document.getElementById('sendModalNote');
+        if(note) note.textContent='';
+        if(backdrop) backdrop.hidden=false;
+      });
     }catch(e){}
 
     try{
