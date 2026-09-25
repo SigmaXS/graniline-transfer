@@ -20,6 +20,8 @@ cd "$(dirname "$0")"
     'analytics_storage': 'denied',
     'wait_for_update': 500
   });
+  gtag('set', 'ads_data_redaction', true);
+  gtag('set', 'url_passthrough', true);
   (function(){
     try{
       var saved = localStorage.getItem('glConsent');
