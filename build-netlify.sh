@@ -10,12 +10,30 @@ cd "$(dirname "$0")"
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18474566267"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'ad_user_data': 'denied',
+    'ad_personalization': 'denied',
+    'analytics_storage': 'denied',
+    'wait_for_update': 500
+  });
+  (function(){
+    try{
+      var saved = localStorage.getItem('glConsent');
+      if(saved === 'granted' || saved === 'denied'){
+        gtag('consent', 'update', {
+          'ad_storage': saved, 'ad_user_data': saved, 'ad_personalization': saved, 'analytics_storage': saved
+        });
+      }
+    }catch(e){}
+  })();
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18474566267"></script>
+<script>
   gtag('js', new Date());
-
   gtag('config', 'AW-18474566267');
 </script>
 <title>GrandLine Transfer — трансфер Молдова ⇄ Украина ⇄ Европа</title>

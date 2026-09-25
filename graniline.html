@@ -435,6 +435,26 @@
   .foot-links{display:flex;gap:28px;flex-wrap:wrap;font-size:.86rem;color:var(--ink-dim);}
   .foot-links a:hover{color:var(--ink);}
   .foot-bottom{margin-top:28px;padding-top:20px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:.78rem;color:var(--ink-faint);}
+  .foot-legal{display:flex;gap:16px;flex-wrap:wrap;}
+  .foot-legal a,.foot-legal button{color:var(--ink-faint);text-decoration:underline;text-underline-offset:2px;}
+  .foot-legal a:hover,.foot-legal button:hover{color:var(--ink-dim);}
+
+  /* ---------- CONSENT BANNER ---------- */
+  .consent-banner{
+    position:fixed;left:16px;right:16px;bottom:16px;z-index:90;
+    max-width:640px;margin:0 auto;
+    background:var(--bg-elev-2);border:1px solid var(--line-strong);border-radius:var(--r-m);
+    padding:20px 22px;box-shadow:var(--shadow-deep);
+    display:flex;flex-direction:column;gap:14px;
+  }
+  .consent-banner[hidden]{display:none;}
+  .consent-banner p{font-size:.86rem;color:var(--ink-dim);}
+  .consent-banner p a{color:var(--accent-soft);text-decoration:underline;}
+  .consent-actions{display:flex;gap:10px;flex-wrap:wrap;}
+  .consent-actions button{padding:.65rem 1.2rem;border-radius:999px;font-weight:700;font-size:.86rem;white-space:nowrap;}
+  .consent-accept{background:var(--grad);color:var(--accent-ink);}
+  .consent-reject{border:1px solid var(--line-strong);color:var(--ink);}
+  @media (max-width:520px){ .consent-actions button{flex:1;} }
 
   .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s ease;}
   .reveal.in{opacity:1;transform:none;}
@@ -1019,6 +1039,10 @@
     <div class="foot-bottom">
       <span>© 2026 GrandLine Transfer</span>
       <span data-i18n="footer.disclaimer">Информация на сайте демонстрационная — уточняйте актуальные тарифы и контакты при запуске.</span>
+      <span class="foot-legal">
+        <a href="privacy.html" data-i18n="footer.privacy">Политика конфиденциальности</a>
+        <button type="button" id="cookieSettingsBtn" data-i18n="footer.cookieSettings">Настройки cookie</button>
+      </span>
     </div>
   </div>
 </footer>
@@ -1054,6 +1078,14 @@
     <span data-i18n="booking.submit">Отправить заявку</span>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
   </a>
+</div>
+
+<div class="consent-banner" id="consentBanner" role="dialog" aria-label="Cookies" hidden>
+  <p data-i18n="consent.text">Мы используем файлы cookie для аналитики и персонализации рекламы. Вы можете принять их или отклонить необязательные cookie. Подробнее — <a href="privacy.html">в политике конфиденциальности</a>.</p>
+  <div class="consent-actions">
+    <button type="button" class="consent-accept" id="consentAccept" data-i18n="consent.accept">Принять</button>
+    <button type="button" class="consent-reject" id="consentReject" data-i18n="consent.reject">Отклонить</button>
+  </div>
 </div>
 
 <script>
@@ -1347,6 +1379,33 @@
         document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
       }
     }catch(e){}
+
+    try{
+      var consentBanner=document.getElementById('consentBanner');
+      var consentAccept=document.getElementById('consentAccept');
+      var consentReject=document.getElementById('consentReject');
+      var cookieSettingsBtn=document.getElementById('cookieSettingsBtn');
+
+      function updateConsent(choice){
+        if(window.gtag){
+          gtag('consent','update',{
+            'ad_storage':choice,'ad_user_data':choice,'ad_personalization':choice,'analytics_storage':choice
+          });
+        }
+        try{ localStorage.setItem('glConsent', choice); }catch(e){}
+        consentBanner.hidden=true;
+      }
+
+      var savedConsent=null;
+      try{ savedConsent=localStorage.getItem('glConsent'); }catch(e){}
+      if(savedConsent!=='granted' && savedConsent!=='denied'){ consentBanner.hidden=false; }
+
+      consentAccept.addEventListener('click',function(){ updateConsent('granted'); });
+      consentReject.addEventListener('click',function(){ updateConsent('denied'); });
+      if(cookieSettingsBtn){
+        cookieSettingsBtn.addEventListener('click',function(){ consentBanner.hidden=false; });
+      }
+    }catch(e){}
   })();
 </script>
 
@@ -1407,6 +1466,9 @@
         "reviews.r3.quote":"«Дальня поїздка до Дніпра — дуже комфортно, водій був на зв'язку всю дорогу і заздалегідь попередив про час прибуття».",
         "reviews.r3.route":"Кишинів — Дніпро",
         "footer.disclaimer":"Інформація на сайті демонстраційна — уточнюйте актуальні тарифи та контакти при запуску.",
+        "footer.privacy":"Політика конфіденційності","footer.cookieSettings":"Налаштування cookie",
+        "consent.text":"Ми використовуємо файли cookie для аналітики та персоналізації реклами. Ви можете прийняти їх або відхилити необов'язкові cookie. Детальніше — <a href=\"privacy.html\">в політиці конфіденційності</a>.",
+        "consent.accept":"Прийняти","consent.reject":"Відхилити",
         "modal.h":"Куди надіслати заявку?","modal.p":"Оберіть зручний месенджер","modal.close":"Закрити",
         "fcta.text":"Потрібен трансфер? Залиште заявку — передзвонимо за 15 хвилин"
       },
@@ -1464,6 +1526,9 @@
         "reviews.r3.quote":"“A long trip to Dnipro — very comfortable, the driver stayed in touch the whole way and gave advance notice of arrival time.”",
         "reviews.r3.route":"Chisinau — Dnipro",
         "footer.disclaimer":"The information on this site is for demonstration — confirm current rates and contacts at launch.",
+        "footer.privacy":"Privacy policy","footer.cookieSettings":"Cookie settings",
+        "consent.text":"We use cookies for analytics and ad personalization. You can accept them or decline non-essential cookies. Details — <a href=\"privacy.html\">in our privacy policy</a>.",
+        "consent.accept":"Accept","consent.reject":"Decline",
         "modal.h":"Where should we send your request?","modal.p":"Choose your preferred messenger","modal.close":"Close",
         "fcta.text":"Need a transfer? Leave a request — we'll call back within 15 minutes"
       }
