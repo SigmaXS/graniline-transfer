@@ -9,6 +9,15 @@ cd "$(dirname "$0")"
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18474566267"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'AW-18474566267');
+</script>
 <title>GrandLine Transfer — трансфер Молдова ⇄ Украина ⇄ Европа</title>
 <meta name="description" content="Комфортный трансфер от двери до двери: Кишинёв ⇄ Киев, Одесса, Бухарест, Яссы, Львов и другие города. Фиксированная цена, опытные водители, знание всех погранпереходов.">
 <meta name="robots" content="index, follow">
