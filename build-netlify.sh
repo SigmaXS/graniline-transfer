@@ -9,6 +9,7 @@ cd "$(dirname "$0")"
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="google-site-verification" content="FQ0LisruHntxyvTPlI9CKA-1Pi_aIdYrRS7hxxmaFhY" />
 <!-- Google tag (gtag.js) -->
 <script>
   window.dataLayer = window.dataLayer || [];
