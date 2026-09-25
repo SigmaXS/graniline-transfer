@@ -12,16 +12,19 @@ cd "$(dirname "$0")"
 <title>GrandLine Transfer — трансфер Молдова ⇄ Украина ⇄ Европа</title>
 <meta name="description" content="Комфортный трансфер от двери до двери: Кишинёв ⇄ Киев, Одесса, Бухарест, Яссы, Львов и другие города. Фиксированная цена, опытные водители, знание всех погранпереходов.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://REPLACE-WITH-YOUR-DOMAIN.com/">
+<link rel="canonical" href="https://gltransfer.com/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GrandLine Transfer">
 <meta property="og:title" content="GrandLine Transfer — трансфер через границу без пересадок">
 <meta property="og:description" content="Комфортный трансфер Кишинёв ⇄ Киев, Одесса, Бухарест и другие направления. Фиксированные цены, опытные водители.">
-<meta property="og:image" content="cars/business-mercedes.png">
-<meta property="og:url" content="https://REPLACE-WITH-YOUR-DOMAIN.com/">
+<meta property="og:image" content="https://gltransfer.com/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:url" content="https://gltransfer.com/">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://gltransfer.com/og-cover.png">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -31,7 +34,7 @@ cd "$(dirname "$0")"
   "areaServed": ["Кишинёв","Киев","Одесса","Бухарест","Яссы","Львов","Измаил","Могилёв-Подольский"],
   "telephone": "+37378293919",
   "priceRange": "$$",
-  "url": "https://REPLACE-WITH-YOUR-DOMAIN.com/"
+  "url": "https://gltransfer.com/"
 }
 </script>
 <style>body{margin:0}</style>

@@ -23,4 +23,4 @@ sh build-netlify.sh
 - **Netlify**: перетащить папку/zip на app.netlify.com/drop, либо подключить этот GitHub-репозиторий.
 - **Railway**: New Project → Deploy from GitHub repo → выбрать этот репозиторий. Railway сам подхватит `package.json` и запустит `npm start`.
 
-Перед запуском в продакшн замените `REPLACE-WITH-YOUR-DOMAIN.com` в `index.html`, `robots.txt` и `sitemap.xml` на настоящий домен.
+Домен `gltransfer.com` уже прописан в `build-netlify.sh` (откуда попадает в `index.html`), `robots.txt` и `sitemap.xml`. При смене домена поправьте его там же.
