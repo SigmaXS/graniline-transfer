@@ -1300,6 +1300,7 @@
 
       document.querySelectorAll('.send-option').forEach(function(btn){
         btn.addEventListener('click',function(){
+          if(window.gtag_report_conversion) gtag_report_conversion();
           var text=window.__pendingRequestText||T('waMsg');
           var app=btn.getAttribute('data-app');
           if(app==='whatsapp'){

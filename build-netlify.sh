@@ -38,6 +38,23 @@ cd "$(dirname "$0")"
   gtag('js', new Date());
   gtag('config', 'AW-18474566267');
 </script>
+<!-- Event snippet for Отправка формы для потенциальных клиентов conversion page -->
+<script>
+  function gtag_report_conversion(url) {
+    var callback = function () {
+      if (typeof url != 'undefined') {
+        window.location = url;
+      }
+    };
+    gtag('event', 'conversion', {
+        'send_to': 'AW-18474566267/YFvYCLDajoUdEPuErulE',
+        'value': 1.0,
+        'currency': 'USD',
+        'event_callback': callback
+    });
+    return false;
+  }
+</script>
 <title>GrandLine Transfer — трансфер Молдова ⇄ Украина ⇄ Европа</title>
 <meta name="description" content="Комфортный трансфер от двери до двери: Кишинёв ⇄ Киев, Одесса, Бухарест, Яссы, Львов и другие города. Фиксированная цена, опытные водители, знание всех погранпереходов.">
 <meta name="robots" content="index, follow">
