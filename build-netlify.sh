@@ -9,14 +9,14 @@ cd "$(dirname "$0")"
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Graniline Transfer — трансфер Молдова ⇄ Украина ⇄ Европа</title>
+<title>GrandLine Transfer — трансфер Молдова ⇄ Украина ⇄ Европа</title>
 <meta name="description" content="Комфортный трансфер от двери до двери: Кишинёв ⇄ Киев, Одесса, Бухарест, Яссы, Львов и другие города. Фиксированная цена, опытные водители, знание всех погранпереходов.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://REPLACE-WITH-YOUR-DOMAIN.com/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Graniline Transfer">
-<meta property="og:title" content="Graniline Transfer — трансфер через границу без пересадок">
+<meta property="og:site_name" content="GrandLine Transfer">
+<meta property="og:title" content="GrandLine Transfer — трансфер через границу без пересадок">
 <meta property="og:description" content="Комфортный трансфер Кишинёв ⇄ Киев, Одесса, Бухарест и другие направления. Фиксированные цены, опытные водители.">
 <meta property="og:image" content="cars/business-mercedes.png">
 <meta property="og:url" content="https://REPLACE-WITH-YOUR-DOMAIN.com/">
@@ -26,7 +26,7 @@ cd "$(dirname "$0")"
 {
   "@context": "https://schema.org",
   "@type": "TaxiService",
-  "name": "Graniline Transfer",
+  "name": "GrandLine Transfer",
   "description": "Комфортный трансфер от двери до двери между Молдовой, Украиной и странами Евросоюза.",
   "areaServed": ["Кишинёв","Киев","Одесса","Бухарест","Яссы","Львов","Измаил","Могилёв-Подольский"],
   "telephone": "+37378293919",

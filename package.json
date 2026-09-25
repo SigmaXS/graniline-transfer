@@ -2,7 +2,7 @@
   "name": "graniline-transfer",
   "private": true,
   "version": "1.0.0",
-  "description": "Graniline Transfer — сайт трансфера Молдова / Украина / Европа",
+  "description": "GrandLine Transfer — сайт трансфера Молдова / Украина / Европа",
   "scripts": {
     "start": "npx --yes serve -s . -l ${PORT:-3000}"
   }
