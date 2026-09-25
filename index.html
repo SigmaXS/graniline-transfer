@@ -335,6 +335,7 @@
     background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;
   }
   .ticket-price span{font-size:.76rem;color:var(--ink-faint);}
+  .ticket-price b .tp{font-size:inherit;color:inherit;}
   .routes-note{margin-top:20px;font-size:.85rem;color:var(--ink-faint);}
 
   /* ---------- FLEET ---------- */
@@ -461,6 +462,25 @@
   .field select:focus,.field input:focus,.field textarea:focus{border-color:var(--accent);}
   .form-note{font-size:.78rem;color:var(--ink-faint);margin-top:2px;}
 
+  .label-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .geo-link{font-size:.74rem;font-weight:600;color:var(--accent-soft);white-space:nowrap;}
+  .geo-link:hover{color:var(--ink);}
+  .geo-link:disabled{opacity:.5;cursor:wait;}
+  .price-est{
+    font-size:.88rem;color:var(--ink);background:rgba(79,140,255,.1);
+    border:1px solid rgba(79,140,255,.3);border-radius:var(--r-s);padding:.6rem .85rem;
+  }
+  .price-est b{font-family:'Unbounded';font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .price-est small{display:block;color:var(--ink-faint);font-size:.74rem;margin-top:3px;}
+  .geo-btn{
+    margin-top:1.1rem;display:inline-flex;align-items:center;gap:6px;
+    padding:.55rem 1rem;border-radius:999px;border:1px solid var(--line-strong);
+    font-size:.84rem;font-weight:600;color:var(--ink);
+  }
+  .geo-btn:hover{border-color:var(--accent);}
+  .geo-btn:disabled{opacity:.5;cursor:wait;}
+  .geo-note{margin-top:.7rem;font-size:.82rem;color:var(--accent-soft);}
+  .ticket.personal .ticket-price b{filter:brightness(1.15);}
   .ac-field{position:relative;}
   .ac-list{
     position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:30;
@@ -650,7 +670,10 @@
       <form class="booking-form" id="bookingForm">
         <div class="form-row" style="margin-top:10px;">
           <div class="field ac-field">
-            <label for="fFrom" data-i18n="booking.from">Откуда</label>
+            <div class="label-row">
+              <label for="fFrom" data-i18n="booking.from">Откуда</label>
+              <button type="button" class="geo-link" id="fromGeoBtn" data-i18n="geo.mine">📍 Моё местоположение</button>
+            </div>
             <input id="fFrom" placeholder="Город или адрес" data-i18n-ph="booking.fromPh" autocomplete="off" required>
             <div class="ac-list" id="fFromList"></div>
           </div>
@@ -660,6 +683,7 @@
             <div class="ac-list" id="fToList"></div>
           </div>
         </div>
+        <p class="price-est" id="priceEst" aria-live="polite" hidden></p>
 
         <div class="form-expand" id="formExpand" hidden>
           <div class="form-row">
@@ -727,10 +751,12 @@
         <span class="eyebrow" data-i18n="routes.eyebrow">Маршруты</span>
         <h2 data-i18n="routes.h2">Основные направления</h2>
         <p data-i18n="routes.p">Фиксированный тариф за автомобиль, известный погранпереход, подача точно ко времени. Другие города — по запросу.</p>
+        <button type="button" class="geo-btn" id="routesGeoBtn" data-i18n="geo.routesBtn">📍 Показать цены от моего местоположения</button>
+        <p class="geo-note" id="routesGeoNote" hidden></p>
       </div>
 
       <div class="routes-grid" id="routesGrid">
-        <a class="ticket reveal" href="#booking" data-to="КПП Паланка">
+        <a class="ticket reveal" href="#booking" data-to="КПП Паланка" data-route="t1">
           <div class="ticket-top">
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">PAL</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -742,10 +768,10 @@
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t1.time">≈ 2 ч</span></span>
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t1.desc">прямо к границе</span></span>
           </div>
-          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 80 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> <span class="tp">80</span> $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
-        <a class="ticket reveal" href="#booking" data-to="Одесса">
+        <a class="ticket reveal" href="#booking" data-to="Одесса" data-route="t2">
           <div class="ticket-top">
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">ODS</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -757,10 +783,10 @@
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t2.time">≈ 3 ч</span></span>
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t2.desc">через Паланку</span></span>
           </div>
-          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 170 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> <span class="tp">170</span> $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
-        <a class="ticket reveal" href="#booking" data-to="Киев">
+        <a class="ticket reveal" href="#booking" data-to="Киев" data-route="t3">
           <div class="ticket-top">
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">IEV</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -772,10 +798,10 @@
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t3.time">≈ 8 ч</span></span>
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t3.desc">через Могилёв-Подольский</span></span>
           </div>
-          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 450 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> <span class="tp">450</span> $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
-        <a class="ticket reveal" href="#booking" data-to="Могилёв-Подольский">
+        <a class="ticket reveal" href="#booking" data-to="Могилёв-Подольский" data-route="t4">
           <div class="ticket-top">
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">MPD</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -787,10 +813,10 @@
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t4.time">≈ 3 ч</span></span>
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t4.desc">КПП Могилёв</span></span>
           </div>
-          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 150 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> <span class="tp">150</span> $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
-        <a class="ticket reveal" href="#booking" data-to="Измаил">
+        <a class="ticket reveal" href="#booking" data-to="Измаил" data-route="t5">
           <div class="ticket-top">
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">IZM</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -802,10 +828,10 @@
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t5.time">≈ 3.5 ч</span></span>
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t5.desc">через Старокозачье</span></span>
           </div>
-          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 200 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> <span class="tp">200</span> $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
-        <a class="ticket reveal" href="#booking" data-to="Львов">
+        <a class="ticket reveal" href="#booking" data-to="Львов" data-route="t6">
           <div class="ticket-top">
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">LWO</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -817,10 +843,10 @@
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t6.time">≈ 8 ч</span></span>
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t6.desc">ночной рейс</span></span>
           </div>
-          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 500 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> <span class="tp">500</span> $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
-        <a class="ticket reveal" href="#booking" data-to="Бухарест">
+        <a class="ticket reveal" href="#booking" data-to="Бухарест" data-route="t7">
           <div class="ticket-top">
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">BUH</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -832,10 +858,10 @@
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t7.time">≈ 6.5 ч</span></span>
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t7.desc">Леушень — Албица</span></span>
           </div>
-          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 400 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> <span class="tp">400</span> $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
-        <a class="ticket reveal" href="#booking" data-to="Яссы">
+        <a class="ticket reveal" href="#booking" data-to="Яссы" data-route="t8">
           <div class="ticket-top">
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">IAS</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
@@ -847,7 +873,7 @@
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t8.time">≈ 1.5 ч</span></span>
             <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t8.desc">Скулень</span></span>
           </div>
-          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 170 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> <span class="tp">170</span> $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
       </div>
       <p class="routes-note" data-i18n="routes.note">Маршруты работают в обе стороны — из Кишинёва и обратно. Указаны стартовые цены за автомобиль комфорт-класса (1–4 пассажира); для бизнес-класса и минивэна — см. раздел «Автопарк». Точная стоимость зависит от даты, точки подачи и числа пассажиров — уточняйте при бронировании.</p>
@@ -1257,13 +1283,6 @@
       };
       if(fFrom) fFrom.addEventListener('focus', window.__expandBookingForm);
       if(fTo) fTo.addEventListener('focus', window.__expandBookingForm);
-
-      document.getElementById('routesGrid').querySelectorAll('.ticket[data-to]').forEach(function(link){
-        link.addEventListener('click',function(){
-          if(fTo) fTo.value=link.getAttribute('data-to');
-          window.__expandBookingForm();
-        });
-      });
     }catch(e){}
 
     try{
@@ -1283,13 +1302,17 @@
           var r=items[i];
           if(!r) return;
           input.value=r.display_name.split(',').slice(0,2).join(',').trim();
+          input.dataset.lat=r.lat;
+          input.dataset.lon=r.lon;
+          input.dispatchEvent(new CustomEvent('glcoords'));
           hideList();
         }
 
         function renderResults(results){
           items=results; activeIdx=-1;
           if(!results.length){
-            list.innerHTML='<div class="ac-empty">Ничего не найдено</div>';
+            list.innerHTML='<div class="ac-empty"></div>';
+            list.firstChild.textContent=T('ac.none');
             list.classList.add('show');
             return;
           }
@@ -1311,6 +1334,8 @@
         }
 
         input.addEventListener('input',function(){
+          delete input.dataset.lat;
+          delete input.dataset.lon;
           var q=input.value.trim();
           if(debounceTimer) clearTimeout(debounceTimer);
           if(controller) controller.abort();
@@ -1339,6 +1364,182 @@
       }
       setupAutocomplete('fFrom','fFromList');
       setupAutocomplete('fTo','fToList');
+    }catch(e){}
+
+    try{
+      var CHISINAU=[47.0105,28.8638];
+      var CHISINAU_NAME={ru:'Кишинёв',uk:'Кишинів',en:'Chisinau'};
+      var ROAD_FACTOR=1.25;
+      // km/price = the Chisinau-based figures shown on the route cards; cross = where the car leaves Moldova.
+      var ROUTES={
+        t1:{dest:[46.408,30.087],cross:[46.408,30.087],km:125,price:80,name:{ru:'КПП Паланка',uk:'КПП Паланка',en:'Palanca border crossing'}},
+        t2:{dest:[46.4825,30.7233],cross:[46.408,30.087],km:180,price:170,name:{ru:'Одесса',uk:'Одеса',en:'Odesa'}},
+        t3:{dest:[50.4501,30.5234],cross:[48.43,27.79],km:600,price:450,name:{ru:'Киев',uk:'Київ',en:'Kyiv'}},
+        t4:{dest:[48.445,27.80],cross:[48.43,27.79],km:200,price:150,name:{ru:'Могилёв-Подольский',uk:'Могилів-Подільський',en:'Mohyliv-Podilskyi'}},
+        t5:{dest:[45.3516,28.8364],cross:[46.40,30.03],km:220,price:200,name:{ru:'Измаил',uk:'Ізмаїл',en:'Izmail'}},
+        t6:{dest:[49.8397,24.0297],cross:[48.27,26.66],km:580,price:500,name:{ru:'Львов',uk:'Львів',en:'Lviv'}},
+        t7:{dest:[44.4268,26.1025],cross:[46.79,28.17],km:450,price:400,name:{ru:'Бухарест',uk:'Бухарест',en:'Bucharest'}},
+        t8:{dest:[47.1585,27.6014],cross:[47.32,27.62],km:100,price:170,name:{ru:'Яссы',uk:'Ясси',en:'Iași'}}
+      };
+      var fFromEl=document.getElementById('fFrom');
+      var fToEl=document.getElementById('fTo');
+      var fPaxEl=document.getElementById('fPax');
+      var priceEst=document.getElementById('priceEst');
+      var fromGeoBtn=document.getElementById('fromGeoBtn');
+      var routesGeoBtn=document.getElementById('routesGeoBtn');
+      var routesGeoNote=document.getElementById('routesGeoNote');
+      var personalPos=null, routesNoteKey=null, estErrorKey=null;
+
+      function lang(){ return window.__glLang||'ru'; }
+      function hav(a,b){
+        var r=Math.PI/180, dLat=(b[0]-a[0])*r, dLon=(b[1]-a[1])*r;
+        var s=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(a[0]*r)*Math.cos(b[0]*r)*Math.sin(dLon/2)*Math.sin(dLon/2);
+        return 2*6371*Math.asin(Math.sqrt(s));
+      }
+      function inMoldova(p){ return p[0]>45.45 && p[0]<48.5 && p[1]>26.6 && p[1]<30.15; }
+      function round5(x){ return Math.round(x/5)*5; }
+      function setCoords(input,p){ input.dataset.lat=p[0]; input.dataset.lon=p[1]; }
+      function getCoords(input){
+        if(!input.dataset.lat) return null;
+        return [parseFloat(input.dataset.lat), parseFloat(input.dataset.lon)];
+      }
+      function fill(tpl,vals){ return tpl.replace(/\{(\w+)\}/g,function(_,k){ return vals[k]; }); }
+
+      // Scales the card price by the extra road distance from pickup to the border crossing.
+      // Never goes below the card's "from" price: cars start from Chisinau, so a closer pickup isn't cheaper.
+      function estimate(route,p){
+        var extra=(hav(p,route.cross)-hav(CHISINAU,route.cross))*ROAD_FACTOR;
+        var km=Math.max(route.km+extra, hav(p,route.dest));
+        var price=Math.max(route.price, round5(route.price*km/route.km));
+        return {km:round5(km), price:price};
+      }
+
+      function matchRoute(from,to){
+        for(var k in ROUTES){
+          var r=ROUTES[k];
+          if(hav(to,r.dest)<30 && inMoldova(from)) return {route:r,pickup:from};
+          if(hav(from,r.dest)<30 && inMoldova(to)) return {route:r,pickup:to};
+        }
+        return null;
+      }
+
+      function updateEstimate(){
+        var from=getCoords(fFromEl), to=getCoords(fToEl);
+        if(!from || !to){
+          if(estErrorKey){ priceEst.innerHTML='<small></small>'; priceEst.firstChild.textContent=T(estErrorKey); priceEst.hidden=false; }
+          else priceEst.hidden=true;
+          return;
+        }
+        estErrorKey=null;
+        var m=matchRoute(from,to);
+        var html;
+        if(m){
+          var e=estimate(m.route,m.pickup);
+          html=fill(T('est.line'),{km:e.km,price:e.price});
+          var pax=parseInt(fPaxEl.value,10)||1;
+          html+='<small>'+(pax>4 ? T('est.van') : T('est.note'))+'</small>';
+        } else {
+          html=fill(T('est.unknown'),{km:round5(hav(from,to)*1.3)});
+        }
+        priceEst.innerHTML=html;
+        priceEst.hidden=false;
+      }
+
+      function personalizeRoutes(){
+        if(!personalPos) return;
+        document.querySelectorAll('#routesGrid .ticket[data-route]').forEach(function(card){
+          var r=ROUTES[card.getAttribute('data-route')];
+          var e=estimate(r,personalPos);
+          card.querySelector('.tp').textContent=e.price;
+          var kmEl=card.querySelector('[data-i18n$=".km"]');
+          if(kmEl) kmEl.textContent='≈ '+e.km+' '+T('u.km');
+          card.classList.add('personal');
+        });
+      }
+
+      function showRoutesNote(key){
+        routesNoteKey=key;
+        routesGeoNote.textContent=T(key);
+        routesGeoNote.hidden=false;
+      }
+
+      var cachedPos=null;
+      function locate(onOk,onFail){
+        if(cachedPos){ onOk(cachedPos); return; }
+        if(!navigator.geolocation){ onFail(); return; }
+        navigator.geolocation.getCurrentPosition(function(pos){
+          cachedPos=[pos.coords.latitude,pos.coords.longitude];
+          onOk(cachedPos);
+        }, onFail, {enableHighAccuracy:false,timeout:10000,maximumAge:600000});
+      }
+
+      function fillFromWithPos(p){
+        setCoords(fFromEl,p);
+        fFromEl.value=T('geo.here');
+        updateEstimate();
+        var url='https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=16&accept-language='+lang()+'&lat='+p[0]+'&lon='+p[1];
+        fetch(url).then(function(res){ return res.json(); }).then(function(d){
+          if(d && d.display_name && getCoords(fFromEl) && getCoords(fFromEl)[0]===p[0]){
+            fFromEl.value=d.display_name.split(',').slice(0,2).join(',').trim();
+          }
+        }).catch(function(){});
+      }
+
+      fromGeoBtn.addEventListener('click',function(){
+        fromGeoBtn.disabled=true;
+        if(window.__expandBookingForm) window.__expandBookingForm();
+        locate(function(p){
+          fromGeoBtn.disabled=false;
+          estErrorKey=null;
+          fillFromWithPos(p);
+        },function(){
+          fromGeoBtn.disabled=false;
+          estErrorKey='geo.failed';
+          updateEstimate();
+        });
+      });
+
+      routesGeoBtn.addEventListener('click',function(){
+        routesGeoBtn.disabled=true;
+        locate(function(p){
+          routesGeoBtn.disabled=false;
+          if(!inMoldova(p)){ showRoutesNote('geo.outside'); return; }
+          personalPos=p;
+          personalizeRoutes();
+          showRoutesNote('geo.done');
+          if(!fFromEl.value.trim()) fillFromWithPos(p);
+        },function(){
+          routesGeoBtn.disabled=false;
+          showRoutesNote('geo.failed');
+        });
+      });
+
+      document.querySelectorAll('#routesGrid .ticket[data-route]').forEach(function(card){
+        card.addEventListener('click',function(){
+          var r=ROUTES[card.getAttribute('data-route')];
+          fToEl.value=r.name[lang()];
+          setCoords(fToEl,r.dest);
+          if(!fFromEl.value.trim()){
+            if(personalPos){ fillFromWithPos(personalPos); }
+            else { fFromEl.value=CHISINAU_NAME[lang()]; setCoords(fFromEl,CHISINAU); }
+          }
+          if(window.__expandBookingForm) window.__expandBookingForm();
+          updateEstimate();
+        });
+      });
+
+      fFromEl.addEventListener('input',updateEstimate);
+      fToEl.addEventListener('input',updateEstimate);
+      fFromEl.addEventListener('glcoords',updateEstimate);
+      fToEl.addEventListener('glcoords',updateEstimate);
+      fPaxEl.addEventListener('input',updateEstimate);
+
+      window.__glLangHooks=window.__glLangHooks||[];
+      window.__glLangHooks.push(function(){
+        personalizeRoutes();
+        if(routesNoteKey) showRoutesNote(routesNoteKey);
+        updateEstimate();
+      });
     }catch(e){}
 
     try{
@@ -1552,6 +1753,7 @@
         "footer.privacy":"Політика конфіденційності","footer.cookieSettings":"Налаштування cookie",
         "consent.text":"Ми використовуємо файли cookie для аналітики та персоналізації реклами. Ви можете прийняти їх або відхилити необов'язкові cookie. Детальніше — <a href=\"privacy.html\">в політиці конфіденційності</a>.",
         "consent.accept":"Прийняти","consent.reject":"Відхилити",
+        "geo.mine":"📍 Моє місцезнаходження","geo.routesBtn":"📍 Показати ціни від мого місцезнаходження",
         "modal.h":"Куди надіслати заявку?","modal.p":"Оберіть зручний месенджер","modal.close":"Закрити",
         "fcta.text":"Потрібен трансфер? Залиште заявку — передзвонимо за 15 хвилин"
       },
@@ -1612,14 +1814,15 @@
         "footer.privacy":"Privacy policy","footer.cookieSettings":"Cookie settings",
         "consent.text":"We use cookies for analytics and ad personalization. You can accept them or decline non-essential cookies. Details — <a href=\"privacy.html\">in our privacy policy</a>.",
         "consent.accept":"Accept","consent.reject":"Decline",
+        "geo.mine":"📍 My location","geo.routesBtn":"📍 Show prices from my location",
         "modal.h":"Where should we send your request?","modal.p":"Choose your preferred messenger","modal.close":"Close",
         "fcta.text":"Need a transfer? Leave a request — we'll call back within 15 minutes"
       }
     };
     var MSGS={
-      ru:{waMsg:"Здравствуйте! Хочу заказать трансфер.","msg.title":"Заявка на трансфер GrandLine:","msg.from":"Откуда","msg.to":"Куда","msg.date":"Дата и время","msg.pax":"Пассажиров","msg.bags":"Багаж","msg.pet":"Едет с животным: да","msg.comment":"Комментарий","msg.phone":"Телефон","msg.noPhone":"не указан","msg.copied":"Текст заявки скопирован — вставьте его в чат (Ctrl+V)."},
-      uk:{waMsg:"Вітаю! Хочу замовити трансфер.","msg.title":"Заявка на трансфер GrandLine:","msg.from":"Звідки","msg.to":"Куди","msg.date":"Дата і час","msg.pax":"Пасажирів","msg.bags":"Багаж","msg.pet":"Їде з твариною: так","msg.comment":"Коментар","msg.phone":"Телефон","msg.noPhone":"не вказано","msg.copied":"Текст заявки скопійовано — вставте його в чат (Ctrl+V)."},
-      en:{waMsg:"Hello! I'd like to book a transfer.","msg.title":"GrandLine Transfer request:","msg.from":"From","msg.to":"To","msg.date":"Date & time","msg.pax":"Passengers","msg.bags":"Luggage","msg.pet":"Traveling with a pet: yes","msg.comment":"Comment","msg.phone":"Phone","msg.noPhone":"not provided","msg.copied":"Request text copied — paste it into the chat (Ctrl+V)."}
+      ru:{waMsg:"Здравствуйте! Хочу заказать трансфер.","msg.title":"Заявка на трансфер GrandLine:","msg.from":"Откуда","msg.to":"Куда","msg.date":"Дата и время","msg.pax":"Пассажиров","msg.bags":"Багаж","msg.pet":"Едет с животным: да","msg.comment":"Комментарий","msg.phone":"Телефон","msg.noPhone":"не указан","msg.copied":"Текст заявки скопирован — вставьте его в чат (Ctrl+V).","ac.none":"Ничего не найдено","u.km":"км","est.line":"≈ {km} км · примерно <b>{price} $</b>","est.note":"Комфорт-класс, 1–4 пасс. Точную цену подтвердим в мессенджере.","est.van":"Для 5+ пассажиров — минивэн, цену подтвердим в мессенджере.","est.unknown":"≈ {km} км · стоимость рассчитаем индивидуально","geo.here":"Моё местоположение","geo.failed":"Не удалось определить местоположение — проверьте, разрешён ли доступ к геолокации.","geo.outside":"Похоже, вы не в Молдове — цены указаны от Кишинёва. Для поездки из вашего города посчитаем индивидуально.","geo.done":"Цены и расстояния пересчитаны от вашего местоположения (примерно)."},
+      uk:{waMsg:"Вітаю! Хочу замовити трансфер.","msg.title":"Заявка на трансфер GrandLine:","msg.from":"Звідки","msg.to":"Куди","msg.date":"Дата і час","msg.pax":"Пасажирів","msg.bags":"Багаж","msg.pet":"Їде з твариною: так","msg.comment":"Коментар","msg.phone":"Телефон","msg.noPhone":"не вказано","msg.copied":"Текст заявки скопійовано — вставте його в чат (Ctrl+V).","ac.none":"Нічого не знайдено","u.km":"км","est.line":"≈ {km} км · орієнтовно <b>{price} $</b>","est.note":"Комфорт-клас, 1–4 пас. Точну ціну підтвердимо в месенджері.","est.van":"Для 5+ пасажирів — мінівен, ціну підтвердимо в месенджері.","est.unknown":"≈ {km} км · вартість розрахуємо індивідуально","geo.here":"Моє місцезнаходження","geo.failed":"Не вдалося визначити місцезнаходження — перевірте, чи дозволено доступ до геолокації.","geo.outside":"Схоже, ви не в Молдові — ціни вказані від Кишинева. Для поїздки з вашого міста розрахуємо індивідуально.","geo.done":"Ціни та відстані перераховані від вашого місцезнаходження (орієнтовно)."},
+      en:{waMsg:"Hello! I'd like to book a transfer.","msg.title":"GrandLine Transfer request:","msg.from":"From","msg.to":"To","msg.date":"Date & time","msg.pax":"Passengers","msg.bags":"Luggage","msg.pet":"Traveling with a pet: yes","msg.comment":"Comment","msg.phone":"Phone","msg.noPhone":"not provided","msg.copied":"Request text copied — paste it into the chat (Ctrl+V).","ac.none":"Nothing found","u.km":"km","est.line":"≈ {km} km · about <b>{price} $</b>","est.note":"Comfort class, 1–4 pax. We'll confirm the exact price in the messenger.","est.van":"For 5+ passengers — minivan, we'll confirm the price in the messenger.","est.unknown":"≈ {km} km · price calculated individually","geo.here":"My location","geo.failed":"Couldn't get your location — check that location access is allowed.","geo.outside":"Looks like you're not in Moldova — prices are from Chisinau. We'll quote a trip from your city individually.","geo.done":"Prices and distances recalculated from your location (approximate)."}
     };
     var META={
       ru:{title:"GrandLine Transfer — трансфер Молдова ⇄ Украина ⇄ Европа",description:"Комфортный трансфер от двери до двери: Кишинёв ⇄ Киев, Одесса, Бухарест, Яссы, Львов и другие города. Фиксированная цена, опытные водители, знание всех погранпереходов."},
@@ -1685,6 +1888,7 @@
         btn.classList.toggle('active', btn.getAttribute('data-lang')===lang);
       });
       try{ localStorage.setItem('glLang', lang); }catch(e){}
+      (window.__glLangHooks||[]).forEach(function(f){ try{ f(lang); }catch(e){} });
     }
 
     function detectInitialLang(){
