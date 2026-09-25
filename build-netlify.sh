@@ -18,13 +18,13 @@ cd "$(dirname "$0")"
 <meta property="og:site_name" content="GrandLine Transfer">
 <meta property="og:title" content="GrandLine Transfer — трансфер через границу без пересадок">
 <meta property="og:description" content="Комфортный трансфер Кишинёв ⇄ Киев, Одесса, Бухарест и другие направления. Фиксированные цены, опытные водители.">
-<meta property="og:image" content="https://gltransfer.com/og-cover.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image" content="https://gltransfer.com/og-cover.jpg">
+<meta property="og:image:width" content="2000">
+<meta property="og:image:height" content="1116">
 <meta property="og:url" content="https://gltransfer.com/">
 <meta property="og:locale" content="ru_RU">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://gltransfer.com/og-cover.png">
+<meta name="twitter:image" content="https://gltransfer.com/og-cover.jpg">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
