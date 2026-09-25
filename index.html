@@ -121,6 +121,10 @@
     transition:transform .15s;
   }
   .nav-cta:hover{transform:translateY(-1px);}
+  .lang-switch{display:flex;align-items:center;gap:2px;background:var(--bg-elev);border:1px solid var(--line-strong);border-radius:999px;padding:3px;}
+  .lang-switch button{padding:.32rem .6rem;border-radius:999px;font-size:.74rem;font-weight:700;color:var(--ink-dim);letter-spacing:.03em;}
+  .lang-switch button.active{background:var(--grad);color:var(--accent-ink);}
+  .lang-switch-mobile{align-self:flex-start;margin-top:14px;}
   .nav-toggle{display:none;width:38px;height:38px;place-items:center;border:1px solid var(--line-strong);border-radius:10px;}
   .nav-toggle svg{width:18px;height:18px;}
   .mobile-panel{display:none;}
@@ -129,6 +133,7 @@
   @media (max-width:820px){
     .nav-links{display:none;}
     .nav-cta{display:none;}
+    #langSwitch{display:none;}
     .nav-toggle{display:grid;}
     .mobile-panel:not([hidden]){
       display:flex;flex-direction:column;gap:4px;
@@ -509,22 +514,28 @@
       <span class="brand-word"><b>GL</b>Transfer</span>
     </a>
     <div class="nav-links">
-      <a href="#routes">Маршруты</a>
-      <a href="#fleet">Автопарк</a>
-      <a href="#reviews">Отзывы</a>
-      <a href="#booking">Контакты</a>
+      <a href="#routes" data-i18n="nav.routes">Маршруты</a>
+      <a href="#fleet" data-i18n="nav.fleet">Автопарк</a>
+      <a href="#reviews" data-i18n="nav.reviews">Отзывы</a>
+      <a href="#booking" data-i18n="nav.contacts">Контакты</a>
     </div>
-    <a class="nav-cta" href="#booking">Забронировать</a>
-    <button class="nav-toggle" id="navToggle" aria-label="Меню" aria-expanded="false">
+    <a class="nav-cta" href="#booking" data-i18n="nav.cta">Забронировать</a>
+    <div class="lang-switch" id="langSwitch" role="group" aria-label="Language">
+      <button type="button" data-lang="ru">RU</button><button type="button" data-lang="uk">UA</button><button type="button" data-lang="en">EN</button>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Меню" data-i18n-aria="nav.menu" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
     </button>
   </div>
   <div class="mobile-panel wrap" id="mobilePanel" hidden>
-    <a href="#routes">Маршруты</a>
-    <a href="#fleet">Автопарк</a>
-    <a href="#reviews">Отзывы</a>
-    <a href="#booking">Контакты</a>
-    <a class="btn btn-primary nav-cta" href="#booking">Забронировать</a>
+    <a href="#routes" data-i18n="nav.routes">Маршруты</a>
+    <a href="#fleet" data-i18n="nav.fleet">Автопарк</a>
+    <a href="#reviews" data-i18n="nav.reviews">Отзывы</a>
+    <a href="#booking" data-i18n="nav.contacts">Контакты</a>
+    <a class="btn btn-primary nav-cta" href="#booking" data-i18n="nav.cta">Забронировать</a>
+    <div class="lang-switch lang-switch-mobile" id="langSwitchMobile" role="group" aria-label="Language">
+      <button type="button" data-lang="ru">RU</button><button type="button" data-lang="uk">UA</button><button type="button" data-lang="en">EN</button>
+    </div>
   </div>
 </nav>
 
@@ -534,13 +545,13 @@
   <div class="hero-fluid" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
   <div class="wrap hero-inner" id="heroInner">
     <div class="hero-copy" id="heroCopy">
-      <span class="eyebrow"><span class="flag-group"><svg class="flag-icon" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#003DA5"/><rect x="1" width="1" height="2" fill="#FFD200"/><rect x="2" width="1" height="2" fill="#CC092F"/></svg> Молдова</span> — <span class="flag-group"><svg class="flag-icon" viewBox="0 0 3 2" aria-hidden="true"><rect width="3" height="1" fill="#0057B7"/><rect y="1" width="3" height="1" fill="#FFD700"/></svg> Украина</span> — <span class="flag-group"><svg class="flag-icon" viewBox="0 0 3 2" aria-hidden="true"><rect width="3" height="2" fill="#039"/><circle cx="1.5" cy="0.45" r="0.09" fill="#FC0"/><circle cx="1.775" cy="0.524" r="0.09" fill="#FC0"/><circle cx="1.976" cy="0.725" r="0.09" fill="#FC0"/><circle cx="2.05" cy="1" r="0.09" fill="#FC0"/><circle cx="1.976" cy="1.275" r="0.09" fill="#FC0"/><circle cx="1.775" cy="1.476" r="0.09" fill="#FC0"/><circle cx="1.5" cy="1.55" r="0.09" fill="#FC0"/><circle cx="1.225" cy="1.476" r="0.09" fill="#FC0"/><circle cx="1.024" cy="1.275" r="0.09" fill="#FC0"/><circle cx="0.95" cy="1" r="0.09" fill="#FC0"/><circle cx="1.024" cy="0.725" r="0.09" fill="#FC0"/><circle cx="1.225" cy="0.524" r="0.09" fill="#FC0"/></svg> Европа</span></span>
-      <h1>Через границу <em>без пересадок</em></h1>
-      <p><span class="brand-inline">GrandLine</span> <span class="brand-suffix">Transfer</span> — комфортный трансфер от двери до двери между Молдовой, Украиной и странами Евросоюза. Фиксированная цена, опытные водители.</p>
+      <span class="eyebrow"><span class="flag-group"><svg class="flag-icon" viewBox="0 0 3 2" aria-hidden="true"><rect width="1" height="2" fill="#003DA5"/><rect x="1" width="1" height="2" fill="#FFD200"/><rect x="2" width="1" height="2" fill="#CC092F"/></svg> <span data-i18n="hero.md">Молдова</span></span> — <span class="flag-group"><svg class="flag-icon" viewBox="0 0 3 2" aria-hidden="true"><rect width="3" height="1" fill="#0057B7"/><rect y="1" width="3" height="1" fill="#FFD700"/></svg> <span data-i18n="hero.ua">Украина</span></span> — <span class="flag-group"><svg class="flag-icon" viewBox="0 0 3 2" aria-hidden="true"><rect width="3" height="2" fill="#039"/><circle cx="1.5" cy="0.45" r="0.09" fill="#FC0"/><circle cx="1.775" cy="0.524" r="0.09" fill="#FC0"/><circle cx="1.976" cy="0.725" r="0.09" fill="#FC0"/><circle cx="2.05" cy="1" r="0.09" fill="#FC0"/><circle cx="1.976" cy="1.275" r="0.09" fill="#FC0"/><circle cx="1.775" cy="1.476" r="0.09" fill="#FC0"/><circle cx="1.5" cy="1.55" r="0.09" fill="#FC0"/><circle cx="1.225" cy="1.476" r="0.09" fill="#FC0"/><circle cx="1.024" cy="1.275" r="0.09" fill="#FC0"/><circle cx="0.95" cy="1" r="0.09" fill="#FC0"/><circle cx="1.024" cy="0.725" r="0.09" fill="#FC0"/><circle cx="1.225" cy="0.524" r="0.09" fill="#FC0"/></svg> <span data-i18n="hero.eu">Европа</span></span></span>
+      <h1><span data-i18n="hero.h1a">Через границу</span> <em data-i18n="hero.h1b">без пересадок</em></h1>
+      <p><span class="brand-inline">GrandLine</span> <span class="brand-suffix">Transfer</span> <span data-i18n="hero.p"> — комфортный трансфер от двери до двери между Молдовой, Украиной и странами Евросоюза. Фиксированная цена, опытные водители.</span></p>
       <div class="hero-actions">
         <button type="button" class="btn btn-primary" id="waBtn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-          Написать нам
+          <span data-i18n="hero.waBtn">Написать нам</span>
           <span class="mini-icons" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 3c5 0 8 2.7 8 7.5S17 18 12 18l-4 3v-3.6C4.8 16.4 3 13.9 3 10.5 3 5.7 7 3 12 3z"/></svg>
@@ -552,33 +563,33 @@
       <div class="contact-list" style="margin-top:1.6rem;">
         <a href="tel:+37378293919">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 3a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.2-1.3a2 2 0 0 1 2.1-.5c1 .4 2 .6 3 .7a2 2 0 0 1 1.7 2z"/></svg>
-          <span><b>+373 78 293 919</b><span class="small">Молдова, звонки, WhatsApp, Viber, Telegram</span></span>
+          <span><b>+373 78 293 919</b><span class="small" data-i18n="hero.phone1sub">Молдова, звонки, WhatsApp, Viber, Telegram</span></span>
         </a>
         <a href="tel:+380987361623">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 3a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.2-1.3a2 2 0 0 1 2.1-.5c1 .4 2 .6 3 .7a2 2 0 0 1 1.7 2z"/></svg>
-          <span><b>+380 98 736 1623</b><span class="small">Украина, звонки и Telegram</span></span>
+          <span><b>+380 98 736 1623</b><span class="small" data-i18n="hero.phone2sub">Украина, звонки и Telegram</span></span>
         </a>
       </div>
 
       <div class="stat-row" id="statRow">
-        <div class="stat"><b class="mono" data-count="2400" data-suffix="+">0</b><span>завершённых поездок</span></div>
-        <div class="stat"><b class="mono" data-count="15" data-suffix=" мин">0</b><span>на подтверждение заявки</span></div>
-        <div class="stat"><b class="mono" data-count="4.9" data-decimals="1" data-suffix=" / 5">0</b><span>средняя оценка пассажиров</span></div>
+        <div class="stat"><b class="mono" data-count="2400" data-suffix="+">0</b><span data-i18n="hero.stat1">завершённых поездок</span></div>
+        <div class="stat"><b class="mono" data-count="15" data-suffix=" мин" data-suffix-i18n="hero.minSuffix">0</b><span data-i18n="hero.stat2">на подтверждение заявки</span></div>
+        <div class="stat"><b class="mono" data-count="4.9" data-decimals="1" data-suffix=" / 5">0</b><span data-i18n="hero.stat3">средняя оценка пассажиров</span></div>
       </div>
     </div>
 
     <div class="hero-form-panel reveal" id="booking">
-      <span class="eyebrow" style="color:var(--accent-2);">Бронирование</span>
+      <span class="eyebrow" style="color:var(--accent-2);" data-i18n="booking.eyebrow">Бронирование</span>
       <form class="booking-form" id="bookingForm">
         <div class="form-row" style="margin-top:10px;">
           <div class="field ac-field">
-            <label for="fFrom">Откуда</label>
-            <input id="fFrom" placeholder="Город или адрес" autocomplete="off" required>
+            <label for="fFrom" data-i18n="booking.from">Откуда</label>
+            <input id="fFrom" placeholder="Город или адрес" data-i18n-ph="booking.fromPh" autocomplete="off" required>
             <div class="ac-list" id="fFromList"></div>
           </div>
           <div class="field ac-field">
-            <label for="fTo">Куда</label>
-            <input id="fTo" placeholder="Город, КПП или свой адрес" autocomplete="off" required>
+            <label for="fTo" data-i18n="booking.to">Куда</label>
+            <input id="fTo" placeholder="Город, КПП или свой адрес" data-i18n-ph="booking.toPh" autocomplete="off" required>
             <div class="ac-list" id="fToList"></div>
           </div>
         </div>
@@ -586,44 +597,44 @@
         <div class="form-expand" id="formExpand" hidden>
           <div class="form-row">
             <div class="field">
-              <label for="fDate">Дата и время</label>
+              <label for="fDate" data-i18n="booking.date">Дата и время</label>
               <input id="fDate" type="datetime-local">
             </div>
             <div class="field">
-              <label for="fPax">Пассажиров</label>
+              <label for="fPax" data-i18n="booking.pax">Пассажиров</label>
               <input id="fPax" type="number" min="1" max="7" value="2">
             </div>
           </div>
           <div class="form-row">
             <div class="field">
-              <label for="fBags">Багаж</label>
+              <label for="fBags" data-i18n="booking.bags">Багаж</label>
               <select id="fBags">
-                <option>Без багажа</option>
-                <option selected>1–2 сумки</option>
-                <option>3–4 сумки</option>
-                <option>5 и больше</option>
+                <option data-i18n="booking.bags0">Без багажа</option>
+                <option selected data-i18n="booking.bags1">1–2 сумки</option>
+                <option data-i18n="booking.bags2">3–4 сумки</option>
+                <option data-i18n="booking.bags3">5 и больше</option>
               </select>
             </div>
             <div class="field">
-              <label for="fPhone">Телефон для связи</label>
+              <label for="fPhone" data-i18n="booking.phone">Телефон для связи</label>
               <input id="fPhone" type="tel" placeholder="+373 XX XXX XXX">
             </div>
           </div>
           <label class="checkbox-field">
             <input type="checkbox" id="fPet">
-            <span>Еду с животным <i>— важно знать заранее, не все переходы это допускают</i></span>
+            <span data-i18n="booking.pet">Еду с животным <i>— важно знать заранее, не все переходы это допускают</i></span>
           </label>
           <div class="field">
-            <label for="fComment">Комментарий (необязательно)</label>
-            <textarea id="fComment" rows="2" placeholder="Детское кресло, доп. багаж, время рейса и т.д."></textarea>
+            <label for="fComment" data-i18n="booking.comment">Комментарий (необязательно)</label>
+            <textarea id="fComment" rows="2" placeholder="Детское кресло, доп. багаж, время рейса и т.д." data-i18n-ph="booking.commentPh"></textarea>
           </div>
         </div>
 
         <button class="btn btn-primary" type="submit" id="formSubmitBtn" style="align-self:flex-start;margin-top:6px;">
-          Отправить заявку
+          <span data-i18n="booking.submit">Отправить заявку</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
         </button>
-        <p class="form-note" id="formNote">Выберите мессенджер — заявка со всеми деталями уйдёт нам, и мы подтвердим маршрут.</p>
+        <p class="form-note" id="formNote" data-i18n="booking.note">Выберите мессенджер — заявка со всеми деталями уйдёт нам, и мы подтвердим маршрут.</p>
       </form>
     </div>
   </div>
@@ -631,14 +642,14 @@
 
 <div class="strip" aria-hidden="true">
   <div class="strip-track" id="stripTrack">
-    <div class="strip-item"><span class="code">KIV ⇄ PAL</span><b>Кишинёв — КПП Паланка</b></div>
-    <div class="strip-item"><span class="code">KIV ⇄ ODS</span><b>Кишинёв — Одесса</b></div>
-    <div class="strip-item"><span class="code">KIV ⇄ IEV</span><b>Кишинёв — Киев</b></div>
-    <div class="strip-item"><span class="code">KIV ⇄ MPD</span><b>Кишинёв — Могилёв-Подольский</b></div>
-    <div class="strip-item"><span class="code">KIV ⇄ IZM</span><b>Кишинёв — Измаил</b></div>
-    <div class="strip-item"><span class="code">KIV ⇄ LWO</span><b>Кишинёв — Львов</b></div>
-    <div class="strip-item"><span class="code">KIV ⇄ BUH</span><b>Кишинёв — Бухарест</b></div>
-    <div class="strip-item"><span class="code">KIV ⇄ IAS</span><b>Кишинёв — Яссы</b></div>
+    <div class="strip-item"><span class="code">KIV ⇄ PAL</span><b data-i18n="r.t1.city">Кишинёв — КПП Паланка</b></div>
+    <div class="strip-item"><span class="code">KIV ⇄ ODS</span><b data-i18n="r.t2.city">Кишинёв — Одесса</b></div>
+    <div class="strip-item"><span class="code">KIV ⇄ IEV</span><b data-i18n="r.t3.city">Кишинёв — Киев</b></div>
+    <div class="strip-item"><span class="code">KIV ⇄ MPD</span><b data-i18n="r.t4.city">Кишинёв — Могилёв-Подольский</b></div>
+    <div class="strip-item"><span class="code">KIV ⇄ IZM</span><b data-i18n="r.t5.city">Кишинёв — Измаил</b></div>
+    <div class="strip-item"><span class="code">KIV ⇄ LWO</span><b data-i18n="r.t6.city">Кишинёв — Львов</b></div>
+    <div class="strip-item"><span class="code">KIV ⇄ BUH</span><b data-i18n="r.t7.city">Кишинёв — Бухарест</b></div>
+    <div class="strip-item"><span class="code">KIV ⇄ IAS</span><b data-i18n="r.t8.city">Кишинёв — Яссы</b></div>
   </div>
 </div>
 
@@ -646,9 +657,9 @@
   <section class="section" id="routes">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">Маршруты</span>
-        <h2>Основные направления</h2>
-        <p>Фиксированный тариф за автомобиль, известный погранпереход, подача точно ко времени. Другие города — по запросу.</p>
+        <span class="eyebrow" data-i18n="routes.eyebrow">Маршруты</span>
+        <h2 data-i18n="routes.h2">Основные направления</h2>
+        <p data-i18n="routes.p">Фиксированный тариф за автомобиль, известный погранпереход, подача точно ко времени. Другие города — по запросу.</p>
       </div>
 
       <div class="routes-grid" id="routesGrid">
@@ -657,14 +668,14 @@
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">PAL</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </div>
-          <div class="ticket-cities">Кишинёв ⇄ КПП Паланка</div>
+          <div class="ticket-cities" data-i18n="r.t1.city">Кишинёв ⇄ КПП Паланка</div>
           <div class="ticket-dash"></div>
           <div class="ticket-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>≈ 125 км</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>≈ 2 ч</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg>прямо к границе</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg><span data-i18n="r.t1.km">≈ 125 км</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t1.time">≈ 2 ч</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t1.desc">прямо к границе</span></span>
           </div>
-          <div class="ticket-price"><b>от 80 $</b><span>за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 80 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
         <a class="ticket reveal" href="#booking" data-to="Одесса">
@@ -672,14 +683,14 @@
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">ODS</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </div>
-          <div class="ticket-cities">Кишинёв ⇄ Одесса</div>
+          <div class="ticket-cities" data-i18n="r.t2.city">Кишинёв ⇄ Одесса</div>
           <div class="ticket-dash"></div>
           <div class="ticket-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>≈ 180 км</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>≈ 3 ч</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg>через Паланку</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg><span data-i18n="r.t2.km">≈ 180 км</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t2.time">≈ 3 ч</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t2.desc">через Паланку</span></span>
           </div>
-          <div class="ticket-price"><b>от 170 $</b><span>за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 170 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
         <a class="ticket reveal" href="#booking" data-to="Киев">
@@ -687,14 +698,14 @@
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">IEV</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </div>
-          <div class="ticket-cities">Кишинёв ⇄ Киев</div>
+          <div class="ticket-cities" data-i18n="r.t3.city">Кишинёв ⇄ Киев</div>
           <div class="ticket-dash"></div>
           <div class="ticket-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>≈ 600 км</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>≈ 8 ч</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg>через Могилёв-Подольский</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg><span data-i18n="r.t3.km">≈ 600 км</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t3.time">≈ 8 ч</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t3.desc">через Могилёв-Подольский</span></span>
           </div>
-          <div class="ticket-price"><b>от 450 $</b><span>за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 450 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
         <a class="ticket reveal" href="#booking" data-to="Могилёв-Подольский">
@@ -702,14 +713,14 @@
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">MPD</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </div>
-          <div class="ticket-cities">Кишинёв ⇄ Могилёв-Подольский</div>
+          <div class="ticket-cities" data-i18n="r.t4.city">Кишинёв ⇄ Могилёв-Подольский</div>
           <div class="ticket-dash"></div>
           <div class="ticket-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>≈ 200 км</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>≈ 3 ч</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg>КПП Могилёв</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg><span data-i18n="r.t4.km">≈ 200 км</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t4.time">≈ 3 ч</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t4.desc">КПП Могилёв</span></span>
           </div>
-          <div class="ticket-price"><b>от 150 $</b><span>за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 150 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
         <a class="ticket reveal" href="#booking" data-to="Измаил">
@@ -717,14 +728,14 @@
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">IZM</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </div>
-          <div class="ticket-cities">Кишинёв ⇄ Измаил</div>
+          <div class="ticket-cities" data-i18n="r.t5.city">Кишинёв ⇄ Измаил</div>
           <div class="ticket-dash"></div>
           <div class="ticket-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>≈ 220 км</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>≈ 3.5 ч</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg>через Старокозачье</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg><span data-i18n="r.t5.km">≈ 220 км</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t5.time">≈ 3.5 ч</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t5.desc">через Старокозачье</span></span>
           </div>
-          <div class="ticket-price"><b>от 200 $</b><span>за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 200 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
         <a class="ticket reveal" href="#booking" data-to="Львов">
@@ -732,14 +743,14 @@
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">LWO</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </div>
-          <div class="ticket-cities">Кишинёв ⇄ Львов</div>
+          <div class="ticket-cities" data-i18n="r.t6.city">Кишинёв ⇄ Львов</div>
           <div class="ticket-dash"></div>
           <div class="ticket-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>≈ 580 км</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>≈ 8 ч</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg>ночной рейс</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg><span data-i18n="r.t6.km">≈ 580 км</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t6.time">≈ 8 ч</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t6.desc">ночной рейс</span></span>
           </div>
-          <div class="ticket-price"><b>от 500 $</b><span>за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 500 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
         <a class="ticket reveal" href="#booking" data-to="Бухарест">
@@ -747,14 +758,14 @@
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">BUH</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </div>
-          <div class="ticket-cities">Кишинёв ⇄ Бухарест</div>
+          <div class="ticket-cities" data-i18n="r.t7.city">Кишинёв ⇄ Бухарест</div>
           <div class="ticket-dash"></div>
           <div class="ticket-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>≈ 450 км</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>≈ 6.5 ч</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg>Леушень — Албица</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg><span data-i18n="r.t7.km">≈ 450 км</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t7.time">≈ 6.5 ч</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t7.desc">Леушень — Албица</span></span>
           </div>
-          <div class="ticket-price"><b>от 400 $</b><span>за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 400 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
 
         <a class="ticket reveal" href="#booking" data-to="Яссы">
@@ -762,17 +773,17 @@
             <div class="ticket-codes">KIV <span class="via">⇄</span> <span class="code">IAS</span></div>
             <span class="ticket-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
           </div>
-          <div class="ticket-cities">Кишинёв ⇄ Яссы</div>
+          <div class="ticket-cities" data-i18n="r.t8.city">Кишинёв ⇄ Яссы</div>
           <div class="ticket-dash"></div>
           <div class="ticket-meta">
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>≈ 100 км</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>≈ 1.5 ч</span>
-            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg>Скулень</span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg><span data-i18n="r.t8.km">≈ 100 км</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg><span data-i18n="r.t8.time">≈ 1.5 ч</span></span>
+            <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg><span data-i18n="r.t8.desc">Скулень</span></span>
           </div>
-          <div class="ticket-price"><b>от 170 $</b><span>за авто, 1–4 пасс.</span></div>
+          <div class="ticket-price"><b><span data-i18n="r.from">от</span> 170 $</b><span data-i18n="r.priceCap">за авто, 1–4 пасс.</span></div>
         </a>
       </div>
-      <p class="routes-note">Маршруты работают в обе стороны — из Кишинёва и обратно. Указаны стартовые цены за автомобиль комфорт-класса (1–4 пассажира); для бизнес-класса и минивэна — см. раздел «Автопарк». Точная стоимость зависит от даты, точки подачи и числа пассажиров — уточняйте при бронировании.</p>
+      <p class="routes-note" data-i18n="routes.note">Маршруты работают в обе стороны — из Кишинёва и обратно. Указаны стартовые цены за автомобиль комфорт-класса (1–4 пассажира); для бизнес-класса и минивэна — см. раздел «Автопарк». Точная стоимость зависит от даты, точки подачи и числа пассажиров — уточняйте при бронировании.</p>
     </div>
   </section>
 
@@ -780,9 +791,9 @@
     <div class="section-fluid" aria-hidden="true"><span class="blob b1"></span><span class="blob b2"></span></div>
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">Автопарк</span>
-        <h2>Три класса — под любую поездку</h2>
-        <p>Проверенные автомобили, чистый салон, кондиционер и достаточно места для чемоданов на всю границу. Листайте карточку — в каждом классе несколько моделей на выбор.</p>
+        <span class="eyebrow" data-i18n="fleet.eyebrow">Автопарк</span>
+        <h2 data-i18n="fleet.h2">Три класса — под любую поездку</h2>
+        <p data-i18n="fleet.p">Проверенные автомобили, чистый салон, кондиционер и достаточно места для чемоданов на всю границу. Листайте карточку — в каждом классе несколько моделей на выбор.</p>
       </div>
 
       <div class="fleet-grid">
@@ -813,8 +824,8 @@
                 <span class="car-slide-tag">Toyota Camry</span>
               </div>
             </div>
-            <button class="car-nav prev" type="button" aria-label="Предыдущая модель"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 6l-6 6 6 6"/></svg></button>
-            <button class="car-nav next" type="button" aria-label="Следующая модель"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
+            <button class="car-nav prev" type="button" aria-label="Предыдущая модель" data-i18n-aria="fleet.prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 6l-6 6 6 6"/></svg></button>
+            <button class="car-nav next" type="button" aria-label="Следующая модель" data-i18n-aria="fleet.next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
           </div>
           <div class="car-dots">
             <button class="dot active" type="button" aria-label="Модель 1"></button>
@@ -823,15 +834,15 @@
             <button class="dot" type="button" aria-label="Модель 4"></button>
           </div>
           <div class="car-head">
-            <h3>Комфорт-класс</h3>
-            <span class="tag">от 80 $ · до 4 пасс.</span>
+            <h3 data-i18n="fleet.c1.name">Комфорт-класс</h3>
+            <span class="tag" data-i18n="fleet.c1.tag">от 80 $ · до 4 пасс.</span>
           </div>
-          <p class="car-desc">Toyota Prius+, Ford Fusion, Lincoln MKZ, Toyota Camry — автомобили до 2015 года, аккуратные и проверенные на маршруте.</p>
+          <p class="car-desc" data-i18n="fleet.c1.desc">Toyota Prius+, Ford Fusion, Lincoln MKZ, Toyota Camry — автомобили до 2015 года, аккуратные и проверенные на маршруте.</p>
           <ul class="car-specs">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-8h6v8"/></svg>3 чемодана</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M6 12a6 6 0 0 1 12 0"/></svg>Кондиционер</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-8h6v8"/></svg><span data-i18n="fleet.c1.s1">3 чемодана</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M6 12a6 6 0 0 1 12 0"/></svg><span data-i18n="fleet.c1.s2">Кондиционер</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 10v4"/></svg>USB / Type-C</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7z"/></svg>Страхование</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7z"/></svg><span data-i18n="fleet.c1.s4">Страхование</span></li>
           </ul>
         </article>
 
@@ -868,8 +879,8 @@
                 <span class="car-slide-tag">Audi A6</span>
               </div>
             </div>
-            <button class="car-nav prev" type="button" aria-label="Предыдущая модель"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 6l-6 6 6 6"/></svg></button>
-            <button class="car-nav next" type="button" aria-label="Следующая модель"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
+            <button class="car-nav prev" type="button" aria-label="Предыдущая модель" data-i18n-aria="fleet.prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 6l-6 6 6 6"/></svg></button>
+            <button class="car-nav next" type="button" aria-label="Следующая модель" data-i18n-aria="fleet.next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
           </div>
           <div class="car-dots">
             <button class="dot active" type="button" aria-label="Модель 1"></button>
@@ -879,15 +890,15 @@
             <button class="dot" type="button" aria-label="Модель 5"></button>
           </div>
           <div class="car-head">
-            <h3>Бизнес-класс</h3>
-            <span class="tag">от 130 $ · до 4 пасс.</span>
+            <h3 data-i18n="fleet.c2.name">Бизнес-класс</h3>
+            <span class="tag" data-i18n="fleet.c2.tag">от 130 $ · до 4 пасс.</span>
           </div>
-          <p class="car-desc">Mercedes E-Class, BMW 5-series, Toyota Camry, Lexus ES, Audi A6 — автомобили 2018 года и выше.</p>
+          <p class="car-desc" data-i18n="fleet.c2.desc">Mercedes E-Class, BMW 5-series, Toyota Camry, Lexus ES, Audi A6 — автомобили 2018 года и выше.</p>
           <ul class="car-specs">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-8h6v8"/></svg>3 чемодана</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M6 12a6 6 0 0 1 12 0"/></svg>Климат-контроль</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-8h6v8"/></svg><span data-i18n="fleet.c1.s1">3 чемодана</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M6 12a6 6 0 0 1 12 0"/></svg><span data-i18n="fleet.c2.s2">Климат-контроль</span></li>
             <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 10v4"/></svg>USB / Type-C</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7z"/></svg>Страхование</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7z"/></svg><span data-i18n="fleet.c1.s4">Страхование</span></li>
           </ul>
         </article>
 
@@ -906,23 +917,23 @@
                 <span class="car-slide-tag">Ford Transit Custom</span>
               </div>
             </div>
-            <button class="car-nav prev" type="button" aria-label="Предыдущая модель"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 6l-6 6 6 6"/></svg></button>
-            <button class="car-nav next" type="button" aria-label="Следующая модель"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
+            <button class="car-nav prev" type="button" aria-label="Предыдущая модель" data-i18n-aria="fleet.prev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M15 6l-6 6 6 6"/></svg></button>
+            <button class="car-nav next" type="button" aria-label="Следующая модель" data-i18n-aria="fleet.next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>
           </div>
           <div class="car-dots">
             <button class="dot active" type="button" aria-label="Модель 1"></button>
             <button class="dot" type="button" aria-label="Модель 2"></button>
           </div>
           <div class="car-head">
-            <h3>Минивэн для группы</h3>
-            <span class="tag">от 150 $ · до 8 мест</span>
+            <h3 data-i18n="fleet.c3.name">Минивэн для группы</h3>
+            <span class="tag" data-i18n="fleet.c3.tag">от 150 $ · до 8 мест</span>
           </div>
-          <p class="car-desc">Mercedes-Benz Vito, Ford Transit Custom — для семьи или компании с большим багажом на долгий переезд.</p>
+          <p class="car-desc" data-i18n="fleet.c3.desc">Mercedes-Benz Vito, Ford Transit Custom — для семьи или компании с большим багажом на долгий переезд.</p>
           <ul class="car-specs">
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-8h6v8"/></svg>6+ чемоданов</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M6 12a6 6 0 0 1 12 0"/></svg>Климат-контроль</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 10v4"/></svg>Розетки 220В</li>
-            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>Детское кресло</li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13"/><path d="M9 21v-8h6v8"/></svg><span data-i18n="fleet.c3.s1">6+ чемоданов</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12h20M6 12a6 6 0 0 1 12 0"/></svg><span data-i18n="fleet.c2.s2">Климат-контроль</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 10v4"/></svg><span data-i18n="fleet.c3.s3">Розетки 220В</span></li>
+            <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span data-i18n="fleet.c3.s4">Детское кресло</span></li>
           </ul>
         </article>
       </div>
@@ -932,39 +943,39 @@
   <section class="section" id="features" style="padding-top:0;">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">Почему GrandLine</span>
-        <h2>Всё для спокойной поездки через границу</h2>
+        <span class="eyebrow" data-i18n="features.eyebrow">Почему GrandLine</span>
+        <h2 data-i18n="features.h2">Всё для спокойной поездки через границу</h2>
       </div>
       <div class="features-grid">
         <div class="feature reveal">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-          <h3>Фиксированная цена</h3>
-          <p>Стоимость известна заранее и не меняется — без доплат на границе или за багаж.</p>
+          <h3 data-i18n="features.f1.h">Фиксированная цена</h3>
+          <p data-i18n="features.f1.p">Стоимость известна заранее и не меняется — без доплат на границе или за багаж.</p>
         </div>
         <div class="feature reveal">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
-          <h3>Работаем 24/7</h3>
-          <p>Ночные рейсы и ранние вылеты — подача в любое время, включая праздники.</p>
+          <h3 data-i18n="features.f2.h">Работаем 24/7</h3>
+          <p data-i18n="features.f2.p">Ночные рейсы и ранние вылеты — подача в любое время, включая праздники.</p>
         </div>
         <div class="feature reveal">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V8l8-5 8 5v13M4 21h16M9 21v-6h6v6"/></svg></div>
-          <h3>Знаем каждый переход</h3>
-          <p>Водители ежедневно работают на маршруте и выбирают переход с меньшей очередью.</p>
+          <h3 data-i18n="features.f3.h">Знаем каждый переход</h3>
+          <p data-i18n="features.f3.p">Водители ежедневно работают на маршруте и выбирают переход с меньшей очередью.</p>
         </div>
         <div class="feature reveal">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v6c0 5 4 8 9 9 5-1 9-4 9-9V7z"/></svg></div>
-          <h3>Страхование пассажиров</h3>
-          <p>Каждая поездка застрахована — можно ехать спокойно с детьми и пожилыми родителями.</p>
+          <h3 data-i18n="features.f4.h">Страхование пассажиров</h3>
+          <p data-i18n="features.f4.p">Каждая поездка застрахована — можно ехать спокойно с детьми и пожилыми родителями.</p>
         </div>
         <div class="feature reveal">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .3 2 .7 3a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.2-1.3a2 2 0 0 1 2.1-.5c1 .4 2 .6 3 .7a2 2 0 0 1 1.7 2z"/></svg></div>
-          <h3>Водитель на связи</h3>
-          <p>Присылаем контакты водителя и время подачи заранее — на связи в WhatsApp до самой встречи.</p>
+          <h3 data-i18n="features.f5.h">Водитель на связи</h3>
+          <p data-i18n="features.f5.p">Присылаем контакты водителя и время подачи заранее — на связи в WhatsApp до самой встречи.</p>
         </div>
         <div class="feature reveal">
           <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
-          <h3>Оплата картой или наличными</h3>
-          <p>Принимаем MDL, UAH, EUR — расплатиться можно любым удобным способом.</p>
+          <h3 data-i18n="features.f6.h">Оплата картой или наличными</h3>
+          <p data-i18n="features.f6.p">Принимаем MDL, UAH, EUR — расплатиться можно любым удобным способом.</p>
         </div>
       </div>
     </div>
@@ -973,9 +984,9 @@
   <section class="section" id="reviews" style="padding-top:0;">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">Отзывы</span>
-        <h2>Что говорят пассажиры</h2>
-        <p style="font-size:.82rem;color:var(--ink-faint);max-width:none;">Примеры отзывов для демонстрации макета — замените на реальные после запуска.</p>
+        <span class="eyebrow" data-i18n="reviews.eyebrow">Отзывы</span>
+        <h2 data-i18n="reviews.h2">Что говорят пассажиры</h2>
+        <p style="font-size:.82rem;color:var(--ink-faint);max-width:none;" data-i18n="reviews.disclaimer">Примеры отзывов для демонстрации макета — замените на реальные после запуска.</p>
       </div>
       <div class="reviews-grid">
         <article class="review reveal">
@@ -986,10 +997,10 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
           </div>
-          <p class="quote">«Доехали быстро и без лишних остановок — машина комфортная, водитель приятный, всё прошло гладко от двери до двери».</p>
+          <p class="quote" data-i18n="reviews.r1.quote">«Доехали быстро и без лишних остановок — машина комфортная, водитель приятный, всё прошло гладко от двери до двери».</p>
           <div class="review-who">
             <div class="av">И</div>
-            <div><b>Ирина</b><span>Кишинёв — Киев</span></div>
+            <div><b>Ирина</b><span data-i18n="r.t3.city">Кишинёв — Киев</span></div>
           </div>
         </article>
         <article class="review reveal">
@@ -1000,10 +1011,10 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
           </div>
-          <p class="quote">«Заказывали комфорт-класс до Одессы — приехали вовремя, машина чистая, ровно та цена, о которой договаривались заранее».</p>
+          <p class="quote" data-i18n="reviews.r2.quote">«Заказывали комфорт-класс до Одессы — приехали вовремя, машина чистая, ровно та цена, о которой договаривались заранее».</p>
           <div class="review-who">
             <div class="av">V</div>
-            <div><b>Vasile</b><span>Кишинёв — Одесса</span></div>
+            <div><b>Vasile</b><span data-i18n="r.t2.city">Кишинёв — Одесса</span></div>
           </div>
         </article>
         <article class="review reveal">
@@ -1014,10 +1025,10 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
           </div>
-          <p class="quote">«Дальняя поездка до Днепра — очень комфортно, водитель был на связи всю дорогу и заранее предупредил о времени прибытия».</p>
+          <p class="quote" data-i18n="reviews.r3.quote">«Дальняя поездка до Днепра — очень комфортно, водитель был на связи всю дорогу и заранее предупредил о времени прибытия».</p>
           <div class="review-who">
             <div class="av">О</div>
-            <div><b>Оксана</b><span>Кишинёв — Днепр</span></div>
+            <div><b>Оксана</b><span data-i18n="reviews.r3.route">Кишинёв — Днепр</span></div>
           </div>
         </article>
       </div>
@@ -1034,23 +1045,23 @@
         GrandLine Transfer
       </a>
       <nav class="foot-links">
-        <a href="#routes">Маршруты</a>
-        <a href="#fleet">Автопарк</a>
-        <a href="#reviews">Отзывы</a>
-        <a href="#booking">Контакты</a>
+        <a href="#routes" data-i18n="nav.routes">Маршруты</a>
+        <a href="#fleet" data-i18n="nav.fleet">Автопарк</a>
+        <a href="#reviews" data-i18n="nav.reviews">Отзывы</a>
+        <a href="#booking" data-i18n="nav.contacts">Контакты</a>
       </nav>
     </div>
     <div class="foot-bottom">
       <span>© 2026 GrandLine Transfer</span>
-      <span>Информация на сайте демонстрационная — уточняйте актуальные тарифы и контакты при запуске.</span>
+      <span data-i18n="footer.disclaimer">Информация на сайте демонстрационная — уточняйте актуальные тарифы и контакты при запуске.</span>
     </div>
   </div>
 </footer>
 
 <div class="send-modal-backdrop" id="sendModalBackdrop" hidden>
   <div class="send-modal" role="dialog" aria-label="Куда отправить заявку">
-    <h3>Куда отправить заявку?</h3>
-    <p>Выберите удобный мессенджер</p>
+    <h3 data-i18n="modal.h">Куда отправить заявку?</h3>
+    <p data-i18n="modal.p">Выберите удобный мессенджер</p>
     <div class="send-modal-options">
       <button type="button" class="send-option" data-app="whatsapp">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
@@ -1066,16 +1077,16 @@
       </button>
     </div>
     <p class="send-modal-note" id="sendModalNote"></p>
-    <button type="button" class="send-modal-close" id="sendModalClose" aria-label="Закрыть">
+    <button type="button" class="send-modal-close" id="sendModalClose" aria-label="Закрыть" data-i18n-aria="modal.close">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>
     </button>
   </div>
 </div>
 
 <div class="floating-cta" id="floatingCta">
-  <span>Нужен трансфер? Оставьте заявку — перезвоним за 15 минут</span>
+  <span data-i18n="fcta.text">Нужен трансфер? Оставьте заявку — перезвоним за 15 минут</span>
   <a class="btn btn-primary" href="#booking" id="floatingCtaBtn">
-    Отправить заявку
+    <span data-i18n="booking.submit">Отправить заявку</span>
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
   </a>
 </div>
@@ -1097,7 +1108,7 @@
     try{
       var wa=document.getElementById('waBtn');
       wa.addEventListener('click',function(){
-        window.__pendingRequestText='Здравствуйте! Хочу заказать трансфер.';
+        window.__pendingRequestText=T('waMsg');
         var backdrop=document.getElementById('sendModalBackdrop');
         var note=document.getElementById('sendModalNote');
         if(note) note.textContent='';
@@ -1227,7 +1238,7 @@
           if(q.length<3){ hideList(); return; }
           debounceTimer=setTimeout(function(){
             controller=('AbortController' in window) ? new AbortController() : null;
-            var url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=0&limit=6&accept-language=ru&countrycodes=md,ua,ro&viewbox=19,52.5,41,43&q='+encodeURIComponent(q);
+            var url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=0&limit=6&accept-language='+(window.__glLang||'ru')+'&countrycodes=md,ua,ro&viewbox=19,52.5,41,43&q='+encodeURIComponent(q);
             fetch(url, controller ? {signal:controller.signal} : {})
               .then(function(res){ return res.json(); })
               .then(function(data){ renderResults(data||[]); })
@@ -1255,23 +1266,23 @@
       var bookingForm=document.getElementById('bookingForm');
       bookingForm.addEventListener('submit',function(e){
         e.preventDefault();
-        var lines=['Заявка на трансфер GrandLine:'];
-        lines.push('Откуда: '+(document.getElementById('fFrom').value||'—'));
-        lines.push('Куда: '+(document.getElementById('fTo').value||'—'));
+        var lines=[T('msg.title')];
+        lines.push(T('msg.from')+': '+(document.getElementById('fFrom').value||'—'));
+        lines.push(T('msg.to')+': '+(document.getElementById('fTo').value||'—'));
         var dateVal=document.getElementById('fDate').value;
         if(dateVal){
           var dtParts=dateVal.split('T');
           var dParts=dtParts[0].split('-');
           var dateFmt=dParts[2]+'.'+dParts[1]+'.'+dParts[0];
-          lines.push('Дата и время: '+dateFmt+(dtParts[1]?', '+dtParts[1]:''));
+          lines.push(T('msg.date')+': '+dateFmt+(dtParts[1]?', '+dtParts[1]:''));
         }
-        lines.push('Пассажиров: '+document.getElementById('fPax').value);
-        lines.push('Багаж: '+document.getElementById('fBags').value);
-        if(document.getElementById('fPet').checked) lines.push('Едет с животным: да');
+        lines.push(T('msg.pax')+': '+document.getElementById('fPax').value);
+        lines.push(T('msg.bags')+': '+document.getElementById('fBags').value);
+        if(document.getElementById('fPet').checked) lines.push(T('msg.pet'));
         var comment=document.getElementById('fComment').value;
-        if(comment) lines.push('Комментарий: '+comment);
+        if(comment) lines.push(T('msg.comment')+': '+comment);
         var phone=document.getElementById('fPhone').value;
-        lines.push('Телефон: '+(phone||'не указан'));
+        lines.push(T('msg.phone')+': '+(phone||T('msg.noPhone')));
         window.__pendingRequestText=lines.join('\n');
         var backdrop=document.getElementById('sendModalBackdrop');
         var note=document.getElementById('sendModalNote');
@@ -1292,7 +1303,7 @@
 
       document.querySelectorAll('.send-option').forEach(function(btn){
         btn.addEventListener('click',function(){
-          var text=window.__pendingRequestText||'Здравствуйте! Хочу заказать трансфер.';
+          var text=window.__pendingRequestText||T('waMsg');
           var app=btn.getAttribute('data-app');
           if(app==='whatsapp'){
             window.open('https://wa.me/'+MD_PHONE+'?text='+encodeURIComponent(text), '_blank');
@@ -1307,7 +1318,7 @@
           } else if(app==='telegram'){
             window.open('https://t.me/+'+MD_PHONE, '_blank');
           }
-          if(note) note.textContent='Текст заявки скопирован — вставьте его в чат (Ctrl+V).';
+          if(note) note.textContent=T('msg.copied');
           setTimeout(closeSendModal, 1800);
         });
       });
@@ -1370,6 +1381,221 @@
       } else {
         document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
       }
+    }catch(e){}
+  })();
+</script>
+
+<script>
+  (function(){
+    var I18N={
+      uk:{
+        "nav.routes":"Маршрути","nav.fleet":"Автопарк","nav.reviews":"Відгуки","nav.contacts":"Контакти","nav.cta":"Забронювати","nav.menu":"Меню",
+        "hero.md":"Молдова","hero.ua":"Україна","hero.eu":"Європа",
+        "hero.h1a":"Через кордон","hero.h1b":"без пересадок",
+        "hero.p":" — комфортний трансфер від дверей до дверей між Молдовою, Україною та країнами Євросоюзу. Фіксована ціна, досвідчені водії.",
+        "hero.waBtn":"Написати нам",
+        "hero.phone1sub":"Молдова, дзвінки, WhatsApp, Viber, Telegram","hero.phone2sub":"Україна, дзвінки та Telegram",
+        "hero.stat1":"завершених поїздок","hero.stat2":"на підтвердження заявки","hero.stat3":"середня оцінка пасажирів","hero.minSuffix":" хв",
+        "booking.eyebrow":"Бронювання","booking.from":"Звідки","booking.fromPh":"Місто або адреса","booking.to":"Куди","booking.toPh":"Місто, КПП або своя адреса",
+        "booking.date":"Дата і час","booking.pax":"Пасажирів","booking.bags":"Багаж",
+        "booking.bags0":"Без багажу","booking.bags1":"1–2 сумки","booking.bags2":"3–4 сумки","booking.bags3":"5 і більше",
+        "booking.phone":"Телефон для зв'язку",
+        "booking.pet":"Їду з твариною <i>— важливо знати заздалегідь, не всі переходи це дозволяють</i>",
+        "booking.comment":"Коментар (необов'язково)","booking.commentPh":"Дитяче крісло, дод. багаж, час рейсу тощо.",
+        "booking.submit":"Надіслати заявку",
+        "booking.note":"Оберіть месенджер — заявка з усіма деталями надійде нам, і ми підтвердимо маршрут.",
+        "r.priceCap":"за авто, 1–4 пас.","r.from":"від",
+        "r.t1.city":"Кишинів ⇄ КПП Паланка","r.t1.km":"≈ 125 км","r.t1.time":"≈ 2 год","r.t1.desc":"прямо до кордону",
+        "r.t2.city":"Кишинів ⇄ Одеса","r.t2.km":"≈ 180 км","r.t2.time":"≈ 3 год","r.t2.desc":"через Паланку",
+        "r.t3.city":"Кишинів ⇄ Київ","r.t3.km":"≈ 600 км","r.t3.time":"≈ 8 год","r.t3.desc":"через Могилів-Подільський",
+        "r.t4.city":"Кишинів ⇄ Могилів-Подільський","r.t4.km":"≈ 200 км","r.t4.time":"≈ 3 год","r.t4.desc":"КПП Могилів",
+        "r.t5.city":"Кишинів ⇄ Ізмаїл","r.t5.km":"≈ 220 км","r.t5.time":"≈ 3.5 год","r.t5.desc":"через Старокозаче",
+        "r.t6.city":"Кишинів ⇄ Львів","r.t6.km":"≈ 580 км","r.t6.time":"≈ 8 год","r.t6.desc":"нічний рейс",
+        "r.t7.city":"Кишинів ⇄ Бухарест","r.t7.km":"≈ 450 км","r.t7.time":"≈ 6.5 год","r.t7.desc":"Леушень — Албіца",
+        "r.t8.city":"Кишинів ⇄ Ясси","r.t8.km":"≈ 100 км","r.t8.time":"≈ 1.5 год","r.t8.desc":"Скулени",
+        "routes.eyebrow":"Маршрути","routes.h2":"Основні напрямки",
+        "routes.p":"Фіксований тариф за автомобіль, відомий пункт пропуску, подача точно у час. Інші міста — за запитом.",
+        "routes.note":"Маршрути працюють в обидва боки — з Кишинева і назад. Вказані стартові ціни за автомобіль комфорт-класу (1–4 пасажири); для бізнес-класу та мінівена — див. розділ «Автопарк». Точна вартість залежить від дати, точки подачі та кількості пасажирів — уточнюйте при бронюванні.",
+        "fleet.eyebrow":"Автопарк","fleet.h2":"Три класи — під будь-яку поїздку",
+        "fleet.p":"Перевірені автомобілі, чистий салон, кондиціонер і достатньо місця для валіз на весь шлях через кордон. Гортайте картку — у кожному класі кілька моделей на вибір.",
+        "fleet.prev":"Попередня модель","fleet.next":"Наступна модель",
+        "fleet.c1.name":"Комфорт-клас","fleet.c1.tag":"від 80 $ · до 4 пас.",
+        "fleet.c1.desc":"Toyota Prius+, Ford Fusion, Lincoln MKZ, Toyota Camry — автомобілі до 2015 року, охайні та перевірені на маршруті.",
+        "fleet.c1.s1":"3 валізи","fleet.c1.s2":"Кондиціонер","fleet.c1.s4":"Страхування",
+        "fleet.c2.name":"Бізнес-клас","fleet.c2.tag":"від 130 $ · до 4 пас.",
+        "fleet.c2.desc":"Mercedes E-Class, BMW 5-series, Toyota Camry, Lexus ES, Audi A6 — автомобілі 2018 року і новіші.",
+        "fleet.c2.s2":"Клімат-контроль",
+        "fleet.c3.name":"Мінівен для групи","fleet.c3.tag":"від 150 $ · до 8 місць",
+        "fleet.c3.desc":"Mercedes-Benz Vito, Ford Transit Custom — для родини або компанії з великим багажем на далеку поїздку.",
+        "fleet.c3.s1":"6+ валіз","fleet.c3.s3":"Розетки 220В","fleet.c3.s4":"Дитяче крісло",
+        "features.eyebrow":"Чому GrandLine","features.h2":"Все для спокійної поїздки через кордон",
+        "features.f1.h":"Фіксована ціна","features.f1.p":"Вартість відома заздалегідь і не змінюється — без доплат на кордоні чи за багаж.",
+        "features.f2.h":"Працюємо 24/7","features.f2.p":"Нічні рейси та ранні вильоти — подача в будь-який час, включно зі святами.",
+        "features.f3.h":"Знаємо кожен перехід","features.f3.p":"Водії щодня працюють на маршруті й обирають перехід з меншою чергою.",
+        "features.f4.h":"Страхування пасажирів","features.f4.p":"Кожна поїздка застрахована — можна їхати спокійно з дітьми та літніми батьками.",
+        "features.f5.h":"Водій на зв'язку","features.f5.p":"Надсилаємо контакти водія та час подачі заздалегідь — на зв'язку у WhatsApp аж до зустрічі.",
+        "features.f6.h":"Оплата карткою або готівкою","features.f6.p":"Приймаємо MDL, UAH, EUR — розрахуватися можна будь-яким зручним способом.",
+        "reviews.eyebrow":"Відгуки","reviews.h2":"Що кажуть пасажири",
+        "reviews.disclaimer":"Приклади відгуків для демонстрації макета — замініть на реальні після запуску.",
+        "reviews.r1.quote":"«Доїхали швидко і без зайвих зупинок — машина комфортна, водій приємний, все пройшло гладко від дверей до дверей».",
+        "reviews.r2.quote":"«Замовляли комфорт-клас до Одеси — приїхали вчасно, машина чиста, рівно та ціна, про яку домовлялися заздалегідь».",
+        "reviews.r3.quote":"«Дальня поїздка до Дніпра — дуже комфортно, водій був на зв'язку всю дорогу і заздалегідь попередив про час прибуття».",
+        "reviews.r3.route":"Кишинів — Дніпро",
+        "footer.disclaimer":"Інформація на сайті демонстраційна — уточнюйте актуальні тарифи та контакти при запуску.",
+        "modal.h":"Куди надіслати заявку?","modal.p":"Оберіть зручний месенджер","modal.close":"Закрити",
+        "fcta.text":"Потрібен трансфер? Залиште заявку — передзвонимо за 15 хвилин"
+      },
+      en:{
+        "nav.routes":"Routes","nav.fleet":"Fleet","nav.reviews":"Reviews","nav.contacts":"Contacts","nav.cta":"Book now","nav.menu":"Menu",
+        "hero.md":"Moldova","hero.ua":"Ukraine","hero.eu":"Europe",
+        "hero.h1a":"Across the border","hero.h1b":"without transfers",
+        "hero.p":" — comfortable door-to-door transfer between Moldova, Ukraine and EU countries. Fixed price, experienced drivers.",
+        "hero.waBtn":"Message us",
+        "hero.phone1sub":"Moldova, calls, WhatsApp, Viber, Telegram","hero.phone2sub":"Ukraine, calls and Telegram",
+        "hero.stat1":"completed trips","hero.stat2":"to confirm a request","hero.stat3":"average passenger rating","hero.minSuffix":" min",
+        "booking.eyebrow":"Booking","booking.from":"From","booking.fromPh":"City or address","booking.to":"To","booking.toPh":"City, border crossing or your address",
+        "booking.date":"Date & time","booking.pax":"Passengers","booking.bags":"Luggage",
+        "booking.bags0":"No luggage","booking.bags1":"1–2 bags","booking.bags2":"3–4 bags","booking.bags3":"5 or more",
+        "booking.phone":"Contact phone",
+        "booking.pet":"Traveling with a pet <i>— important to know in advance, not all checkpoints allow this</i>",
+        "booking.comment":"Comment (optional)","booking.commentPh":"Child seat, extra luggage, flight time, etc.",
+        "booking.submit":"Send request",
+        "booking.note":"Choose a messenger — the request with all details will be sent to us, and we'll confirm the route.",
+        "r.priceCap":"per car, 1–4 pax","r.from":"from",
+        "r.t1.city":"Chisinau ⇄ Palanca border crossing","r.t1.km":"≈ 125 km","r.t1.time":"≈ 2 h","r.t1.desc":"straight to the border",
+        "r.t2.city":"Chisinau ⇄ Odesa","r.t2.km":"≈ 180 km","r.t2.time":"≈ 3 h","r.t2.desc":"via Palanca",
+        "r.t3.city":"Chisinau ⇄ Kyiv","r.t3.km":"≈ 600 km","r.t3.time":"≈ 8 h","r.t3.desc":"via Mohyliv-Podilskyi",
+        "r.t4.city":"Chisinau ⇄ Mohyliv-Podilskyi","r.t4.km":"≈ 200 km","r.t4.time":"≈ 3 h","r.t4.desc":"Mohyliv border crossing",
+        "r.t5.city":"Chisinau ⇄ Izmail","r.t5.km":"≈ 220 km","r.t5.time":"≈ 3.5 h","r.t5.desc":"via Starokozache",
+        "r.t6.city":"Chisinau ⇄ Lviv","r.t6.km":"≈ 580 km","r.t6.time":"≈ 8 h","r.t6.desc":"overnight trip",
+        "r.t7.city":"Chisinau ⇄ Bucharest","r.t7.km":"≈ 450 km","r.t7.time":"≈ 6.5 h","r.t7.desc":"Leușeni – Albița",
+        "r.t8.city":"Chisinau ⇄ Iași","r.t8.km":"≈ 100 km","r.t8.time":"≈ 1.5 h","r.t8.desc":"Sculeni",
+        "routes.eyebrow":"Routes","routes.h2":"Main destinations",
+        "routes.p":"Fixed rate per car, a known border crossing, on-time pickup. Other cities available on request.",
+        "routes.note":"Routes run both ways — from Chisinau and back. Prices shown are starting rates for a comfort-class car (1–4 passengers); for business class and the minivan, see the “Fleet” section. Exact cost depends on the date, pickup point and number of passengers — please confirm when booking.",
+        "fleet.eyebrow":"Fleet","fleet.h2":"Three classes — for any trip",
+        "fleet.p":"Vetted cars, clean interior, air conditioning and enough room for luggage the whole way across the border. Swipe the card — each class has several models to choose from.",
+        "fleet.prev":"Previous model","fleet.next":"Next model",
+        "fleet.c1.name":"Comfort class","fleet.c1.tag":"from $80 · up to 4 pax",
+        "fleet.c1.desc":"Toyota Prius+, Ford Fusion, Lincoln MKZ, Toyota Camry — cars up to 2015, well-kept and proven on the route.",
+        "fleet.c1.s1":"3 suitcases","fleet.c1.s2":"Air conditioning","fleet.c1.s4":"Insurance",
+        "fleet.c2.name":"Business class","fleet.c2.tag":"from $130 · up to 4 pax",
+        "fleet.c2.desc":"Mercedes E-Class, BMW 5-series, Toyota Camry, Lexus ES, Audi A6 — cars from 2018 onward.",
+        "fleet.c2.s2":"Climate control",
+        "fleet.c3.name":"Minivan for groups","fleet.c3.tag":"from $150 · up to 8 seats",
+        "fleet.c3.desc":"Mercedes-Benz Vito, Ford Transit Custom — for a family or group with a lot of luggage on a long trip.",
+        "fleet.c3.s1":"6+ suitcases","fleet.c3.s3":"220V outlets","fleet.c3.s4":"Child seat",
+        "features.eyebrow":"Why GrandLine","features.h2":"Everything for a stress-free border crossing",
+        "features.f1.h":"Fixed price","features.f1.p":"The cost is known in advance and doesn't change — no extra charges at the border or for luggage.",
+        "features.f2.h":"Available 24/7","features.f2.p":"Night trips and early flights — pickup any time, including holidays.",
+        "features.f3.h":"We know every crossing","features.f3.p":"Drivers work the route daily and pick the checkpoint with the shorter queue.",
+        "features.f4.h":"Passenger insurance","features.f4.p":"Every trip is insured — travel with peace of mind with kids or elderly parents.",
+        "features.f5.h":"Driver stays in touch","features.f5.p":"We send the driver's contact and pickup time in advance — reachable on WhatsApp right up to the meeting.",
+        "features.f6.h":"Card or cash payment","features.f6.p":"We accept MDL, UAH, EUR — pay however is most convenient for you.",
+        "reviews.eyebrow":"Reviews","reviews.h2":"What passengers say",
+        "reviews.disclaimer":"Sample reviews for the mockup — replace with real ones after launch.",
+        "reviews.r1.quote":"“We got there quickly with no unnecessary stops — comfortable car, friendly driver, everything went smoothly door to door.”",
+        "reviews.r2.quote":"“We booked comfort class to Odesa — arrived on time, clean car, exactly the price we agreed on beforehand.”",
+        "reviews.r3.quote":"“A long trip to Dnipro — very comfortable, the driver stayed in touch the whole way and gave advance notice of arrival time.”",
+        "reviews.r3.route":"Chisinau — Dnipro",
+        "footer.disclaimer":"The information on this site is for demonstration — confirm current rates and contacts at launch.",
+        "modal.h":"Where should we send your request?","modal.p":"Choose your preferred messenger","modal.close":"Close",
+        "fcta.text":"Need a transfer? Leave a request — we'll call back within 15 minutes"
+      }
+    };
+    var MSGS={
+      ru:{waMsg:"Здравствуйте! Хочу заказать трансфер.","msg.title":"Заявка на трансфер GrandLine:","msg.from":"Откуда","msg.to":"Куда","msg.date":"Дата и время","msg.pax":"Пассажиров","msg.bags":"Багаж","msg.pet":"Едет с животным: да","msg.comment":"Комментарий","msg.phone":"Телефон","msg.noPhone":"не указан","msg.copied":"Текст заявки скопирован — вставьте его в чат (Ctrl+V)."},
+      uk:{waMsg:"Вітаю! Хочу замовити трансфер.","msg.title":"Заявка на трансфер GrandLine:","msg.from":"Звідки","msg.to":"Куди","msg.date":"Дата і час","msg.pax":"Пасажирів","msg.bags":"Багаж","msg.pet":"Їде з твариною: так","msg.comment":"Коментар","msg.phone":"Телефон","msg.noPhone":"не вказано","msg.copied":"Текст заявки скопійовано — вставте його в чат (Ctrl+V)."},
+      en:{waMsg:"Hello! I'd like to book a transfer.","msg.title":"GrandLine Transfer request:","msg.from":"From","msg.to":"To","msg.date":"Date & time","msg.pax":"Passengers","msg.bags":"Luggage","msg.pet":"Traveling with a pet: yes","msg.comment":"Comment","msg.phone":"Phone","msg.noPhone":"not provided","msg.copied":"Request text copied — paste it into the chat (Ctrl+V)."}
+    };
+    var META={
+      ru:{title:"GrandLine Transfer — трансфер Молдова ⇄ Украина ⇄ Европа",description:"Комфортный трансфер от двери до двери: Кишинёв ⇄ Киев, Одесса, Бухарест, Яссы, Львов и другие города. Фиксированная цена, опытные водители, знание всех погранпереходов."},
+      uk:{title:"GrandLine Transfer — трансфер Молдова ⇄ Україна ⇄ Європа",description:"Комфортний трансфер від дверей до дверей: Кишинів ⇄ Київ, Одеса, Бухарест, Ясси, Львів та інші міста. Фіксована ціна, досвідчені водії, знання всіх пунктів пропуску."},
+      en:{title:"GrandLine Transfer — Moldova ⇄ Ukraine ⇄ Europe transfer",description:"Comfortable door-to-door transfer: Chisinau ⇄ Kyiv, Odesa, Bucharest, Iași, Lviv and other cities. Fixed price, experienced drivers, knowledge of every border crossing."}
+    };
+
+    window.__glLang='ru';
+    window.T=function(key){
+      var lang=window.__glLang||'ru';
+      return (MSGS[lang]&&MSGS[lang][key]) || MSGS.ru[key] || key;
+    };
+
+    function snapshotOriginals(){
+      document.querySelectorAll('[data-i18n]').forEach(function(el){ el.setAttribute('data-i18n-orig', el.innerHTML); });
+      document.querySelectorAll('[data-i18n-ph]').forEach(function(el){ el.setAttribute('data-i18n-ph-orig', el.getAttribute('placeholder')||''); });
+      document.querySelectorAll('[data-i18n-aria]').forEach(function(el){ el.setAttribute('data-i18n-aria-orig', el.getAttribute('aria-label')||''); });
+    }
+
+    function applyLang(lang){
+      window.__glLang=lang;
+      document.documentElement.lang=lang;
+      var dict=I18N[lang]||null;
+
+      document.querySelectorAll('[data-i18n]').forEach(function(el){
+        var key=el.getAttribute('data-i18n');
+        if(dict && dict[key]!==undefined){ el.innerHTML=dict[key]; }
+        else { el.innerHTML=el.getAttribute('data-i18n-orig'); }
+      });
+      document.querySelectorAll('[data-i18n-ph]').forEach(function(el){
+        var key=el.getAttribute('data-i18n-ph');
+        if(dict && dict[key]!==undefined){ el.setAttribute('placeholder', dict[key]); }
+        else { el.setAttribute('placeholder', el.getAttribute('data-i18n-ph-orig')); }
+      });
+      document.querySelectorAll('[data-i18n-aria]').forEach(function(el){
+        var key=el.getAttribute('data-i18n-aria');
+        if(dict && dict[key]!==undefined){ el.setAttribute('aria-label', dict[key]); }
+        else { el.setAttribute('aria-label', el.getAttribute('data-i18n-aria-orig')); }
+      });
+      document.querySelectorAll('[data-suffix-i18n]').forEach(function(el){
+        var key=el.getAttribute('data-suffix-i18n');
+        var suf=(dict && dict[key]!==undefined) ? dict[key] : el.getAttribute('data-suffix');
+        el.setAttribute('data-suffix', suf);
+        if(el.textContent && el.textContent!=='0'){
+          var target=parseFloat(el.getAttribute('data-count'));
+          var decimals=parseInt(el.getAttribute('data-decimals')||'0',10);
+          el.textContent=target.toLocaleString('ru-RU',{minimumFractionDigits:decimals,maximumFractionDigits:decimals})+suf;
+        }
+      });
+
+      var m=META[lang]||META.ru;
+      try{
+        document.title=m.title;
+        var metaDesc=document.querySelector('meta[name="description"]');
+        if(metaDesc) metaDesc.setAttribute('content', m.description);
+        var ogTitle=document.querySelector('meta[property="og:title"]');
+        if(ogTitle) ogTitle.setAttribute('content', m.title);
+        var ogDesc=document.querySelector('meta[property="og:description"]');
+        if(ogDesc) ogDesc.setAttribute('content', m.description);
+      }catch(e){}
+
+      document.querySelectorAll('.lang-switch button').forEach(function(btn){
+        btn.classList.toggle('active', btn.getAttribute('data-lang')===lang);
+      });
+      try{ localStorage.setItem('glLang', lang); }catch(e){}
+    }
+
+    function detectInitialLang(){
+      try{
+        var saved=localStorage.getItem('glLang');
+        if(saved==='ru'||saved==='uk'||saved==='en') return saved;
+      }catch(e){}
+      try{
+        var params=new URLSearchParams(window.location.search);
+        var q=params.get('lang');
+        if(q==='ru'||q==='uk'||q==='en') return q;
+      }catch(e){}
+      var nav=(navigator.language||'ru').toLowerCase();
+      if(nav.indexOf('uk')===0) return 'uk';
+      if(nav.indexOf('en')===0) return 'en';
+      return 'ru';
+    }
+
+    try{
+      snapshotOriginals();
+      document.querySelectorAll('.lang-switch button').forEach(function(btn){
+        btn.addEventListener('click', function(){ applyLang(btn.getAttribute('data-lang')); });
+      });
+      applyLang(detectInitialLang());
     }catch(e){}
   })();
 </script>
