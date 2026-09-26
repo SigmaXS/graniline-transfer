@@ -1282,6 +1282,20 @@
       };
       if(fFrom) fFrom.addEventListener('focus', window.__expandBookingForm);
       if(fTo) fTo.addEventListener('focus', window.__expandBookingForm);
+
+      // Logo = back to the start: collapse the form so the headline and contacts show again (typed values stay).
+      document.querySelectorAll('a[href="#top"]').forEach(function(a){
+        a.addEventListener('click',function(e){
+          e.preventDefault();
+          if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
+          if(heroInner) heroInner.classList.remove('expanded');
+          if(formExpand) formExpand.hidden=true;
+          var panel=document.getElementById('mobilePanel'), toggle=document.getElementById('navToggle');
+          if(panel && !panel.hidden){ panel.hidden=true; if(toggle) toggle.setAttribute('aria-expanded','false'); }
+          if(location.hash) history.replaceState(null,'',location.pathname+location.search);
+          window.scrollTo({top:0,behavior:'smooth'});
+        });
+      });
     }catch(e){}
 
     try{
