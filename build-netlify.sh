@@ -56,15 +56,15 @@ cd "$(dirname "$0")"
     return false;
   }
 </script>
-<title>GrandLine Transfer — трансфер Молдова ⇄ Украина ⇄ Европа</title>
-<meta name="description" content="Комфортный трансфер от двери до двери: Кишинёв ⇄ Киев, Одесса, Бухарест, Яссы, Львов и другие города. Фиксированная цена, опытные водители, знание всех погранпереходов.">
+<title>GrandLine Transfer — индивидуальный трансфер Молдова ⇄ Украина ⇄ Европа</title>
+<meta name="description" content="Индивидуальный трансфер от двери до двери: Кишинёв ⇄ Киев, Одесса, Бухарест, Яссы, Львов и другие города. Фиксированная цена, опытные водители, знание всех погранпереходов.">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://gltransfer.com/">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="GrandLine Transfer">
-<meta property="og:title" content="GrandLine Transfer — трансфер через границу без пересадок">
-<meta property="og:description" content="Комфортный трансфер Кишинёв ⇄ Киев, Одесса, Бухарест и другие направления. Фиксированные цены, опытные водители.">
+<meta property="og:title" content="GrandLine Transfer — индивидуальный трансфер через границу без пересадок">
+<meta property="og:description" content="Индивидуальный трансфер Кишинёв ⇄ Киев, Одесса, Бухарест и другие направления. Фиксированные цены, опытные водители.">
 <meta property="og:image" content="https://gltransfer.com/og-cover.jpg">
 <meta property="og:image:width" content="2000">
 <meta property="og:image:height" content="1116">
@@ -77,7 +77,7 @@ cd "$(dirname "$0")"
   "@context": "https://schema.org",
   "@type": "TaxiService",
   "name": "GrandLine Transfer",
-  "description": "Комфортный трансфер от двери до двери между Молдовой, Украиной и странами Евросоюза.",
+  "description": "Индивидуальный трансфер от двери до двери между Молдовой, Украиной и странами Евросоюза.",
   "areaServed": ["Кишинёв","Киев","Одесса","Бухарест","Яссы","Львов","Измаил","Могилёв-Подольский"],
   "telephone": "+37378293919",
   "priceRange": "$$",
