@@ -79,7 +79,7 @@
 }
 </script>
 <style>body{margin:0}</style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&family=Rubik:wght@400;500;700;800&display=swap">
 <style>
   :root{
     --bg:#0A0E17;
@@ -185,6 +185,8 @@
     .nav-links{gap:12px;font-size:.8rem;}
     .nav-cta{padding-left:14px;padding-right:14px;}
     .nav-links a[href="#booking"]{display:none;}
+    .nav .wrap{gap:10px;}
+    #langSwitch button{padding:.3rem .42rem;}
   }
 
   @media (max-width:820px){
@@ -505,6 +507,14 @@
   .class-opt input:checked + span{border-color:var(--accent);background:rgba(79,140,255,.12);}
   .class-opt input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px;}
   @media (max-width:420px){ .class-opts{gap:6px;} .class-opt span{padding:.55rem .5rem;} .class-opt b{font-size:.82rem;} .class-opt small{font-size:.68rem;} }
+  .phone-row{display:flex;gap:8px;}
+  .phone-row select{flex:0 0 auto;width:auto;min-width:6.4rem;}
+  .phone-row input{flex:1 1 auto;min-width:0;}
+  html[lang="he"] body, html[lang="he"] body *{font-family:'Rubik',system-ui,sans-serif !important;}
+  [dir="rtl"] .contact-list b{direction:ltr;unicode-bidi:isolate;}
+  [dir="rtl"] #formSubmitBtn svg, [dir="rtl"] #floatingCtaBtn svg{transform:scaleX(-1);}
+  [dir="rtl"] .ticket-codes{direction:ltr;text-align:right;}
+  [dir="rtl"] .faq-item summary::after{margin-right:0;margin-left:4px;}
   .call-note{margin-top:.9rem;font-size:.86rem;color:var(--ink-dim);}
   .label-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
   .geo-link{font-size:.74rem;font-weight:600;color:var(--accent-soft);white-space:nowrap;}
@@ -653,7 +663,7 @@
     </div>
     <a class="nav-cta" href="#booking" data-i18n="nav.cta">Забронировать</a>
     <div class="lang-switch" id="langSwitch" role="group" aria-label="Language">
-      <button type="button" data-lang="ru">RU</button><button type="button" data-lang="uk">UA</button><button type="button" data-lang="en">EN</button>
+      <button type="button" data-lang="ru">RU</button><button type="button" data-lang="uk">UA</button><button type="button" data-lang="en">EN</button><button type="button" data-lang="he">HE</button>
     </div>
     <button class="nav-toggle" id="navToggle" aria-label="Меню" data-i18n-aria="nav.menu" aria-expanded="false">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
@@ -667,7 +677,7 @@
     <a href="#booking" data-i18n="nav.contacts">Контакты</a>
     <a class="btn btn-primary nav-cta" href="#booking" data-i18n="nav.cta">Забронировать</a>
     <div class="lang-switch lang-switch-mobile" id="langSwitchMobile" role="group" aria-label="Language">
-      <button type="button" data-lang="ru">RU</button><button type="button" data-lang="uk">UA</button><button type="button" data-lang="en">EN</button>
+      <button type="button" data-lang="ru">RU</button><button type="button" data-lang="uk">UA</button><button type="button" data-lang="en">EN</button><button type="button" data-lang="he">HE</button>
     </div>
   </div>
 </nav>
@@ -765,7 +775,16 @@
             </div>
             <div class="field">
               <label for="fPhone" data-i18n="booking.phone">Телефон для связи</label>
-              <input id="fPhone" type="tel" placeholder="+373 XX XXX XXX">
+              <div class="phone-row" dir="ltr">
+                <select id="fPhoneCC" aria-label="Код страны" data-i18n-aria="booking.phoneCC">
+                  <option value="+373" data-cc="md">MD +373</option>
+                  <option value="+38" data-cc="ua">UA +38</option>
+                  <option value="+40" data-cc="ro">RO +40</option>
+                  <option value="+972" data-cc="il">IL +972</option>
+                  <option value="" data-cc="other" data-i18n="phone.otherOpt">Другая</option>
+                </select>
+                <input id="fPhone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="79 123 456">
+              </div>
             </div>
           </div>
           <label class="checkbox-field">
@@ -1496,18 +1515,18 @@
 
     try{
       var CHISINAU=[47.0105,28.8638];
-      var CHISINAU_NAME={ru:'Кишинёв',uk:'Кишинів',en:'Chisinau'};
+      var CHISINAU_NAME={ru:'Кишинёв',uk:'Кишинів',en:'Chisinau',he:'קישינב'};
       var ROAD_FACTOR=1.25;
       // km/price = the Chisinau-based figures shown on the route cards; cross = where the car leaves Moldova.
       var ROUTES={
-        t1:{cc:'md',dest:[46.408,30.087],cross:[46.408,30.087],km:125,price:80,name:{ru:'КПП Паланка',uk:'КПП Паланка',en:'Palanca border crossing'}},
-        t2:{cc:'ua',dest:[46.4825,30.7233],cross:[46.408,30.087],km:180,price:170,name:{ru:'Одесса',uk:'Одеса',en:'Odesa'}},
-        t3:{cc:'ua',dest:[50.4501,30.5234],cross:[48.43,27.79],km:600,price:450,name:{ru:'Киев',uk:'Київ',en:'Kyiv'}},
-        t4:{cc:'ua',dest:[48.445,27.80],cross:[48.43,27.79],km:200,price:150,name:{ru:'Могилёв-Подольский',uk:'Могилів-Подільський',en:'Mohyliv-Podilskyi'}},
-        t5:{cc:'ua',dest:[45.3516,28.8364],cross:[45.72,28.60],km:220,price:200,name:{ru:'Измаил',uk:'Ізмаїл',en:'Izmail'}},
-        t6:{cc:'ua',dest:[49.8397,24.0297],cross:[48.27,26.66],km:580,price:500,name:{ru:'Львов',uk:'Львів',en:'Lviv'}},
-        t7:{cc:'ro',dest:[44.4268,26.1025],cross:[46.79,28.17],km:450,price:400,name:{ru:'Бухарест',uk:'Бухарест',en:'Bucharest'}},
-        t8:{cc:'ro',dest:[47.1585,27.6014],cross:[47.32,27.62],km:150,price:170,name:{ru:'Яссы',uk:'Ясси',en:'Iași'}}
+        t1:{cc:'md',dest:[46.408,30.087],cross:[46.408,30.087],km:125,price:80,name:{ru:'КПП Паланка',uk:'КПП Паланка',en:'Palanca border crossing',he:'מעבר הגבול פלנקה'}},
+        t2:{cc:'ua',dest:[46.4825,30.7233],cross:[46.408,30.087],km:180,price:170,name:{ru:'Одесса',uk:'Одеса',en:'Odesa',he:'אודסה'}},
+        t3:{cc:'ua',dest:[50.4501,30.5234],cross:[48.43,27.79],km:600,price:450,name:{ru:'Киев',uk:'Київ',en:'Kyiv',he:'קייב'}},
+        t4:{cc:'ua',dest:[48.445,27.80],cross:[48.43,27.79],km:200,price:150,name:{ru:'Могилёв-Подольский',uk:'Могилів-Подільський',en:'Mohyliv-Podilskyi',he:'מוהיליב-פודילסקי'}},
+        t5:{cc:'ua',dest:[45.3516,28.8364],cross:[45.72,28.60],km:220,price:200,name:{ru:'Измаил',uk:'Ізмаїл',en:'Izmail',he:'איזמאיל'}},
+        t6:{cc:'ua',dest:[49.8397,24.0297],cross:[48.27,26.66],km:580,price:500,name:{ru:'Львов',uk:'Львів',en:'Lviv',he:'לביב'}},
+        t7:{cc:'ro',dest:[44.4268,26.1025],cross:[46.79,28.17],km:450,price:400,name:{ru:'Бухарест',uk:'Бухарест',en:'Bucharest',he:'בוקרשט'}},
+        t8:{cc:'ro',dest:[47.1585,27.6014],cross:[47.32,27.62],km:150,price:170,name:{ru:'Яссы',uk:'Ясси',en:'Iași',he:'יאשי'}}
       };
       var fFromEl=document.getElementById('fFrom');
       var fToEl=document.getElementById('fTo');
@@ -1765,6 +1784,31 @@
     }catch(e){}
 
     try{
+      // Country code picker: the client only types their own number; the example in grey follows the country.
+      var ccSel=document.getElementById('fPhoneCC'), phoneEl=document.getElementById('fPhone');
+      var ccTouched=false, LANG_CC={ru:'+373',uk:'+38',en:'+373',he:'+972'};
+      function ccKey(){ var o=ccSel.options[ccSel.selectedIndex]; return o ? o.getAttribute('data-cc') : 'md'; }
+      function updatePhonePh(){ phoneEl.setAttribute('placeholder', T('phone.ph.'+ccKey())); }
+      ccSel.addEventListener('change',function(){ ccTouched=true; updatePhonePh(); phoneEl.focus(); });
+      window.__glLangHooks=window.__glLangHooks||[];
+      window.__glLangHooks.push(function(lang){
+        if(!ccTouched && !phoneEl.value) ccSel.value=LANG_CC[lang]||'+373';
+        updatePhonePh();
+      });
+      if(window.T) updatePhonePh();   // otherwise the language hook sets it once translations load
+      window.__glFullPhone=function(){
+        var num=phoneEl.value.trim(), cc=ccSel.value;
+        if(!num) return '';
+        if(!cc || num.charAt(0)==='+') return num;
+        var d=num.replace(/\D/g,''), ccd=cc.slice(1);
+        if(d.indexOf(ccd)===0 && d.length>ccd.length+8) d=d.slice(ccd.length);   // country code typed twice
+        if(cc==='+38'){ if(d.charAt(0)!=='0' && d.length===9) d='0'+d; }          // Ukraine: +38 0XX XXX XX XX
+        else d=d.replace(/^0+/,'');                                                // others drop the trunk 0
+        return cc+' '+d;
+      };
+    }catch(e){}
+
+    try{
       var bookingForm=document.getElementById('bookingForm');
       bookingForm.addEventListener('submit',function(e){
         e.preventDefault();
@@ -1786,7 +1830,7 @@
         if(document.getElementById('fPet').checked) lines.push(T('msg.pet'));
         var comment=document.getElementById('fComment').value;
         if(comment) lines.push(T('msg.comment')+': '+comment);
-        var phone=document.getElementById('fPhone').value;
+        var phone=window.__glFullPhone ? window.__glFullPhone() : document.getElementById('fPhone').value;
         lines.push(T('msg.phone')+': '+(phone||T('msg.noPhone')));
         window.__pendingRequestText=lines.join('\n');
         var backdrop=document.getElementById('sendModalBackdrop');
@@ -1998,7 +2042,7 @@
         "faq.a8":"Вкажіть це в коментарі до заявки — дитяче крісло, додатковий багаж, номер і час рейсу. Підготуємо машину під вашу поїздку.",
         "faq.q9":"Чи можна замовити трансфер з аеропорту?",
         "faq.a9":"Так, ми возимо від дверей до дверей — зокрема з аеропорту Кишинева й до нього. Вкажіть номер рейсу в коментарі до заявки.",
-        "booking.class":"Клас авто","cls.comfort":"Комфорт","cls.comfortSub":"до 4 пас.","cls.business":"Бізнес","cls.businessSub":"до 4 пас.","cls.van":"Мінівен","cls.vanSub":"до 8 місць","hero.callNote":"Возимо лише індивідуально — попутних і спільних поїздок немає.",
+        "booking.class":"Клас авто","booking.phoneCC":"Код країни","phone.otherOpt":"Інша","cls.comfort":"Комфорт","cls.comfortSub":"до 4 пас.","cls.business":"Бізнес","cls.businessSub":"до 4 пас.","cls.van":"Мінівен","cls.vanSub":"до 8 місць","hero.callNote":"Возимо лише індивідуально — попутних і спільних поїздок немає.",
         "footer.privacy":"Політика конфіденційності","footer.cookieSettings":"Налаштування cookie",
         "consent.text":"Ми використовуємо файли cookie для аналітики та персоналізації реклами. Ви можете прийняти їх або відхилити необов'язкові cookie. Детальніше — <a href=\"privacy.html\">в політиці конфіденційності</a>.",
         "consent.accept":"Прийняти","consent.reject":"Відхилити",
@@ -2083,23 +2127,191 @@
         "faq.a8":"Add it to the comment in your request — child seat, extra luggage, flight number and time. We'll prepare the car for your trip.",
         "faq.q9":"Can I book a transfer from the airport?",
         "faq.a9":"Yes, we go door to door — including to and from Chisinau airport. Add your flight number to the comment in your request.",
-        "booking.class":"Car class","cls.comfort":"Comfort","cls.comfortSub":"up to 4 pax","cls.business":"Business","cls.businessSub":"up to 4 pax","cls.van":"Minivan","cls.vanSub":"up to 8 seats","hero.callNote":"Private trips only — no shared rides or ride-sharing.",
+        "booking.class":"Car class","booking.phoneCC":"Country code","phone.otherOpt":"Other","cls.comfort":"Comfort","cls.comfortSub":"up to 4 pax","cls.business":"Business","cls.businessSub":"up to 4 pax","cls.van":"Minivan","cls.vanSub":"up to 8 seats","hero.callNote":"Private trips only — no shared rides or ride-sharing.",
         "footer.privacy":"Privacy policy","footer.cookieSettings":"Cookie settings",
         "consent.text":"We use cookies for analytics and ad personalization. You can accept them or decline non-essential cookies. Details — <a href=\"privacy.html\">in our privacy policy</a>.",
         "consent.accept":"Accept","consent.reject":"Decline",
         "geo.mine":"📍 My location","geo.routesBtn":"📍 Show prices from my location",
         "modal.h":"Where should we send your request?","modal.p":"Choose your preferred messenger","modal.close":"Close",
         "fcta.text":"Need a transfer? Leave a request — we'll call back within 15 minutes"
-      }
+      },
+      he:{
+        "nav.routes": "מסלולים",
+        "nav.fleet": "צי רכבים",
+        "nav.reviews": "ביקורות",
+        "nav.contacts": "צור קשר",
+        "nav.cta": "להזמנה",
+        "nav.menu": "תפריט",
+        "hero.md": "מולדובה",
+        "hero.ua": "אוקראינה",
+        "hero.eu": "אירופה",
+        "hero.h1a": "מעבר גבול",
+        "hero.h1b": "בלי החלפות",
+        "hero.p": " — הסעה פרטית מדלת לדלת בין מולדובה, אוקראינה ומדינות האיחוד האירופי. בלי נוסעים זרים, מחיר קבוע, נהגים מנוסים.",
+        "hero.solo": "הסעה פרטית — הרכב רק בשבילכם",
+        "hero.waBtn": "שלחו לנו הודעה",
+        "hero.phone1sub": "מולדובה, שיחות, WhatsApp, Viber, Telegram",
+        "hero.phone2sub": "אוקראינה, שיחות ו־Telegram",
+        "hero.stat1": "נסיעות שהושלמו",
+        "hero.stat2": "לאישור הזמנה",
+        "hero.stat3": "דירוג ממוצע של נוסעים",
+        "hero.minSuffix": " דק׳",
+        "booking.eyebrow": "הסעה פרטית",
+        "booking.solo": "הרכב רק בשבילכם ובשביל המלווים שלכם — לא מצרפים נוסעים אחרים.",
+        "booking.from": "מאיפה",
+        "booking.fromPh": "עיר או כתובת",
+        "booking.to": "לאן",
+        "booking.toPh": "עיר, מעבר גבול או כתובת",
+        "booking.date": "תאריך ושעה",
+        "booking.pax": "נוסעים",
+        "booking.bags": "מזוודות",
+        "booking.bags0": "בלי מזוודות",
+        "booking.bags1": "1–2 תיקים",
+        "booking.bags2": "3–4 תיקים",
+        "booking.bags3": "5 ומעלה",
+        "booking.phone": "טלפון ליצירת קשר",
+        "booking.pet": "נוסע/ת עם חיית מחמד <i>— חשוב לדעת מראש, לא כל מעברי הגבול מאפשרים זאת</i>",
+        "booking.comment": "הערה (לא חובה)",
+        "booking.commentPh": "כיסא בטיחות לילד, מזוודות נוספות, שעת הטיסה וכו׳",
+        "booking.submit": "שליחת הזמנה",
+        "booking.note": "בחרו מסנג׳ר — ההזמנה עם כל הפרטים תגיע אלינו, ונאשר את המסלול.",
+        "r.priceCap": "לרכב, 1–4 נוסעים",
+        "r.from": "מ־",
+        "r.t1.city": "קישינב ⇄ מעבר הגבול פלנקה",
+        "r.t1.km": "≈ 125 ק״מ",
+        "r.t1.time": "≈ 2 שע׳",
+        "r.t1.desc": "ישירות לגבול",
+        "r.t2.city": "קישינב ⇄ אודסה",
+        "r.t2.km": "≈ 180 ק״מ",
+        "r.t2.time": "≈ 3 שע׳",
+        "r.t2.desc": "דרך פלנקה",
+        "r.t3.city": "קישינב ⇄ קייב",
+        "r.t3.km": "≈ 600 ק״מ",
+        "r.t3.time": "≈ 8 שע׳",
+        "r.t3.desc": "דרך מוהיליב-פודילסקי",
+        "r.t4.city": "קישינב ⇄ מוהיליב-פודילסקי",
+        "r.t4.km": "≈ 200 ק״מ",
+        "r.t4.time": "≈ 3 שע׳",
+        "r.t4.desc": "מעבר הגבול מוהיליב",
+        "r.t5.city": "קישינב ⇄ איזמאיל",
+        "r.t5.km": "≈ 220 ק״מ",
+        "r.t5.time": "≈ 3.5 שע׳",
+        "r.t5.desc": "דרך בולהרד",
+        "r.t6.city": "קישינב ⇄ לביב",
+        "r.t6.km": "≈ 580 ק״מ",
+        "r.t6.time": "≈ 8 שע׳",
+        "r.t6.desc": "נסיעת לילה",
+        "r.t7.city": "קישינב ⇄ בוקרשט",
+        "r.t7.km": "≈ 450 ק״מ",
+        "r.t7.time": "≈ 6.5 שע׳",
+        "r.t7.desc": "לאושן – אלביצה",
+        "r.t8.city": "קישינב ⇄ יאשי",
+        "r.t8.km": "≈ 150 ק״מ",
+        "r.t8.time": "≈ 3 שע׳",
+        "r.t8.desc": "סקולני",
+        "routes.eyebrow": "מסלולים",
+        "routes.h2": "יעדים עיקריים",
+        "routes.p": "הסעה פרטית: מחיר קבוע לכל הרכב, מעבר גבול ידוע ואיסוף בזמן. ערים נוספות — לפי בקשה.",
+        "routes.note": "המסלולים פועלים בשני הכיוונים — מקישינב ובחזרה. המחירים הם מחירי פתיחה לרכב בדרגת קומפורט (1–4 נוסעים); לדרגת ביזנס ולמיניוואן — ראו את פרק „צי רכבים”. המחיר הסופי תלוי בתאריך, בנקודת האיסוף ובמספר הנוסעים — יש לאשר בעת ההזמנה.",
+        "fleet.eyebrow": "צי רכבים",
+        "fleet.h2": "שלוש דרגות — לכל נסיעה",
+        "fleet.p": "רכבים בדוקים, פנים נקי, מיזוג אוויר ומספיק מקום למזוודות לכל אורך הדרך. החליקו את הכרטיס — בכל דרגה יש כמה דגמים לבחירה.",
+        "fleet.prev": "הדגם הקודם",
+        "fleet.next": "הדגם הבא",
+        "fleet.c1.name": "דרגת קומפורט",
+        "fleet.c1.tag": "מ־80 $ · עד 4 נוסעים",
+        "fleet.c1.desc": "Toyota Prius+, Ford Fusion, Lincoln MKZ, Toyota Camry — רכבים עד שנת 2015, מטופלים ובדוקים על המסלול.",
+        "fleet.c1.s1": "3 מזוודות",
+        "fleet.c1.s2": "מיזוג אוויר",
+        "fleet.c1.s4": "ביטוח",
+        "fleet.c2.name": "דרגת ביזנס",
+        "fleet.c2.tag": "מ־130 $ · עד 4 נוסעים",
+        "fleet.c2.desc": "Mercedes E-Class, BMW 5-series, Toyota Camry, Lexus ES, Audi A6 — רכבים משנת 2018 ומעלה.",
+        "fleet.c2.s2": "בקרת אקלים",
+        "fleet.c3.name": "מיניוואן לקבוצות",
+        "fleet.c3.tag": "מ־150 $ · עד 8 מקומות",
+        "fleet.c3.desc": "Mercedes-Benz Vito, Ford Transit Custom — למשפחה או לקבוצה עם הרבה מזוודות בנסיעה ארוכה.",
+        "fleet.c3.s1": "6+ מזוודות",
+        "fleet.c3.s3": "שקעי 220V",
+        "fleet.c3.s4": "כיסא בטיחות לילד",
+        "features.eyebrow": "למה GrandLine",
+        "features.h2": "כל מה שצריך למעבר גבול רגוע",
+        "features.f1.h": "הסעה פרטית",
+        "features.f1.p": "הרכב רק בשבילכם — בלי נוסעים זרים ובלי עצירות לאסוף אף אחד. מחיר קבוע אחד לכל הרכב — בלי תוספות בגבול או על מזוודות.",
+        "features.f2.h": "זמינים 24/7",
+        "features.f2.p": "נסיעות לילה וטיסות מוקדמות — איסוף בכל שעה, גם בחגים.",
+        "features.f3.h": "מכירים כל מעבר גבול",
+        "features.f3.p": "הנהגים נוסעים במסלול כל יום ובוחרים את המעבר עם התור הקצר יותר.",
+        "features.f4.h": "ביטוח נוסעים",
+        "features.f4.p": "כל נסיעה מבוטחת — אפשר לנסוע בראש שקט עם ילדים או הורים מבוגרים.",
+        "features.f5.h": "הנהג זמין לאורך כל הדרך",
+        "features.f5.p": "שולחים מראש את פרטי הנהג ושעת האיסוף — זמין ב־WhatsApp עד לרגע הפגישה.",
+        "features.f6.h": "תשלום בכרטיס או במזומן",
+        "features.f6.p": "מקבלים MDL, UAH, EUR — שלמו בדרך הנוחה לכם.",
+        "reviews.eyebrow": "ביקורות",
+        "reviews.h2": "מה אומרים הנוסעים",
+        "reviews.disclaimer": "ביקורות לדוגמה להדגמת העיצוב — יוחלפו בביקורות אמיתיות לאחר ההשקה.",
+        "reviews.r1.quote": "„הגענו מהר ובלי עצירות מיותרות — רכב נוח, נהג נעים, הכול עבר חלק מדלת לדלת.”",
+        "reviews.r2.quote": "„הזמנו דרגת קומפורט לאודסה — הגיעו בזמן, רכב נקי, בדיוק המחיר שסיכמנו מראש.”",
+        "reviews.r3.quote": "„נסיעה ארוכה לדניפרו — נוח מאוד, הנהג היה זמין כל הדרך והודיע מראש על שעת ההגעה.”",
+        "reviews.r3.route": "קישינב — דניפרו",
+        "footer.disclaimer": "המידע באתר הוא להדגמה — יש לאשר מחירים ופרטי קשר עדכניים.",
+        "nav.faq": "שאלות",
+        "faq.eyebrow": "שאלות",
+        "faq.h2": "שאלות נפוצות",
+        "faq.q0": "זו הסעה פרטית או משותפת?",
+        "faq.a0": "פרטית. הרכב נוסע רק איתכם ועם המלווים שלכם — לא מצרפים נוסעים אחרים ולא עוצרים לאסוף אף אחד בדרך. המחיר הוא לכל הרכב.",
+        "faq.q1": "צריך לשלם מראש?",
+        "faq.a1": "לא, אין תשלום מראש. ההזמנה בחינם — משלמים רק על הנסיעה עצמה.",
+        "faq.q2": "אפשר לדחות או לבטל את הנסיעה?",
+        "faq.a2": "כן, בכל עת. פשוט שלחו לנו הודעה או התקשרו — נמצא תאריך ושעה חדשים. אין תשלום מראש, כך שלא מפסידים כלום.",
+        "faq.q3": "המחיר לאדם או לרכב?",
+        "faq.a3": "לרכב, דרגת קומפורט (1–4 נוסעים). המחיר נקבע בעת ההזמנה ולא משתנה — בלי תוספות בגבול או על מזוודות. ל־5 נוסעים ומעלה נשלח מיניוואן והמחיר יחושב בנפרד.",
+        "faq.q4": "איך מזמינים הסעה?",
+        "faq.a4": "מלאו את הטופס בראש העמוד ובחרו מסנג׳ר — WhatsApp, Viber או Telegram. ההזמנה עם כל הפרטים מגיעה ישירות אלינו ואנחנו מאשרים את הנסיעה. או פשוט התקשרו: <a href=\"tel:+37378293919\" dir=\"ltr\">+373 78 293 919</a>, <a href=\"tel:+380987361623\" dir=\"ltr\">+380 98 736 1623</a>.",
+        "faq.q5": "אילו מסמכים צריך לגבול?",
+        "faq.a5": "דרכון לכל נוסע, בתוקף לכניסה למדינת היעד. אזרחי ישראל אינם צריכים ויזה לביקור קצר במולדובה, באוקראינה וברומניה. לילדים — דרכון משלהם. כללי היציאה מאוקראינה בזמן מלחמה משתנים — בדקו לפני הנסיעה באתר שירות משמר הגבול של אוקראינה (<a href=\"https://dpsu.gov.ua\" target=\"_blank\" rel=\"noopener\">dpsu.gov.ua</a>).",
+        "faq.q6": "אפשר לנסוע עם חיית מחמד?",
+        "faq.a6": "כן, אבל חובה לעדכן מראש — בטופס יש סימון „נוסע/ת עם חיית מחמד”: לא כל מעברי הגבול מאפשרים זאת. לחיה צריך את כל המסמכים: דרכון וטרינרי, שבב וחיסון כלבת בתוקף. לכניסה לאיחוד האירופי (למשל לרומניה) צריך גם בדיקת נוגדנים לכלבת ותעודה וטרינרית. הדרישות משתנות, לכן בדקו אותן מראש מול הווטרינר.",
+        "faq.q7": "כמה זמן לוקח מעבר הגבול?",
+        "faq.a7": "תלוי ביום, בשעה ובעומס במעבר — מכמה דקות ועד כמה שעות. זמני הנסיעה בכרטיסי המסלולים משוערים. הנהגים שלנו מכירים כל מעבר ויציעו את המהיר ביותר באותו רגע.",
+        "faq.q8": "אפשר לבקש כיסא בטיחות לילד או לקחת יותר מזוודות?",
+        "faq.a8": "כתבו זאת בהערה להזמנה — כיסא בטיחות, מזוודות נוספות, מספר הטיסה ושעתה. נכין את הרכב לנסיעה שלכם.",
+        "faq.q9": "אפשר להזמין הסעה משדה התעופה?",
+        "faq.a9": "כן, אנחנו נוסעים מדלת לדלת — כולל אל שדה התעופה של קישינב וממנו. כתבו את מספר הטיסה בהערה להזמנה.",
+        "booking.class": "דרגת רכב",
+        "cls.comfort": "קומפורט",
+        "cls.comfortSub": "עד 4 נוסעים",
+        "cls.business": "ביזנס",
+        "cls.businessSub": "עד 4 נוסעים",
+        "cls.van": "מיניוואן",
+        "cls.vanSub": "עד 8 מקומות",
+        "hero.callNote": "רק נסיעות פרטיות — אין נסיעות משותפות או טרמפים.",
+        "footer.privacy": "מדיניות פרטיות",
+        "footer.cookieSettings": "הגדרות עוגיות",
+        "consent.text": "אנחנו משתמשים בעוגיות לניתוח נתונים ולהתאמת פרסומות. אפשר לאשר אותן או לדחות עוגיות שאינן הכרחיות. פרטים — <a href=\"privacy.html\">במדיניות הפרטיות</a>.",
+        "consent.accept": "אישור",
+        "consent.reject": "דחייה",
+        "geo.mine": "📍 המיקום שלי",
+        "geo.routesBtn": "📍 הצגת מחירים מהמיקום שלי",
+        "modal.h": "לאן לשלוח את ההזמנה?",
+        "modal.p": "בחרו את המסנג׳ר המועדף",
+        "modal.close": "סגירה",
+        "fcta.text": "צריכים הסעה? השאירו הזמנה — נחזור אליכם תוך 15 דקות",
+        "booking.phoneCC": "קידומת מדינה",
+        "phone.otherOpt": "אחר"
+        }
     };
     var MSGS={
-      ru:{waMsg:"Здравствуйте! Хочу заказать трансфер.","msg.title":"Заявка на индивидуальный трансфер GrandLine:","msg.from":"Откуда","msg.to":"Куда","msg.date":"Дата и время","msg.pax":"Пассажиров","msg.bags":"Багаж","msg.pet":"Едет с животным: да","msg.comment":"Комментарий","msg.phone":"Телефон","msg.noPhone":"не указан","msg.copied":"Текст заявки скопирован — вставьте его в чат (Ctrl+V).","ac.none":"Ничего не найдено","u.km":"км","est.line":"≈ {km} км · примерно <b>{price} $</b>","est.note":"Индивидуальный трансфер, {cls}, {cap}. Точную цену подтвердим в мессенджере.","est.paxVan":"Для 5+ пассажиров нужен минивэн — выберите его выше.","est.loading":"Считаем расстояние…","msg.class":"Класс","msg.price":"Примерная цена","msgcls.comfort":"Комфорт","msgcls.business":"Бизнес","msgcls.van":"Минивэн","cap.comfort":"до 4 пассажиров","cap.business":"до 4 пассажиров","cap.van":"до 8 мест","est.unknown":"≈ {km} км · стоимость рассчитаем индивидуально","geo.here":"Моё местоположение","geo.failed":"Не удалось определить местоположение — проверьте, разрешён ли доступ к геолокации.","geo.outside":"Похоже, вы не в Молдове — цены указаны от Кишинёва. Для поездки из вашего города посчитаем индивидуально.","geo.done":"Цены и расстояния пересчитаны от вашего местоположения (примерно)."},
-      uk:{waMsg:"Вітаю! Хочу замовити трансфер.","msg.title":"Заявка на індивідуальний трансфер GrandLine:","msg.from":"Звідки","msg.to":"Куди","msg.date":"Дата і час","msg.pax":"Пасажирів","msg.bags":"Багаж","msg.pet":"Їде з твариною: так","msg.comment":"Коментар","msg.phone":"Телефон","msg.noPhone":"не вказано","msg.copied":"Текст заявки скопійовано — вставте його в чат (Ctrl+V).","ac.none":"Нічого не знайдено","u.km":"км","est.line":"≈ {km} км · орієнтовно <b>{price} $</b>","est.note":"Індивідуальний трансфер, {cls}, {cap}. Точну ціну підтвердимо в месенджері.","est.paxVan":"Для 5+ пасажирів потрібен мінівен — оберіть його вище.","est.loading":"Рахуємо відстань…","msg.class":"Клас","msg.price":"Орієнтовна ціна","msgcls.comfort":"Комфорт","msgcls.business":"Бізнес","msgcls.van":"Мінівен","cap.comfort":"до 4 пасажирів","cap.business":"до 4 пасажирів","cap.van":"до 8 місць","est.unknown":"≈ {km} км · вартість розрахуємо індивідуально","geo.here":"Моє місцезнаходження","geo.failed":"Не вдалося визначити місцезнаходження — перевірте, чи дозволено доступ до геолокації.","geo.outside":"Схоже, ви не в Молдові — ціни вказані від Кишинева. Для поїздки з вашого міста розрахуємо індивідуально.","geo.done":"Ціни та відстані перераховані від вашого місцезнаходження (орієнтовно)."},
-      en:{waMsg:"Hello! I'd like to book a transfer.","msg.title":"GrandLine private transfer request:","msg.from":"From","msg.to":"To","msg.date":"Date & time","msg.pax":"Passengers","msg.bags":"Luggage","msg.pet":"Traveling with a pet: yes","msg.comment":"Comment","msg.phone":"Phone","msg.noPhone":"not provided","msg.copied":"Request text copied — paste it into the chat (Ctrl+V).","ac.none":"Nothing found","u.km":"km","est.line":"≈ {km} km · about <b>{price} $</b>","est.note":"Private transfer, {cls}, {cap}. We'll confirm the exact price in the messenger.","est.paxVan":"5+ passengers need a minivan — choose it above.","est.loading":"Calculating distance…","msg.class":"Class","msg.price":"Estimated price","msgcls.comfort":"Comfort","msgcls.business":"Business","msgcls.van":"Minivan","cap.comfort":"up to 4 pax","cap.business":"up to 4 pax","cap.van":"up to 8 seats","est.unknown":"≈ {km} km · price calculated individually","geo.here":"My location","geo.failed":"Couldn't get your location — check that location access is allowed.","geo.outside":"Looks like you're not in Moldova — prices are from Chisinau. We'll quote a trip from your city individually.","geo.done":"Prices and distances recalculated from your location (approximate)."}
+      ru:{"phone.ph.md":"79 123 456","phone.ph.ua":"098 123 45 67","phone.ph.ro":"712 345 678","phone.ph.il":"50 123 4567","phone.ph.other":"+ код страны и номер",waMsg:"Здравствуйте! Хочу заказать трансфер.","msg.title":"Заявка на индивидуальный трансфер GrandLine:","msg.from":"Откуда","msg.to":"Куда","msg.date":"Дата и время","msg.pax":"Пассажиров","msg.bags":"Багаж","msg.pet":"Едет с животным: да","msg.comment":"Комментарий","msg.phone":"Телефон","msg.noPhone":"не указан","msg.copied":"Текст заявки скопирован — вставьте его в чат (Ctrl+V).","ac.none":"Ничего не найдено","u.km":"км","est.line":"≈ {km} км · примерно <b>{price} $</b>","est.note":"Индивидуальный трансфер, {cls}, {cap}. Точную цену подтвердим в мессенджере.","est.paxVan":"Для 5+ пассажиров нужен минивэн — выберите его выше.","est.loading":"Считаем расстояние…","msg.class":"Класс","msg.price":"Примерная цена","msgcls.comfort":"Комфорт","msgcls.business":"Бизнес","msgcls.van":"Минивэн","cap.comfort":"до 4 пассажиров","cap.business":"до 4 пассажиров","cap.van":"до 8 мест","est.unknown":"≈ {km} км · стоимость рассчитаем индивидуально","geo.here":"Моё местоположение","geo.failed":"Не удалось определить местоположение — проверьте, разрешён ли доступ к геолокации.","geo.outside":"Похоже, вы не в Молдове — цены указаны от Кишинёва. Для поездки из вашего города посчитаем индивидуально.","geo.done":"Цены и расстояния пересчитаны от вашего местоположения (примерно)."},
+      uk:{"phone.ph.md":"79 123 456","phone.ph.ua":"098 123 45 67","phone.ph.ro":"712 345 678","phone.ph.il":"50 123 4567","phone.ph.other":"+ код країни і номер",waMsg:"Вітаю! Хочу замовити трансфер.","msg.title":"Заявка на індивідуальний трансфер GrandLine:","msg.from":"Звідки","msg.to":"Куди","msg.date":"Дата і час","msg.pax":"Пасажирів","msg.bags":"Багаж","msg.pet":"Їде з твариною: так","msg.comment":"Коментар","msg.phone":"Телефон","msg.noPhone":"не вказано","msg.copied":"Текст заявки скопійовано — вставте його в чат (Ctrl+V).","ac.none":"Нічого не знайдено","u.km":"км","est.line":"≈ {km} км · орієнтовно <b>{price} $</b>","est.note":"Індивідуальний трансфер, {cls}, {cap}. Точну ціну підтвердимо в месенджері.","est.paxVan":"Для 5+ пасажирів потрібен мінівен — оберіть його вище.","est.loading":"Рахуємо відстань…","msg.class":"Клас","msg.price":"Орієнтовна ціна","msgcls.comfort":"Комфорт","msgcls.business":"Бізнес","msgcls.van":"Мінівен","cap.comfort":"до 4 пасажирів","cap.business":"до 4 пасажирів","cap.van":"до 8 місць","est.unknown":"≈ {km} км · вартість розрахуємо індивідуально","geo.here":"Моє місцезнаходження","geo.failed":"Не вдалося визначити місцезнаходження — перевірте, чи дозволено доступ до геолокації.","geo.outside":"Схоже, ви не в Молдові — ціни вказані від Кишинева. Для поїздки з вашого міста розрахуємо індивідуально.","geo.done":"Ціни та відстані перераховані від вашого місцезнаходження (орієнтовно)."},
+      en:{"phone.ph.md":"79 123 456","phone.ph.ua":"098 123 45 67","phone.ph.ro":"712 345 678","phone.ph.il":"50 123 4567","phone.ph.other":"+ country code and number",waMsg:"Hello! I'd like to book a transfer.","msg.title":"GrandLine private transfer request:","msg.from":"From","msg.to":"To","msg.date":"Date & time","msg.pax":"Passengers","msg.bags":"Luggage","msg.pet":"Traveling with a pet: yes","msg.comment":"Comment","msg.phone":"Phone","msg.noPhone":"not provided","msg.copied":"Request text copied — paste it into the chat (Ctrl+V).","ac.none":"Nothing found","u.km":"km","est.line":"≈ {km} km · about <b>{price} $</b>","est.note":"Private transfer, {cls}, {cap}. We'll confirm the exact price in the messenger.","est.paxVan":"5+ passengers need a minivan — choose it above.","est.loading":"Calculating distance…","msg.class":"Class","msg.price":"Estimated price","msgcls.comfort":"Comfort","msgcls.business":"Business","msgcls.van":"Minivan","cap.comfort":"up to 4 pax","cap.business":"up to 4 pax","cap.van":"up to 8 seats","est.unknown":"≈ {km} km · price calculated individually","geo.here":"My location","geo.failed":"Couldn't get your location — check that location access is allowed.","geo.outside":"Looks like you're not in Moldova — prices are from Chisinau. We'll quote a trip from your city individually.","geo.done":"Prices and distances recalculated from your location (approximate)."},
+      he:{"waMsg": "שלום! אני רוצה להזמין הסעה.", "msg.title": "הזמנת הסעה פרטית GrandLine:", "msg.from": "מאיפה", "msg.to": "לאן", "msg.date": "תאריך ושעה", "msg.pax": "נוסעים", "msg.bags": "מזוודות", "msg.pet": "נוסע/ת עם חיית מחמד: כן", "msg.comment": "הערה", "msg.phone": "טלפון", "msg.noPhone": "לא צוין", "msg.copied": "טקסט ההזמנה הועתק — הדביקו אותו בצ׳אט (Ctrl+V).", "ac.none": "לא נמצאו תוצאות", "u.km": "ק״מ", "est.line": "≈ {km} ק״מ · בערך <b>{price} $</b>", "est.note": "הסעה פרטית, {cls}, {cap}. את המחיר המדויק נאשר במסנג׳ר.", "est.paxVan": "ל־5 נוסעים ומעלה צריך מיניוואן — בחרו אותו למעלה.", "est.loading": "מחשבים מרחק…", "msg.class": "דרגה", "msg.price": "מחיר משוער", "msgcls.comfort": "קומפורט", "msgcls.business": "ביזנס", "msgcls.van": "מיניוואן", "cap.comfort": "עד 4 נוסעים", "cap.business": "עד 4 נוסעים", "cap.van": "עד 8 מקומות", "est.unknown": "≈ {km} ק״מ · המחיר יחושב באופן אישי", "geo.here": "המיקום שלי", "geo.failed": "לא הצלחנו לאתר את המיקום — בדקו שהגישה למיקום מאושרת.", "geo.outside": "נראה שאתם לא במולדובה — המחירים הם מקישינב. נסיעה מהעיר שלכם נחשב באופן אישי.", "geo.done": "המחירים והמרחקים חושבו מחדש מהמיקום שלכם (בקירוב).", "phone.ph.md": "79 123 456", "phone.ph.ua": "098 123 45 67", "phone.ph.ro": "712 345 678", "phone.ph.il": "50 123 4567", "phone.ph.other": "+ קידומת ומספר", "phone.other": "אחר"}
     };
     var META={
       ru:{title:"GrandLine Transfer — индивидуальный трансфер Молдова ⇄ Украина ⇄ Европа",description:"Индивидуальный трансфер от двери до двери: Кишинёв ⇄ Киев, Одесса, Бухарест, Яссы, Львов и другие города. Фиксированная цена, опытные водители, знание всех погранпереходов."},
       uk:{title:"GrandLine Transfer — індивідуальний трансфер Молдова ⇄ Україна ⇄ Європа",description:"Індивідуальний трансфер від дверей до дверей: Кишинів ⇄ Київ, Одеса, Бухарест, Ясси, Львів та інші міста. Фіксована ціна, досвідчені водії, знання всіх пунктів пропуску."},
+      he:{title:"GrandLine Transfer — הסעה פרטית מולדובה ⇄ אוקראינה ⇄ אירופה",description:"הסעה פרטית מדלת לדלת: קישינב ⇄ קייב, אודסה, אומן, בוקרשט, יאשי, לביב וערים נוספות. מחיר קבוע, נהגים מנוסים, היכרות עם כל מעברי הגבול."},
       en:{title:"GrandLine Transfer — private transfer Moldova ⇄ Ukraine ⇄ Europe",description:"Private door-to-door transfer: Chisinau ⇄ Kyiv, Odesa, Bucharest, Iași, Lviv and other cities. Fixed price, experienced drivers, knowledge of every border crossing."}
     };
 
@@ -2118,6 +2330,7 @@
     function applyLang(lang){
       window.__glLang=lang;
       document.documentElement.lang=lang;
+      document.documentElement.dir=(lang==='he')?'rtl':'ltr';
       var dict=I18N[lang]||null;
 
       document.querySelectorAll('[data-i18n]').forEach(function(el){
@@ -2168,16 +2381,17 @@
     function detectInitialLang(){
       try{
         var saved=localStorage.getItem('glLang');
-        if(saved==='ru'||saved==='uk'||saved==='en') return saved;
+        if(saved==='ru'||saved==='uk'||saved==='en'||saved==='he') return saved;
       }catch(e){}
       try{
         var params=new URLSearchParams(window.location.search);
         var q=params.get('lang');
-        if(q==='ru'||q==='uk'||q==='en') return q;
+        if(q==='ru'||q==='uk'||q==='en'||q==='he') return q;
       }catch(e){}
       var nav=(navigator.language||'ru').toLowerCase();
       if(nav.indexOf('uk')===0) return 'uk';
       if(nav.indexOf('en')===0) return 'en';
+      if(nav.indexOf('he')===0 || nav.indexOf('iw')===0) return 'he';
       return 'ru';
     }
 
