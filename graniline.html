@@ -414,6 +414,18 @@
   .field select:focus,.field input:focus,.field textarea:focus{border-color:var(--accent);}
   .form-note{font-size:.78rem;color:var(--ink-faint);margin-top:2px;}
 
+  .class-pick{display:flex;flex-direction:column;gap:7px;margin-top:12px;}
+  .class-lbl{font-size:.76rem;font-weight:600;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.06em;}
+  .class-opts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+  .class-opt{position:relative;cursor:pointer;}
+  .class-opt input{position:absolute;opacity:0;width:1px;height:1px;}
+  .class-opt span{display:flex;flex-direction:column;gap:2px;padding:.6rem .7rem;border:1px solid var(--line-strong);border-radius:var(--r-s);background:var(--bg);transition:border-color .15s,background .15s;}
+  .class-opt b{font-size:.9rem;color:var(--ink);}
+  .class-opt small{font-size:.72rem;color:var(--ink-faint);}
+  .class-opt input:checked + span{border-color:var(--accent);background:rgba(79,140,255,.12);}
+  .class-opt input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px;}
+  @media (max-width:420px){ .class-opts{gap:6px;} .class-opt span{padding:.55rem .5rem;} .class-opt b{font-size:.82rem;} .class-opt small{font-size:.68rem;} }
+  .call-note{margin-top:.9rem;font-size:.86rem;color:var(--ink-dim);}
   .label-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
   .geo-link{font-size:.74rem;font-weight:600;color:var(--accent-soft);white-space:nowrap;}
   .geo-link:hover{color:var(--ink);}
@@ -610,6 +622,7 @@
           <span><b>+380 98 736 1623</b><span class="small" data-i18n="hero.phone2sub">Украина, звонки и Telegram</span></span>
         </a>
       </div>
+      <p class="call-note" data-i18n="hero.callNote">Возим только индивидуально — попутных и совместных поездок нет.</p>
 
       <div class="stat-row" id="statRow">
         <div class="stat"><b class="mono" data-count="2400" data-suffix="+">0</b><span data-i18n="hero.stat1">завершённых поездок</span></div>
@@ -635,6 +648,14 @@
             <label for="fTo" data-i18n="booking.to">Куда</label>
             <input id="fTo" placeholder="Город, КПП или свой адрес" data-i18n-ph="booking.toPh" autocomplete="off" required>
             <div class="ac-list" id="fToList"></div>
+          </div>
+        </div>
+        <div class="class-pick" role="radiogroup" aria-labelledby="classLbl">
+          <span class="class-lbl" id="classLbl" data-i18n="booking.class">Класс авто</span>
+          <div class="class-opts">
+            <label class="class-opt"><input type="radio" name="carClass" value="comfort" checked><span><b data-i18n="cls.comfort">Комфорт</b><small data-i18n="cls.comfortSub">до 4 пасс.</small></span></label>
+            <label class="class-opt"><input type="radio" name="carClass" value="business"><span><b data-i18n="cls.business">Бизнес</b><small data-i18n="cls.businessSub">до 4 пасс.</small></span></label>
+            <label class="class-opt"><input type="radio" name="carClass" value="van"><span><b data-i18n="cls.van">Минивэн</b><small data-i18n="cls.vanSub">до 8 мест</small></span></label>
           </div>
         </div>
         <p class="price-est" id="priceEst" aria-live="polite" hidden></p>
@@ -1327,6 +1348,7 @@
           input.value=r.display_name.split(',').slice(0,2).join(',').trim();
           input.dataset.lat=r.lat;
           input.dataset.lon=r.lon;
+          if(r.address && r.address.country_code) input.dataset.cc=r.address.country_code; else delete input.dataset.cc;
           input.dispatchEvent(new CustomEvent('glcoords'));
           hideList();
         }
@@ -1359,13 +1381,14 @@
         input.addEventListener('input',function(){
           delete input.dataset.lat;
           delete input.dataset.lon;
+          delete input.dataset.cc;
           var q=input.value.trim();
           if(debounceTimer) clearTimeout(debounceTimer);
           if(controller) controller.abort();
           if(q.length<3){ hideList(); return; }
           debounceTimer=setTimeout(function(){
             controller=('AbortController' in window) ? new AbortController() : null;
-            var url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=0&limit=6&accept-language='+(window.__glLang||'ru')+'&countrycodes=md,ua,ro&viewbox=19,52.5,41,43&q='+encodeURIComponent(q);
+            var url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&accept-language='+(window.__glLang||'ru')+'&countrycodes=md,ua,ro&viewbox=19,52.5,41,43&q='+encodeURIComponent(q);
             fetch(url, controller ? {signal:controller.signal} : {})
               .then(function(res){ return res.json(); })
               .then(function(data){ renderResults(data||[]); })
@@ -1395,14 +1418,14 @@
       var ROAD_FACTOR=1.25;
       // km/price = the Chisinau-based figures shown on the route cards; cross = where the car leaves Moldova.
       var ROUTES={
-        t1:{dest:[46.408,30.087],cross:[46.408,30.087],km:125,price:80,name:{ru:'КПП Паланка',uk:'КПП Паланка',en:'Palanca border crossing'}},
-        t2:{dest:[46.4825,30.7233],cross:[46.408,30.087],km:180,price:170,name:{ru:'Одесса',uk:'Одеса',en:'Odesa'}},
-        t3:{dest:[50.4501,30.5234],cross:[48.43,27.79],km:600,price:450,name:{ru:'Киев',uk:'Київ',en:'Kyiv'}},
-        t4:{dest:[48.445,27.80],cross:[48.43,27.79],km:200,price:150,name:{ru:'Могилёв-Подольский',uk:'Могилів-Подільський',en:'Mohyliv-Podilskyi'}},
-        t5:{dest:[45.3516,28.8364],cross:[45.72,28.60],km:220,price:200,name:{ru:'Измаил',uk:'Ізмаїл',en:'Izmail'}},
-        t6:{dest:[49.8397,24.0297],cross:[48.27,26.66],km:580,price:500,name:{ru:'Львов',uk:'Львів',en:'Lviv'}},
-        t7:{dest:[44.4268,26.1025],cross:[46.79,28.17],km:450,price:400,name:{ru:'Бухарест',uk:'Бухарест',en:'Bucharest'}},
-        t8:{dest:[47.1585,27.6014],cross:[47.32,27.62],km:150,price:170,name:{ru:'Яссы',uk:'Ясси',en:'Iași'}}
+        t1:{cc:'md',dest:[46.408,30.087],cross:[46.408,30.087],km:125,price:80,name:{ru:'КПП Паланка',uk:'КПП Паланка',en:'Palanca border crossing'}},
+        t2:{cc:'ua',dest:[46.4825,30.7233],cross:[46.408,30.087],km:180,price:170,name:{ru:'Одесса',uk:'Одеса',en:'Odesa'}},
+        t3:{cc:'ua',dest:[50.4501,30.5234],cross:[48.43,27.79],km:600,price:450,name:{ru:'Киев',uk:'Київ',en:'Kyiv'}},
+        t4:{cc:'ua',dest:[48.445,27.80],cross:[48.43,27.79],km:200,price:150,name:{ru:'Могилёв-Подольский',uk:'Могилів-Подільський',en:'Mohyliv-Podilskyi'}},
+        t5:{cc:'ua',dest:[45.3516,28.8364],cross:[45.72,28.60],km:220,price:200,name:{ru:'Измаил',uk:'Ізмаїл',en:'Izmail'}},
+        t6:{cc:'ua',dest:[49.8397,24.0297],cross:[48.27,26.66],km:580,price:500,name:{ru:'Львов',uk:'Львів',en:'Lviv'}},
+        t7:{cc:'ro',dest:[44.4268,26.1025],cross:[46.79,28.17],km:450,price:400,name:{ru:'Бухарест',uk:'Бухарест',en:'Bucharest'}},
+        t8:{cc:'ro',dest:[47.1585,27.6014],cross:[47.32,27.62],km:150,price:170,name:{ru:'Яссы',uk:'Ясси',en:'Iași'}}
       };
       var fFromEl=document.getElementById('fFrom');
       var fToEl=document.getElementById('fTo');
@@ -1421,7 +1444,7 @@
       }
       function inMoldova(p){ return p[0]>45.45 && p[0]<48.5 && p[1]>26.6 && p[1]<30.15; }
       function round5(x){ return Math.round(x/5)*5; }
-      function setCoords(input,p){ input.dataset.lat=p[0]; input.dataset.lon=p[1]; }
+      function setCoords(input,p,cc){ input.dataset.lat=p[0]; input.dataset.lon=p[1]; if(cc) input.dataset.cc=cc; else delete input.dataset.cc; }
       function getCoords(input){
         if(!input.dataset.lat) return null;
         return [parseFloat(input.dataset.lat), parseFloat(input.dataset.lon)];
@@ -1446,26 +1469,112 @@
         return null;
       }
 
+      // $ per km by car class; MIN_FARE = the "from" prices in the fleet section.
+      var RATES={comfort:0.80,business:1.10,van:1.20};
+      var MIN_FARE={comfort:80,business:130,van:150};
+      // Moldovan border crossings (Palanca, Otaci, Criva, Mirnoe, Giurgiulesti, Leuseni, Sculeni, Cahul, Costesti):
+      // trips abroad are routed through the shortest of these, never through Transnistria.
+      var CROSSINGS=[[46.408,30.087],[48.437,27.795],[48.27,26.66],[45.73,28.58],[45.47,28.20],[46.79,28.17],[47.32,27.62],[45.90,28.12],[47.86,27.25]];
+      var OSRM='https://router.project-osrm.org/';
+      var roadCache={}, roadPending=null;
+      window.__glEstimate=null;
+
+      function carClass(){
+        var el=document.querySelector('input[name="carClass"]:checked');
+        return el ? el.value : 'comfort';
+      }
+      function getCC(input){ return input.dataset.cc||null; }
+      function ll(p){ return p[1].toFixed(5)+','+p[0].toFixed(5); }
+
+      // Road distance in km via OSRM (one request), or null if it fails.
+      function roadKm(from,to,fromCC,toCC,cb){
+        var key=ll(from)+'|'+ll(to)+'|'+fromCC+'|'+toCC;
+        if(roadCache[key]!==undefined){ cb(roadCache[key]); return; }
+        var abroad=(fromCC==='md')!==(toCC==='md') && fromCC && toCC;
+        var url;
+        if(abroad){
+          var pts=[from].concat(CROSSINGS).concat([to]), n=CROSSINGS.length;
+          var src=[], dst=[];
+          for(var i=0;i<=n;i++) src.push(i);
+          for(var j=1;j<=n+1;j++) dst.push(j);
+          url=OSRM+'table/v1/driving/'+pts.map(ll).join(';')+'?annotations=distance&sources='+src.join(';')+'&destinations='+dst.join(';');
+        } else {
+          url=OSRM+'route/v1/driving/'+ll(from)+';'+ll(to)+'?overview=false';
+        }
+        var done=false;
+        var timer=setTimeout(function(){ if(!done){ done=true; cb(null); } },8000);
+        fetch(url).then(function(r){ return r.json(); }).then(function(d){
+          if(done) return;
+          var m=null;
+          if(abroad && d && d.distances){
+            for(var k=0;k<n;k++){
+              var a=d.distances[0][k], b=d.distances[k+1][n];
+              if(a!=null && b!=null && (m===null || a+b<m)) m=a+b;
+            }
+          } else if(d && d.routes && d.routes[0]) m=d.routes[0].distance;
+          done=true; clearTimeout(timer);
+          var km=m===null ? null : m/1000;
+          roadCache[key]=km;
+          cb(km);
+        }).catch(function(){ if(!done){ done=true; clearTimeout(timer); cb(null); } });
+      }
+
+      function classPrice(cls,km,m){
+        if(m){
+          // Route cards keep their fixed comfort tariff; other classes scale from it.
+          var comfort=estimate(m.route,m.pickup).price;
+          return Math.max(MIN_FARE[cls], round5(comfort*RATES[cls]/RATES.comfort));
+        }
+        return Math.max(MIN_FARE[cls], round5(km*RATES[cls]));
+      }
+
+      function showEstimate(km,cls,m){
+        var price=classPrice(cls,km,m);
+        var kmShown=round5(km);
+        window.__glEstimate={km:kmShown,price:price,cls:cls};
+        var pax=parseInt(fPaxEl.value,10)||1;
+        var html=fill(T('est.line'),{km:kmShown,price:price});
+        var note=(pax>4 && cls!=='van') ? T('est.paxVan') : fill(T('est.note'),{cls:T('msgcls.'+cls),cap:T('cap.'+cls)});
+        priceEst.innerHTML=html+'<small></small>';
+        priceEst.lastChild.textContent=note;
+        priceEst.hidden=false;
+      }
+
       function updateEstimate(){
         var from=getCoords(fFromEl), to=getCoords(fToEl);
+        window.__glEstimate=null;
         if(!from || !to){
           if(estErrorKey){ priceEst.innerHTML='<small></small>'; priceEst.firstChild.textContent=T(estErrorKey); priceEst.hidden=false; }
           else priceEst.hidden=true;
           return;
         }
         estErrorKey=null;
+        var cls=carClass();
         var m=matchRoute(from,to);
-        var html;
-        if(m){
-          var e=estimate(m.route,m.pickup);
-          html=fill(T('est.line'),{km:e.km,price:e.price});
-          var pax=parseInt(fPaxEl.value,10)||1;
-          html+='<small>'+(pax>4 ? T('est.van') : T('est.note'))+'</small>';
-        } else {
-          html=fill(T('est.unknown'),{km:round5(hav(from,to)*1.3)});
-        }
-        priceEst.innerHTML=html;
+        if(m){ showEstimate(estimate(m.route,m.pickup).km,cls,m); return; }
+        var fromCC=getCC(fFromEl), toCC=getCC(fToEl);
+        var req={};
+        roadPending=req;
+        priceEst.innerHTML='<small></small>';
+        priceEst.firstChild.textContent=T('est.loading');
         priceEst.hidden=false;
+        roadKm(from,to,fromCC,toCC,function(km){
+          if(roadPending!==req) return;   // a newer calculation started
+          if(km===null) km=hav(from,to)*1.3;
+          showEstimate(km,carClass(),null);
+        });
+      }
+
+      // A typed address that wasn't picked from the list still gets coordinates (one lookup on leaving the field).
+      function geocodeTyped(input){
+        var q=input.value.trim();
+        if(getCoords(input) || q.length<3 || q===T('geo.here')) return;
+        var url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=1&accept-language='+lang()+'&countrycodes=md,ua,ro&viewbox=19,52.5,41,43&q='+encodeURIComponent(q);
+        fetch(url).then(function(r){ return r.json(); }).then(function(d){
+          if(!d || !d[0] || input.value.trim()!==q || getCoords(input)) return;
+          setCoords(input,[parseFloat(d[0].lat),parseFloat(d[0].lon)], d[0].address && d[0].address.country_code);
+          updateEstimate();
+        }).catch(function(){});
       }
 
       function personalizeRoutes(){
@@ -1497,13 +1606,14 @@
       }
 
       function fillFromWithPos(p){
-        setCoords(fFromEl,p);
+        setCoords(fFromEl,p,inMoldova(p)?'md':null);
         fFromEl.value=T('geo.here');
         updateEstimate();
-        var url='https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=16&accept-language='+lang()+'&lat='+p[0]+'&lon='+p[1];
+        var url='https://nominatim.openstreetmap.org/reverse?format=jsonv2&zoom=16&accept-language='+lang()+'&addressdetails=1&lat='+p[0]+'&lon='+p[1];
         fetch(url).then(function(res){ return res.json(); }).then(function(d){
           if(d && d.display_name && getCoords(fFromEl) && getCoords(fFromEl)[0]===p[0]){
             fFromEl.value=d.display_name.split(',').slice(0,2).join(',').trim();
+            if(d.address && d.address.country_code){ fFromEl.dataset.cc=d.address.country_code; updateEstimate(); }
           }
         }).catch(function(){});
       }
@@ -1541,10 +1651,10 @@
         card.addEventListener('click',function(){
           var r=ROUTES[card.getAttribute('data-route')];
           fToEl.value=r.name[lang()];
-          setCoords(fToEl,r.dest);
+          setCoords(fToEl,r.dest,r.cc);
           if(!fFromEl.value.trim()){
             if(personalPos){ fillFromWithPos(personalPos); }
-            else { fFromEl.value=CHISINAU_NAME[lang()]; setCoords(fFromEl,CHISINAU); }
+            else { fFromEl.value=CHISINAU_NAME[lang()]; setCoords(fFromEl,CHISINAU,'md'); }
           }
           if(window.__expandBookingForm) window.__expandBookingForm();
           updateEstimate();
@@ -1555,7 +1665,14 @@
       fToEl.addEventListener('input',updateEstimate);
       fFromEl.addEventListener('glcoords',updateEstimate);
       fToEl.addEventListener('glcoords',updateEstimate);
-      fPaxEl.addEventListener('input',updateEstimate);
+      fPaxEl.addEventListener('input',function(){
+        // 5+ passengers only fit in a minivan
+        if((parseInt(fPaxEl.value,10)||1)>4){ var v=document.querySelector('input[name="carClass"][value="van"]'); if(v && !v.checked) v.checked=true; }
+        updateEstimate();
+      });
+      document.querySelectorAll('input[name="carClass"]').forEach(function(r){ r.addEventListener('change',updateEstimate); });
+      fFromEl.addEventListener('change',function(){ geocodeTyped(fFromEl); });
+      fToEl.addEventListener('change',function(){ geocodeTyped(fToEl); });
 
       window.__glLangHooks=window.__glLangHooks||[];
       window.__glLangHooks.push(function(){
@@ -1579,6 +1696,9 @@
           var dateFmt=dParts[2]+'.'+dParts[1]+'.'+dParts[0];
           lines.push(T('msg.date')+': '+dateFmt+(dtParts[1]?', '+dtParts[1]:''));
         }
+        var clsEl=document.querySelector('input[name="carClass"]:checked');
+        lines.push(T('msg.class')+': '+T('msgcls.'+(clsEl?clsEl.value:'comfort')));
+        if(window.__glEstimate) lines.push(T('msg.price')+': ≈ '+window.__glEstimate.price+' $ (≈ '+window.__glEstimate.km+' '+T('u.km')+')');
         lines.push(T('msg.pax')+': '+document.getElementById('fPax').value);
         lines.push(T('msg.bags')+': '+document.getElementById('fBags').value);
         if(document.getElementById('fPet').checked) lines.push(T('msg.pet'));
@@ -1796,6 +1916,7 @@
         "faq.a8":"Вкажіть це в коментарі до заявки — дитяче крісло, додатковий багаж, номер і час рейсу. Підготуємо машину під вашу поїздку.",
         "faq.q9":"Чи можна замовити трансфер з аеропорту?",
         "faq.a9":"Так, ми возимо від дверей до дверей — зокрема з аеропорту Кишинева й до нього. Вкажіть номер рейсу в коментарі до заявки.",
+        "booking.class":"Клас авто","cls.comfort":"Комфорт","cls.comfortSub":"до 4 пас.","cls.business":"Бізнес","cls.businessSub":"до 4 пас.","cls.van":"Мінівен","cls.vanSub":"до 8 місць","hero.callNote":"Возимо лише індивідуально — попутних і спільних поїздок немає.",
         "footer.privacy":"Політика конфіденційності","footer.cookieSettings":"Налаштування cookie",
         "consent.text":"Ми використовуємо файли cookie для аналітики та персоналізації реклами. Ви можете прийняти їх або відхилити необов'язкові cookie. Детальніше — <a href=\"privacy.html\">в політиці конфіденційності</a>.",
         "consent.accept":"Прийняти","consent.reject":"Відхилити",
@@ -1880,6 +2001,7 @@
         "faq.a8":"Add it to the comment in your request — child seat, extra luggage, flight number and time. We'll prepare the car for your trip.",
         "faq.q9":"Can I book a transfer from the airport?",
         "faq.a9":"Yes, we go door to door — including to and from Chisinau airport. Add your flight number to the comment in your request.",
+        "booking.class":"Car class","cls.comfort":"Comfort","cls.comfortSub":"up to 4 pax","cls.business":"Business","cls.businessSub":"up to 4 pax","cls.van":"Minivan","cls.vanSub":"up to 8 seats","hero.callNote":"Private trips only — no shared rides or ride-sharing.",
         "footer.privacy":"Privacy policy","footer.cookieSettings":"Cookie settings",
         "consent.text":"We use cookies for analytics and ad personalization. You can accept them or decline non-essential cookies. Details — <a href=\"privacy.html\">in our privacy policy</a>.",
         "consent.accept":"Accept","consent.reject":"Decline",
@@ -1889,9 +2011,9 @@
       }
     };
     var MSGS={
-      ru:{waMsg:"Здравствуйте! Хочу заказать трансфер.","msg.title":"Заявка на индивидуальный трансфер GrandLine:","msg.from":"Откуда","msg.to":"Куда","msg.date":"Дата и время","msg.pax":"Пассажиров","msg.bags":"Багаж","msg.pet":"Едет с животным: да","msg.comment":"Комментарий","msg.phone":"Телефон","msg.noPhone":"не указан","msg.copied":"Текст заявки скопирован — вставьте его в чат (Ctrl+V).","ac.none":"Ничего не найдено","u.km":"км","est.line":"≈ {km} км · примерно <b>{price} $</b>","est.note":"Индивидуальный трансфер, комфорт-класс, 1–4 пасс. Точную цену подтвердим в мессенджере.","est.van":"Для 5+ пассажиров — минивэн, цену подтвердим в мессенджере.","est.unknown":"≈ {km} км · стоимость рассчитаем индивидуально","geo.here":"Моё местоположение","geo.failed":"Не удалось определить местоположение — проверьте, разрешён ли доступ к геолокации.","geo.outside":"Похоже, вы не в Молдове — цены указаны от Кишинёва. Для поездки из вашего города посчитаем индивидуально.","geo.done":"Цены и расстояния пересчитаны от вашего местоположения (примерно)."},
-      uk:{waMsg:"Вітаю! Хочу замовити трансфер.","msg.title":"Заявка на індивідуальний трансфер GrandLine:","msg.from":"Звідки","msg.to":"Куди","msg.date":"Дата і час","msg.pax":"Пасажирів","msg.bags":"Багаж","msg.pet":"Їде з твариною: так","msg.comment":"Коментар","msg.phone":"Телефон","msg.noPhone":"не вказано","msg.copied":"Текст заявки скопійовано — вставте його в чат (Ctrl+V).","ac.none":"Нічого не знайдено","u.km":"км","est.line":"≈ {km} км · орієнтовно <b>{price} $</b>","est.note":"Індивідуальний трансфер, комфорт-клас, 1–4 пас. Точну ціну підтвердимо в месенджері.","est.van":"Для 5+ пасажирів — мінівен, ціну підтвердимо в месенджері.","est.unknown":"≈ {km} км · вартість розрахуємо індивідуально","geo.here":"Моє місцезнаходження","geo.failed":"Не вдалося визначити місцезнаходження — перевірте, чи дозволено доступ до геолокації.","geo.outside":"Схоже, ви не в Молдові — ціни вказані від Кишинева. Для поїздки з вашого міста розрахуємо індивідуально.","geo.done":"Ціни та відстані перераховані від вашого місцезнаходження (орієнтовно)."},
-      en:{waMsg:"Hello! I'd like to book a transfer.","msg.title":"GrandLine private transfer request:","msg.from":"From","msg.to":"To","msg.date":"Date & time","msg.pax":"Passengers","msg.bags":"Luggage","msg.pet":"Traveling with a pet: yes","msg.comment":"Comment","msg.phone":"Phone","msg.noPhone":"not provided","msg.copied":"Request text copied — paste it into the chat (Ctrl+V).","ac.none":"Nothing found","u.km":"km","est.line":"≈ {km} km · about <b>{price} $</b>","est.note":"Private transfer, comfort class, 1–4 pax. We'll confirm the exact price in the messenger.","est.van":"For 5+ passengers — minivan, we'll confirm the price in the messenger.","est.unknown":"≈ {km} km · price calculated individually","geo.here":"My location","geo.failed":"Couldn't get your location — check that location access is allowed.","geo.outside":"Looks like you're not in Moldova — prices are from Chisinau. We'll quote a trip from your city individually.","geo.done":"Prices and distances recalculated from your location (approximate)."}
+      ru:{waMsg:"Здравствуйте! Хочу заказать трансфер.","msg.title":"Заявка на индивидуальный трансфер GrandLine:","msg.from":"Откуда","msg.to":"Куда","msg.date":"Дата и время","msg.pax":"Пассажиров","msg.bags":"Багаж","msg.pet":"Едет с животным: да","msg.comment":"Комментарий","msg.phone":"Телефон","msg.noPhone":"не указан","msg.copied":"Текст заявки скопирован — вставьте его в чат (Ctrl+V).","ac.none":"Ничего не найдено","u.km":"км","est.line":"≈ {km} км · примерно <b>{price} $</b>","est.note":"Индивидуальный трансфер, {cls}, {cap}. Точную цену подтвердим в мессенджере.","est.paxVan":"Для 5+ пассажиров нужен минивэн — выберите его выше.","est.loading":"Считаем расстояние…","msg.class":"Класс","msg.price":"Примерная цена","msgcls.comfort":"Комфорт","msgcls.business":"Бизнес","msgcls.van":"Минивэн","cap.comfort":"до 4 пассажиров","cap.business":"до 4 пассажиров","cap.van":"до 8 мест","est.unknown":"≈ {km} км · стоимость рассчитаем индивидуально","geo.here":"Моё местоположение","geo.failed":"Не удалось определить местоположение — проверьте, разрешён ли доступ к геолокации.","geo.outside":"Похоже, вы не в Молдове — цены указаны от Кишинёва. Для поездки из вашего города посчитаем индивидуально.","geo.done":"Цены и расстояния пересчитаны от вашего местоположения (примерно)."},
+      uk:{waMsg:"Вітаю! Хочу замовити трансфер.","msg.title":"Заявка на індивідуальний трансфер GrandLine:","msg.from":"Звідки","msg.to":"Куди","msg.date":"Дата і час","msg.pax":"Пасажирів","msg.bags":"Багаж","msg.pet":"Їде з твариною: так","msg.comment":"Коментар","msg.phone":"Телефон","msg.noPhone":"не вказано","msg.copied":"Текст заявки скопійовано — вставте його в чат (Ctrl+V).","ac.none":"Нічого не знайдено","u.km":"км","est.line":"≈ {km} км · орієнтовно <b>{price} $</b>","est.note":"Індивідуальний трансфер, {cls}, {cap}. Точну ціну підтвердимо в месенджері.","est.paxVan":"Для 5+ пасажирів потрібен мінівен — оберіть його вище.","est.loading":"Рахуємо відстань…","msg.class":"Клас","msg.price":"Орієнтовна ціна","msgcls.comfort":"Комфорт","msgcls.business":"Бізнес","msgcls.van":"Мінівен","cap.comfort":"до 4 пасажирів","cap.business":"до 4 пасажирів","cap.van":"до 8 місць","est.unknown":"≈ {km} км · вартість розрахуємо індивідуально","geo.here":"Моє місцезнаходження","geo.failed":"Не вдалося визначити місцезнаходження — перевірте, чи дозволено доступ до геолокації.","geo.outside":"Схоже, ви не в Молдові — ціни вказані від Кишинева. Для поїздки з вашого міста розрахуємо індивідуально.","geo.done":"Ціни та відстані перераховані від вашого місцезнаходження (орієнтовно)."},
+      en:{waMsg:"Hello! I'd like to book a transfer.","msg.title":"GrandLine private transfer request:","msg.from":"From","msg.to":"To","msg.date":"Date & time","msg.pax":"Passengers","msg.bags":"Luggage","msg.pet":"Traveling with a pet: yes","msg.comment":"Comment","msg.phone":"Phone","msg.noPhone":"not provided","msg.copied":"Request text copied — paste it into the chat (Ctrl+V).","ac.none":"Nothing found","u.km":"km","est.line":"≈ {km} km · about <b>{price} $</b>","est.note":"Private transfer, {cls}, {cap}. We'll confirm the exact price in the messenger.","est.paxVan":"5+ passengers need a minivan — choose it above.","est.loading":"Calculating distance…","msg.class":"Class","msg.price":"Estimated price","msgcls.comfort":"Comfort","msgcls.business":"Business","msgcls.van":"Minivan","cap.comfort":"up to 4 pax","cap.business":"up to 4 pax","cap.van":"up to 8 seats","est.unknown":"≈ {km} km · price calculated individually","geo.here":"My location","geo.failed":"Couldn't get your location — check that location access is allowed.","geo.outside":"Looks like you're not in Moldova — prices are from Chisinau. We'll quote a trip from your city individually.","geo.done":"Prices and distances recalculated from your location (approximate)."}
     };
     var META={
       ru:{title:"GrandLine Transfer — индивидуальный трансфер Молдова ⇄ Украина ⇄ Европа",description:"Индивидуальный трансфер от двери до двери: Кишинёв ⇄ Киев, Одесса, Бухарест, Яссы, Львов и другие города. Фиксированная цена, опытные водители, знание всех погранпереходов."},
