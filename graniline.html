@@ -360,8 +360,15 @@
   .feature p{font-size:.86rem;color:var(--ink-dim);}
 
   /* ---------- REVIEWS ---------- */
-  .reviews-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
-  @media (max-width:920px){ .reviews-grid{grid-template-columns:1fr;} }
+  .review-cta{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
+    background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--r-m);padding:clamp(22px,4vw,36px);}
+  .review-cta h2{font-size:clamp(1.4rem,3vw,2rem);margin-top:.5rem;}
+  .review-cta p{color:var(--ink-dim);margin-top:.7rem;max-width:52ch;}
+  .review-cta-actions{display:flex;gap:10px;flex-wrap:wrap;}
+  .btn-ghost{border:1px solid var(--line-strong);color:var(--ink);background:transparent;}
+  .btn-ghost:hover{border-color:var(--accent);}
+  .review-cta-actions svg{width:18px;height:18px;color:#F5B942;}
+  [hidden]{display:none !important;}
   .review{
     background:var(--bg-elev);border:1px solid var(--line);border-radius:var(--r-m);
     padding:24px;display:flex;flex-direction:column;gap:16px;
@@ -575,7 +582,7 @@
     <div class="nav-links">
       <a href="#routes" data-i18n="nav.routes">Маршруты</a>
       <a href="#fleet" data-i18n="nav.fleet">Автопарк</a>
-      <a href="#reviews" data-i18n="nav.reviews">Отзывы</a>
+      <a href="#reviews" class="rv-link" data-i18n="nav.reviews" hidden>Отзывы</a>
       <a href="#faq" data-i18n="nav.faq">Вопросы</a>
       <a href="#booking" data-i18n="nav.contacts">Контакты</a>
     </div>
@@ -590,7 +597,7 @@
   <div class="mobile-panel wrap" id="mobilePanel" hidden>
     <a href="#routes" data-i18n="nav.routes">Маршруты</a>
     <a href="#fleet" data-i18n="nav.fleet">Автопарк</a>
-    <a href="#reviews" data-i18n="nav.reviews">Отзывы</a>
+    <a href="#reviews" class="rv-link" data-i18n="nav.reviews" hidden>Отзывы</a>
     <a href="#faq" data-i18n="nav.faq">Вопросы</a>
     <a href="#booking" data-i18n="nav.contacts">Контакты</a>
     <a class="btn btn-primary nav-cta" href="#booking" data-i18n="nav.cta">Забронировать</a>
@@ -1068,56 +1075,21 @@
     </div>
   </section>
 
-  <section class="section" id="reviews" style="padding-top:0;">
+  <section class="section" id="reviews" style="padding-top:0;" hidden>
     <div class="wrap">
-      <div class="section-head reveal">
-        <span class="eyebrow" data-i18n="reviews.eyebrow">Отзывы</span>
-        <h2 data-i18n="reviews.h2">Что говорят пассажиры</h2>
-        <p style="font-size:.82rem;color:var(--ink-faint);max-width:none;" data-i18n="reviews.disclaimer">Примеры отзывов для демонстрации макета — замените на реальные после запуска.</p>
-      </div>
-      <div class="reviews-grid">
-        <article class="review reveal">
-          <div class="review-stars">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-          </div>
-          <p class="quote" data-i18n="reviews.r1.quote">«Доехали быстро и без лишних остановок — машина комфортная, водитель приятный, всё прошло гладко от двери до двери».</p>
-          <div class="review-who">
-            <div class="av">И</div>
-            <div><b>Ирина</b><span data-i18n="r.t3.city">Кишинёв — Киев</span></div>
-          </div>
-        </article>
-        <article class="review reveal">
-          <div class="review-stars">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-          </div>
-          <p class="quote" data-i18n="reviews.r2.quote">«Заказывали комфорт-класс до Одессы — приехали вовремя, машина чистая, ровно та цена, о которой договаривались заранее».</p>
-          <div class="review-who">
-            <div class="av">V</div>
-            <div><b>Vasile</b><span data-i18n="r.t2.city">Кишинёв — Одесса</span></div>
-          </div>
-        </article>
-        <article class="review reveal">
-          <div class="review-stars">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
-          </div>
-          <p class="quote" data-i18n="reviews.r3.quote">«Дальняя поездка до Днепра — очень комфортно, водитель был на связи всю дорогу и заранее предупредил о времени прибытия».</p>
-          <div class="review-who">
-            <div class="av">О</div>
-            <div><b>Оксана</b><span data-i18n="reviews.r3.route">Кишинёв — Днепр</span></div>
-          </div>
-        </article>
+      <div class="review-cta reveal">
+        <div>
+          <span class="eyebrow" data-i18n="reviews.eyebrow">Отзывы</span>
+          <h2 data-i18n="reviews.ctaH">Ездили с нами?</h2>
+          <p data-i18n="reviews.ctaP">Оставьте отзыв в Google — это займёт минуту и поможет другим пассажирам выбрать надёжный трансфер.</p>
+        </div>
+        <div class="review-cta-actions">
+          <a class="btn btn-primary" id="reviewWriteBtn" href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l3 7 7 .6-5.3 4.6 1.6 7-6.3-4-6.3 4 1.6-7L2 9.6 9 9z"/></svg>
+            <span data-i18n="reviews.write">Оставить отзыв в Google</span>
+          </a>
+          <a class="btn btn-ghost" id="reviewReadBtn" href="#" target="_blank" rel="noopener" hidden><span data-i18n="reviews.read">Читать отзывы</span></a>
+        </div>
       </div>
     </div>
   </section>
@@ -1188,14 +1160,13 @@
       <nav class="foot-links">
         <a href="#routes" data-i18n="nav.routes">Маршруты</a>
         <a href="#fleet" data-i18n="nav.fleet">Автопарк</a>
-        <a href="#reviews" data-i18n="nav.reviews">Отзывы</a>
+        <a href="#reviews" class="rv-link" data-i18n="nav.reviews" hidden>Отзывы</a>
         <a href="#faq" data-i18n="nav.faq">Вопросы</a>
         <a href="#booking" data-i18n="nav.contacts">Контакты</a>
       </nav>
     </div>
     <div class="foot-bottom">
       <span>© 2026 GrandLine Transfer</span>
-      <span data-i18n="footer.disclaimer">Информация на сайте демонстрационная — уточняйте актуальные тарифы и контакты при запуске.</span>
       <span class="foot-legal">
         <a href="privacy.html" data-i18n="footer.privacy">Политика конфиденциальности</a>
         <button type="button" id="cookieSettingsBtn" data-i18n="footer.cookieSettings">Настройки cookie</button>
@@ -1702,6 +1673,18 @@
     }catch(e){}
 
     try{
+      // Google Business Profile: "ask for reviews" link and the profile/maps link. Empty = section stays hidden.
+      var REVIEW_WRITE_URL='';
+      var REVIEW_READ_URL='';
+      if(REVIEW_WRITE_URL){
+        document.getElementById('reviewWriteBtn').href=REVIEW_WRITE_URL;
+        if(REVIEW_READ_URL){ var rr=document.getElementById('reviewReadBtn'); rr.href=REVIEW_READ_URL; rr.hidden=false; }
+        document.getElementById('reviews').hidden=false;
+        document.querySelectorAll('.rv-link').forEach(function(a){ a.hidden=false; });
+      }
+    }catch(e){}
+
+    try{
       // Country code picker: the client only types their own number; the example in grey follows the country.
       var ccSel=document.getElementById('fPhoneCC'), phoneEl=document.getElementById('fPhone');
       var ccTouched=false, LANG_CC={ru:'+373',uk:'+38',en:'+373',he:'+972'};
@@ -1930,14 +1913,7 @@
         "features.f4.h":"Страхування пасажирів","features.f4.p":"Кожна поїздка застрахована — можна їхати спокійно з дітьми та літніми батьками.",
         "features.f5.h":"Водій на зв'язку","features.f5.p":"Надсилаємо контакти водія та час подачі заздалегідь — на зв'язку у WhatsApp аж до зустрічі.",
         "features.f6.h":"Оплата карткою або готівкою","features.f6.p":"Приймаємо MDL, UAH, EUR — розрахуватися можна будь-яким зручним способом.",
-        "reviews.eyebrow":"Відгуки","reviews.h2":"Що кажуть пасажири",
-        "reviews.disclaimer":"Приклади відгуків для демонстрації макета — замініть на реальні після запуску.",
-        "reviews.r1.quote":"«Доїхали швидко і без зайвих зупинок — машина комфортна, водій приємний, все пройшло гладко від дверей до дверей».",
-        "reviews.r2.quote":"«Замовляли комфорт-клас до Одеси — приїхали вчасно, машина чиста, рівно та ціна, про яку домовлялися заздалегідь».",
-        "reviews.r3.quote":"«Дальня поїздка до Дніпра — дуже комфортно, водій був на зв'язку всю дорогу і заздалегідь попередив про час прибуття».",
-        "reviews.r3.route":"Кишинів — Дніпро",
-        "footer.disclaimer":"Інформація на сайті демонстраційна — уточнюйте актуальні тарифи та контакти при запуску.",
-        "nav.faq":"Питання",
+        "reviews.eyebrow":"Відгуки","reviews.ctaH":"Їздили з нами?","reviews.ctaP":"Залиште відгук у Google — це займе хвилину й допоможе іншим пасажирам обрати надійний трансфер.","reviews.write":"Залишити відгук у Google","reviews.read":"Читати відгуки","nav.faq":"Питання",
         "faq.eyebrow":"Питання",
         "faq.h2":"Часті питання",
         "faq.q0":"Це індивідуальний чи спільний трансфер?",
@@ -2015,14 +1991,7 @@
         "features.f4.h":"Passenger insurance","features.f4.p":"Every trip is insured — travel with peace of mind with kids or elderly parents.",
         "features.f5.h":"Driver stays in touch","features.f5.p":"We send the driver's contact and pickup time in advance — reachable on WhatsApp right up to the meeting.",
         "features.f6.h":"Card or cash payment","features.f6.p":"We accept MDL, UAH, EUR — pay however is most convenient for you.",
-        "reviews.eyebrow":"Reviews","reviews.h2":"What passengers say",
-        "reviews.disclaimer":"Sample reviews for the mockup — replace with real ones after launch.",
-        "reviews.r1.quote":"“We got there quickly with no unnecessary stops — comfortable car, friendly driver, everything went smoothly door to door.”",
-        "reviews.r2.quote":"“We booked comfort class to Odesa — arrived on time, clean car, exactly the price we agreed on beforehand.”",
-        "reviews.r3.quote":"“A long trip to Dnipro — very comfortable, the driver stayed in touch the whole way and gave advance notice of arrival time.”",
-        "reviews.r3.route":"Chisinau — Dnipro",
-        "footer.disclaimer":"The information on this site is for demonstration — confirm current rates and contacts at launch.",
-        "nav.faq":"FAQ",
+        "reviews.eyebrow":"Reviews","reviews.ctaH":"Travelled with us?","reviews.ctaP":"Leave a review on Google — it takes a minute and helps other passengers choose a reliable transfer.","reviews.write":"Leave a Google review","reviews.read":"Read reviews","nav.faq":"FAQ",
         "faq.eyebrow":"FAQ",
         "faq.h2":"Frequently asked questions",
         "faq.q0":"Is this a private or a shared transfer?",
@@ -2166,14 +2135,7 @@
         "features.f5.p": "שולחים מראש את פרטי הנהג ושעת האיסוף — זמין ב־WhatsApp עד לרגע הפגישה.",
         "features.f6.h": "תשלום בכרטיס או במזומן",
         "features.f6.p": "מקבלים MDL, UAH, EUR — שלמו בדרך הנוחה לכם.",
-        "reviews.eyebrow": "ביקורות",
-        "reviews.h2": "מה אומרים הנוסעים",
-        "reviews.disclaimer": "ביקורות לדוגמה להדגמת העיצוב — יוחלפו בביקורות אמיתיות לאחר ההשקה.",
-        "reviews.r1.quote": "„הגענו מהר ובלי עצירות מיותרות — רכב נוח, נהג נעים, הכול עבר חלק מדלת לדלת.”",
-        "reviews.r2.quote": "„הזמנו דרגת קומפורט לאודסה — הגיעו בזמן, רכב נקי, בדיוק המחיר שסיכמנו מראש.”",
-        "reviews.r3.quote": "„נסיעה ארוכה לדניפרו — נוח מאוד, הנהג היה זמין כל הדרך והודיע מראש על שעת ההגעה.”",
-        "reviews.r3.route": "קישינב — דניפרו",
-        "footer.disclaimer": "המידע באתר הוא להדגמה — יש לאשר מחירים ופרטי קשר עדכניים.",
+        "reviews.eyebrow": "ביקורות","reviews.ctaH": "נסעתם איתנו?","reviews.ctaP": "השאירו ביקורת בגוגל — זה לוקח דקה ועוזר לנוסעים אחרים לבחור הסעה אמינה.","reviews.write": "השארת ביקורת בגוגל","reviews.read": "קריאת ביקורות",
         "nav.faq": "שאלות",
         "faq.eyebrow": "שאלות",
         "faq.h2": "שאלות נפוצות",
