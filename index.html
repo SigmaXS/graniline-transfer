@@ -149,7 +149,10 @@
     background:rgba(13,16,21,.72);
     backdrop-filter:blur(14px);
     border-bottom:1px solid var(--line);
+    transition:transform .25s ease;
   }
+  /* hidden while scrolling down, back on scroll up */
+  .nav.nav-hide{transform:translateY(calc(-100% - env(safe-area-inset-top,0px) - 2px));}
   .nav .wrap{display:flex;align-items:center;justify-content:space-between;gap:24px;}
   .brand{position:relative;display:flex;align-items:center;gap:10px;font-family:'Unbounded';font-size:1.05rem;font-weight:700;letter-spacing:-.01em;}
   .brand .mark{width:30px;height:30px;flex:none;}
@@ -644,6 +647,13 @@
       justify-content:center;
     }
     .floating-cta .btn-primary{width:100%;justify-content:center;padding:1rem 1.2rem;font-size:.95rem;}
+  }
+  /* iPhone Safari zooms into fields with text under 16px and stays zoomed — keep form text at 16px on phones */
+  @media (max-width:820px){
+    .field select,.field input,.field textarea,.phone-row select,.phone-row input{font-size:16px;}
+    .phone-row{gap:6px;}
+    .phone-row select{min-width:0;padding-left:.55rem;padding-right:.3rem;}
+    .phone-row input{padding-left:.7rem;padding-right:.5rem;}
   }
 </style>
 </head>
@@ -1752,6 +1762,24 @@
         if(routesNoteKey) showRoutesNote(routesNoteKey);
         updateEstimate();
       });
+    }catch(e){}
+
+    try{
+      // Top bar hides on scroll down and comes back on scroll up (not while the mobile menu is open).
+      var navBar=document.querySelector('.nav'), mPanel=document.getElementById('mobilePanel');
+      var lastY=window.scrollY, ticking=false;
+      window.addEventListener('scroll',function(){
+        if(ticking) return;
+        ticking=true;
+        requestAnimationFrame(function(){
+          var y=window.scrollY, dy=y-lastY;
+          if(mPanel && !mPanel.hidden){ navBar.classList.remove('nav-hide'); }
+          else if(y<80 || dy<-6){ navBar.classList.remove('nav-hide'); }
+          else if(dy>6){ navBar.classList.add('nav-hide'); }
+          if(Math.abs(dy)>6 || y<80) lastY=y;
+          ticking=false;
+        });
+      },{passive:true});
     }catch(e){}
 
     try{
