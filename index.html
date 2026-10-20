@@ -518,7 +518,12 @@
   .class-opt input:focus-visible + span{outline:2px solid var(--accent);outline-offset:2px;}
   @media (max-width:420px){ .class-opts{gap:6px;} .class-opt span{padding:.55rem .5rem;} .class-opt b{font-size:.82rem;} .class-opt small{font-size:.68rem;} }
   .phone-row{display:flex;gap:8px;}
-  .phone-row select{flex:0 0 auto;width:auto;min-width:6.4rem;}
+  .cc-wrap{position:relative;flex:0 0 auto;}
+  .phone-row .cc-wrap select{width:100%;min-width:6.6rem;color:transparent;}
+  .phone-row .cc-wrap select option{color:var(--ink);background:var(--bg-elev);}
+  .cc-wrap::after{content:"";position:absolute;right:.75rem;top:50%;width:6px;height:6px;border-right:2px solid var(--ink-dim);border-bottom:2px solid var(--ink-dim);transform:translateY(-70%) rotate(45deg);pointer-events:none;}
+  .cc-face{position:absolute;inset:0 1.4rem 0 0;display:flex;align-items:center;gap:7px;padding-left:.8rem;pointer-events:none;color:var(--ink);font-size:.92rem;}
+  .cc-flag svg{display:block;width:21px;height:14px;border-radius:2px;box-shadow:0 0 0 1px rgba(255,255,255,.15);}
   .phone-row input{flex:1 1 auto;min-width:0;}
   html[lang="he"] body, html[lang="he"] body *{font-family:'Rubik',system-ui,sans-serif !important;}
   [dir="rtl"] .contact-list b{direction:ltr;unicode-bidi:isolate;}
@@ -652,7 +657,8 @@
   @media (max-width:820px){
     .field select,.field input,.field textarea,.phone-row select,.phone-row input{font-size:16px;}
     .phone-row{gap:6px;}
-    .phone-row select{min-width:0;padding-left:.55rem;padding-right:.3rem;}
+    .phone-row .cc-wrap select{min-width:6.3rem;padding-left:.55rem;padding-right:.3rem;}
+    .cc-face{padding-left:.6rem;font-size:16px;}
     .phone-row input{padding-left:.7rem;padding-right:.5rem;}
   }
 </style>
@@ -784,22 +790,25 @@
             <div class="field">
               <label for="fBags" data-i18n="booking.bags">Багаж</label>
               <select id="fBags">
-                <option data-i18n="booking.bags0">Без багажа</option>
-                <option selected data-i18n="booking.bags1">1–2 сумки</option>
-                <option data-i18n="booking.bags2">3–4 сумки</option>
-                <option data-i18n="booking.bags3">5 и больше</option>
+                <option data-i18n="booking.bags0">Только ручная кладь</option>
+                <option selected data-i18n="booking.bags1">1–2 чемодана</option>
+                <option data-i18n="booking.bags2">3–4 чемодана</option>
+                <option data-i18n="booking.bags3">5 и больше чемоданов</option>
               </select>
             </div>
             <div class="field">
               <label for="fPhone" data-i18n="booking.phone">Телефон для связи</label>
               <div class="phone-row" dir="ltr">
-                <select id="fPhoneCC" aria-label="Код страны" data-i18n-aria="booking.phoneCC">
-                  <option value="+373" data-cc="md">MD +373</option>
-                  <option value="+38" data-cc="ua">UA +38</option>
-                  <option value="+40" data-cc="ro">RO +40</option>
-                  <option value="+972" data-cc="il">IL +972</option>
-                  <option value="" data-cc="other" data-i18n="phone.otherOpt">Другая</option>
-                </select>
+                <div class="cc-wrap">
+                  <select id="fPhoneCC" aria-label="Код страны" data-i18n-aria="booking.phoneCC">
+                    <option value="+373" data-cc="md">🇲🇩 +373</option>
+                    <option value="+38" data-cc="ua">🇺🇦 +38</option>
+                    <option value="+40" data-cc="ro">🇷🇴 +40</option>
+                    <option value="+972" data-cc="il">🇮🇱 +972</option>
+                    <option value="" data-cc="other" data-i18n="phone.otherOpt">Другая</option>
+                  </select>
+                  <span class="cc-face" aria-hidden="true"><span class="cc-flag"></span><span class="cc-code">+373</span></span>
+                </div>
                 <input id="fPhone" type="tel" inputmode="tel" autocomplete="tel-national" placeholder="79 123 456">
               </div>
             </div>
@@ -1552,7 +1561,7 @@
       }
 
       // $ per km by car class; MIN_FARE = the "from" prices in the fleet section.
-      var RATES={comfort:0.80,business:1.10,van:1.20};
+      var RATES={comfort:0.80,business:1.25,van:1.35};
       var MIN_FARE={comfort:80,business:130,van:150};
       // Moldovan border crossings (Palanca, Otaci, Criva, Mirnoe, Giurgiulesti, Leuseni, Sculeni, Cahul, Costesti):
       // trips abroad are routed through the shortest of these, never through Transnistria.
@@ -1799,14 +1808,25 @@
       var ccSel=document.getElementById('fPhoneCC'), phoneEl=document.getElementById('fPhone');
       var ccTouched=false, LANG_CC={ru:'+373',uk:'+38',en:'+373',he:'+972'};
       function ccKey(){ var o=ccSel.options[ccSel.selectedIndex]; return o ? o.getAttribute('data-cc') : 'md'; }
-      function updatePhonePh(){ phoneEl.setAttribute('placeholder', T('phone.ph.'+ccKey())); }
+      var FLAGS={
+        md:'<svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#0046AE"/><rect x="1" width="1" height="2" fill="#FFD200"/><rect x="2" width="1" height="2" fill="#CC092F"/><rect x="1.32" y=".72" width=".36" height=".56" rx=".08" fill="#8C5A2B"/></svg>',
+        ua:'<svg viewBox="0 0 3 2"><rect width="3" height="1" fill="#0057B7"/><rect y="1" width="3" height="1" fill="#FFD700"/></svg>',
+        ro:'<svg viewBox="0 0 3 2"><rect width="1" height="2" fill="#002B7F"/><rect x="1" width="1" height="2" fill="#FCD116"/><rect x="2" width="1" height="2" fill="#CE1126"/></svg>',
+        il:'<svg viewBox="0 0 220 160"><rect width="220" height="160" fill="#fff"/><rect y="15" width="220" height="25" fill="#0038B8"/><rect y="120" width="220" height="25" fill="#0038B8"/><path d="M110 52 134 94H86z M110 108 86 66h48z" fill="none" stroke="#0038B8" stroke-width="6"/></svg>',
+        other:'<svg viewBox="0 0 24 24" fill="none" stroke="#94A1C2" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3.2 3 14.8 0 18M12 3c-3 3.2-3 14.8 0 18"/></svg>'
+      };
+      var ccFace=document.querySelector('.cc-face');
+      function updatePhonePh(){
+        phoneEl.setAttribute('placeholder', T('phone.ph.'+ccKey()));
+        if(ccFace){ ccFace.querySelector('.cc-flag').innerHTML=FLAGS[ccKey()]||FLAGS.other; ccFace.querySelector('.cc-code').textContent=ccSel.value||'+'; }
+      }
       ccSel.addEventListener('change',function(){ ccTouched=true; updatePhonePh(); phoneEl.focus(); });
       window.__glLangHooks=window.__glLangHooks||[];
       window.__glLangHooks.push(function(lang){
         if(!ccTouched && !phoneEl.value) ccSel.value=LANG_CC[lang]||'+373';
         updatePhonePh();
       });
-      if(window.T) updatePhonePh();   // otherwise the language hook sets it once translations load
+      if(window.T) updatePhonePh(); else if(ccFace) ccFace.querySelector('.cc-flag').innerHTML=FLAGS[ccKey()];
       window.__glFullPhone=function(){
         var num=phoneEl.value.trim(), cc=ccSel.value;
         if(!num) return '';
@@ -1986,7 +2006,7 @@
         "hero.stat1":"завершених поїздок","hero.stat2":"на підтвердження заявки","hero.stat3":"середня оцінка пасажирів","hero.minSuffix":" хв",
         "booking.eyebrow":"Індивідуальний трансфер","booking.solo":"Машина лише для вас і ваших супутників — без підсадки сторонніх пасажирів.","booking.from":"Звідки","booking.fromPh":"Місто або адреса","booking.to":"Куди","booking.toPh":"Місто, КПП або своя адреса",
         "booking.date":"Дата і час","booking.pax":"Пасажирів","booking.bags":"Багаж",
-        "booking.bags0":"Без багажу","booking.bags1":"1–2 сумки","booking.bags2":"3–4 сумки","booking.bags3":"5 і більше",
+        "booking.bags0":"Лише ручна поклажа","booking.bags1":"1–2 валізи","booking.bags2":"3–4 валізи","booking.bags3":"5 і більше валіз",
         "booking.phone":"Телефон для зв'язку",
         "booking.pet":"Їду з твариною <i>— важливо знати заздалегідь, не всі переходи це дозволяють</i>",
         "booking.comment":"Коментар (необов'язково)","booking.commentPh":"Дитяче крісло, дод. багаж, час рейсу тощо.",
@@ -2064,7 +2084,7 @@
         "hero.stat1":"completed trips","hero.stat2":"to confirm a request","hero.stat3":"average passenger rating","hero.minSuffix":" min",
         "booking.eyebrow":"Private transfer","booking.solo":"The car is just for you and your companions — we never add other passengers.","booking.from":"From","booking.fromPh":"City or address","booking.to":"To","booking.toPh":"City, border crossing or your address",
         "booking.date":"Date & time","booking.pax":"Passengers","booking.bags":"Luggage",
-        "booking.bags0":"No luggage","booking.bags1":"1–2 bags","booking.bags2":"3–4 bags","booking.bags3":"5 or more",
+        "booking.bags0":"Hand luggage only","booking.bags1":"1–2 suitcases","booking.bags2":"3–4 suitcases","booking.bags3":"5+ suitcases",
         "booking.phone":"Contact phone",
         "booking.pet":"Traveling with a pet <i>— important to know in advance, not all checkpoints allow this</i>",
         "booking.comment":"Comment (optional)","booking.commentPh":"Child seat, extra luggage, flight time, etc.",
@@ -2162,10 +2182,10 @@
         "booking.date": "תאריך ושעה",
         "booking.pax": "נוסעים",
         "booking.bags": "מזוודות",
-        "booking.bags0": "בלי מזוודות",
-        "booking.bags1": "1–2 תיקים",
-        "booking.bags2": "3–4 תיקים",
-        "booking.bags3": "5 ומעלה",
+        "booking.bags0": "רק תיק יד",
+        "booking.bags1": "1–2 מזוודות",
+        "booking.bags2": "3–4 מזוודות",
+        "booking.bags3": "5 מזוודות ומעלה",
         "booking.phone": "טלפון ליצירת קשר",
         "booking.pet": "נוסע/ת עם חיית מחמד <i>— חשוב לדעת מראש, לא כל מעברי הגבול מאפשרים זאת</i>",
         "booking.comment": "הערה (לא חובה)",
