@@ -1421,6 +1421,41 @@
     }catch(e){}
 
     try{
+      // Nearby-first address search. The visitor's approximate location (Netlify reads it from the IP,
+      // see netlify/edge-functions/geo.js) or the precise one after "My location" narrows the area
+      // Nominatim prefers to ~50 km; results from elsewhere still come, just after the nearby ones.
+      window.__glNear=null;
+      var nearAsked=false;
+      window.__glEnsureNear=function(){
+        if(window.__glNear || nearAsked) return;
+        nearAsked=true;
+        try{ var c=JSON.parse(sessionStorage.getItem('glNear')||'null'); if(c){ window.__glNear=c; return; } }catch(e){}
+        fetch('/api/geo').then(function(r){ return r.ok ? r.json() : null; }).then(function(g){
+          if(g && typeof g.lat==='number' && typeof g.lon==='number' && ['md','ua','ro'].indexOf(g.cc)>=0 && !window.__glNear){
+            window.__glNear={lat:g.lat,lon:g.lon};
+            try{ sessionStorage.setItem('glNear',JSON.stringify(window.__glNear)); }catch(e){}
+          }
+        }).catch(function(){});
+      };
+      window.__glSetNear=function(lat,lon){ window.__glNear={lat:lat,lon:lon}; };
+      window.__glViewbox=function(){
+        var n=window.__glNear, d=0.6;
+        if(!n) return '&viewbox=19,52.5,41,43';
+        return '&viewbox='+(n.lon-d).toFixed(3)+','+(n.lat+d).toFixed(3)+','+(n.lon+d).toFixed(3)+','+(n.lat-d).toFixed(3);
+      };
+      // Keeps Nominatim's order but moves results within ~60 km of the visitor to the top.
+      window.__glNearFirst=function(list){
+        var n=window.__glNear;
+        if(!n || !list || !list.length) return list||[];
+        var r=Math.PI/180;
+        function far(x){
+          var dLat=(x.lat-n.lat)*r, dLon=(x.lon-n.lon)*r;
+          var a=Math.sin(dLat/2)*Math.sin(dLat/2)+Math.cos(n.lat*r)*Math.cos(x.lat*r)*Math.sin(dLon/2)*Math.sin(dLon/2);
+          return 2*6371*Math.asin(Math.sqrt(a))>60;
+        }
+        return list.filter(function(x){ return !far(x); }).concat(list.filter(far));
+      };
+
       function setupAutocomplete(inputId, listId){
         var input=document.getElementById(inputId);
         var list=document.getElementById(listId);
@@ -1469,6 +1504,7 @@
           list.classList.add('show');
         }
 
+        input.addEventListener('focus',function(){ if(window.__glEnsureNear) window.__glEnsureNear(); });
         input.addEventListener('input',function(){
           delete input.dataset.lat;
           delete input.dataset.lon;
@@ -1479,10 +1515,10 @@
           if(q.length<3){ hideList(); return; }
           debounceTimer=setTimeout(function(){
             controller=('AbortController' in window) ? new AbortController() : null;
-            var url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&accept-language='+(window.__glLang||'ru')+'&countrycodes=md,ua,ro&viewbox=19,52.5,41,43&q='+encodeURIComponent(q);
+            var url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=6&accept-language='+(window.__glLang||'ru')+'&countrycodes=md,ua,ro'+window.__glViewbox()+'&q='+encodeURIComponent(q);
             fetch(url, controller ? {signal:controller.signal} : {})
               .then(function(res){ return res.json(); })
-              .then(function(data){ renderResults(data||[]); })
+              .then(function(data){ renderResults(window.__glNearFirst(data||[])); })
               .catch(function(){});
           },450);
         });
@@ -1660,7 +1696,7 @@
       function geocodeTyped(input){
         var q=input.value.trim();
         if(getCoords(input) || q.length<3 || q===T('geo.here')) return;
-        var url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=1&accept-language='+lang()+'&countrycodes=md,ua,ro&viewbox=19,52.5,41,43&q='+encodeURIComponent(q);
+        var url='https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&limit=1&accept-language='+lang()+'&countrycodes=md,ua,ro'+window.__glViewbox()+'&q='+encodeURIComponent(q);
         fetch(url).then(function(r){ return r.json(); }).then(function(d){
           if(!d || !d[0] || input.value.trim()!==q || getCoords(input)) return;
           setCoords(input,[parseFloat(d[0].lat),parseFloat(d[0].lon)], d[0].address && d[0].address.country_code);
@@ -1697,6 +1733,7 @@
       }
 
       function fillFromWithPos(p){
+        if(window.__glSetNear) window.__glSetNear(p[0],p[1]);
         setCoords(fFromEl,p,inMoldova(p)?'md':null);
         fFromEl.value=T('geo.here');
         updateEstimate();
